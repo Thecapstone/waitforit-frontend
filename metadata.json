@@ -1,0 +1,6 @@
+{
+  "name": "WaitForIt",
+  "description": "The Developer Visibility Platform - Preserving engineering decisions with terminal-first documentation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
