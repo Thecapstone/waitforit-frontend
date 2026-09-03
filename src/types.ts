@@ -1,5 +1,13 @@
 export type Theme = 'light' | 'dark';
 
+export interface AuthUser {
+  id?: string;
+  email: string;
+  role?: 'user' | 'admin' | 'tester' | string;
+  is_verified?: boolean;
+  is_premium?: boolean;
+}
+
 export type RoleType = 
   | 'Backend Engineer' 
   | 'Full Stack' 
@@ -16,7 +24,7 @@ export interface WaitlistSubmission {
   is_developer: boolean;
   role?: RoleType | string;
   created_at: string;
-  status: 'pending' | 'welcomed' | 'beta_invited' | 'archived';
+  status: 'new' | 'contacted' | 'converted' | 'unsubscribed' | 'pending' | 'welcomed' | 'beta_invited' | 'archived';
   welcome_email_sent: boolean;
   welcome_email_sent_at?: string;
   source?: string;
@@ -81,6 +89,7 @@ export type PageView =
   | 'contact' 
   | 'login' 
   | 'integration-guide' 
+  | 'terminal-authorize'
   | 'dashboard';
 
 export interface BlogPost {

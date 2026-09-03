@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { PageView, Theme } from '../types';
-import { Terminal, LayoutDashboard, ArrowRight, Menu, X, Sun, Moon } from 'lucide-react';
+import { AuthUser, PageView, Theme } from '../types';
+import { LogOut, Shield, Terminal, ArrowRight, Menu, X, Sun, Moon, UserCircle } from 'lucide-react';
 
 interface HeaderProps {
   currentPage: PageView;
@@ -8,6 +8,9 @@ interface HeaderProps {
   onOpenWaitlist: () => void;
   theme: Theme;
   onToggleTheme: () => void;
+  currentUser?: AuthUser | null;
+  authLoading?: boolean;
+  onLogout: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -16,6 +19,9 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenWaitlist,
   theme,
   onToggleTheme,
+  currentUser,
+  authLoading = false,
+  onLogout,
 }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -109,7 +115,7 @@ export const Header: React.FC<HeaderProps> = ({
           })}
         </nav>
 
-        {/* Right Actions: Theme Toggle, Admin Dashboard, Olive Join Waitlist CTA */}
+        {/* Right Actions: Theme Toggle, Auth, Olive Join Waitlist CTA */}
         <div className="hidden md:flex items-center space-x-3">
           {/* Dark/Light Mode Switch */}
           <button
@@ -125,25 +131,56 @@ export const Header: React.FC<HeaderProps> = ({
             {isLight ? <Moon className="w-4 h-4 text-[#8C5E3C]" /> : <Sun className="w-4 h-4 text-[#D8E0CC]" />}
           </button>
 
-          {/* Admin Dashboard */}
-          <button
-            onClick={() => {
-              setCurrentPage('dashboard');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className={`px-3 py-2 rounded-none text-xs font-mono flex items-center space-x-1.5 border transition-all ${
-              currentPage === 'dashboard'
-                ? 'bg-[#6B7A3D]/20 text-[#6B7A3D] border-[#6B7A3D]'
-                : isLight
-                  ? 'bg-[#F2ECE1] text-[#554D44] border-[#DCD5C9] hover:border-[#6B7A3D] hover:text-[#6B7A3D]'
-                  : 'bg-[#1A1D1A] text-[#A0A8B0] border-[#2C3325] hover:border-[#6B7A3D] hover:text-[#8FAF9A]'
-            }`}
-            title="Manage subscribers & view conversion analytics"
-          >
-            <LayoutDashboard className="w-3.5 h-3.5" />
-            <span>Dashboard</span>
-            <span className="w-2 h-2 rounded-full bg-[#6B7A3D] animate-pulse"></span>
-          </button>
+          {currentUser?.role === 'admin' && (
+            <button
+              onClick={() => {
+                setCurrentPage('dashboard');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className={`p-2 rounded-none border text-xs flex items-center justify-center transition-all ${
+                isLight
+                  ? 'bg-[#F2ECE1] text-[#6B7A3D] border-[#DCD5C9] hover:bg-[#E8E0D2]'
+                  : 'bg-[#1A1D1A] text-[#8FAF9A] border-[#2C3325] hover:bg-[#252A25]'
+              }`}
+              title="Admin dashboard"
+              aria-label="Admin dashboard"
+            >
+              <Shield className="w-4 h-4" />
+            </button>
+          )}
+
+          {currentUser ? (
+            <button
+              onClick={onLogout}
+              className={`px-3 py-2 rounded-none text-xs font-mono flex items-center space-x-1.5 border transition-all ${
+                isLight
+                  ? 'bg-[#F2ECE1] text-[#554D44] border-[#DCD5C9] hover:border-[#8C5E3C]'
+                  : 'bg-[#1A1D1A] text-[#A0A8B0] border-[#2C3325] hover:border-[#8C5E3C]'
+              }`}
+              title={`Signed in as ${currentUser.email}`}
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Logout</span>
+            </button>
+          ) : (
+            <button
+              disabled={authLoading}
+              onClick={() => {
+                setCurrentPage('login');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className={`px-3 py-2 rounded-none text-xs font-mono flex items-center space-x-1.5 border transition-all ${
+                currentPage === 'login'
+                  ? 'bg-[#6B7A3D]/20 text-[#6B7A3D] border-[#6B7A3D]'
+                  : isLight
+                    ? 'bg-[#F2ECE1] text-[#554D44] border-[#DCD5C9] hover:border-[#6B7A3D] hover:text-[#6B7A3D]'
+                    : 'bg-[#1A1D1A] text-[#A0A8B0] border-[#2C3325] hover:border-[#6B7A3D] hover:text-[#8FAF9A]'
+              }`}
+            >
+              <UserCircle className="w-3.5 h-3.5" />
+              <span>Sign In</span>
+            </button>
+          )}
 
           {/* Olive Button for Join Waitlist */}
           <button
@@ -164,18 +201,6 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             {isLight ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-          </button>
-
-          <button
-            onClick={() => {
-              setCurrentPage('dashboard');
-              setMobileMenuOpen(false);
-            }}
-            className={`p-2 rounded-none border text-xs ${
-              isLight ? 'bg-[#F2ECE1] border-[#DCD5C9] text-[#6B7A3D]' : 'bg-[#1A1D1A] border-[#2C3325] text-[#8FAF9A]'
-            }`}
-          >
-            <LayoutDashboard className="w-4 h-4" />
           </button>
 
           <button
@@ -213,16 +238,42 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           ))}
           <div className={`pt-3 border-t flex flex-col space-y-2 ${isLight ? 'border-[#DCD5C9]' : 'border-[#2C3325]'}`}>
-            <button
-              onClick={() => {
-                setCurrentPage('dashboard');
-                setMobileMenuOpen(false);
-              }}
-              className="w-full text-center py-2.5 rounded-none bg-[#6B7A3D]/15 text-[#6B7A3D] text-xs font-mono border border-[#6B7A3D]/40 flex items-center justify-center space-x-2"
-            >
-              <LayoutDashboard className="w-4 h-4" />
-              <span>Subscriber & Analytics Dashboard</span>
-            </button>
+            {currentUser?.role === 'admin' && (
+              <button
+                onClick={() => {
+                  setCurrentPage('dashboard');
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-center py-2.5 rounded-none bg-[#6B7A3D]/15 text-[#6B7A3D] text-xs font-mono border border-[#6B7A3D]/40 flex items-center justify-center space-x-2"
+              >
+                <Shield className="w-4 h-4" />
+                <span>Admin Dashboard</span>
+              </button>
+            )}
+
+            {currentUser ? (
+              <button
+                onClick={() => {
+                  onLogout();
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-center py-2.5 rounded-none bg-[#8C5E3C]/15 text-[#8C5E3C] text-xs font-mono border border-[#8C5E3C]/40 flex items-center justify-center space-x-2"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Logout</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setCurrentPage('login');
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-center py-2.5 rounded-none bg-[#6B7A3D]/15 text-[#6B7A3D] text-xs font-mono border border-[#6B7A3D]/40 flex items-center justify-center space-x-2"
+              >
+                <UserCircle className="w-4 h-4" />
+                <span>Sign In</span>
+              </button>
+            )}
 
             <button
               onClick={() => {
@@ -239,4 +290,3 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
-
