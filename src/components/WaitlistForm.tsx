@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
 import { RoleType, WaitlistApiResponse, Theme } from '../types';
 import { Check, Mail, User, Code2, AlertCircle, Loader2, Sparkles, Send } from 'lucide-react';
+import { joinWaitlist } from '../lib/api';
 
 interface WaitlistFormProps {
   onSuccess?: (res: WaitlistApiResponse) => void;
@@ -32,23 +33,13 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onSuccess, source = 
     setError(null);
 
     try {
-      const res = await fetch('/api/v1/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          is_developer: isDeveloper,
-          role,
-          source
-        })
+      const data: WaitlistApiResponse = await joinWaitlist({
+        name: name.trim(),
+        email: email.trim(),
+        is_developer: isDeveloper,
+        role,
+        source
       });
-
-      const data: WaitlistApiResponse = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || 'Failed to submit form.');
-      }
 
       setResponse(data);
 
@@ -264,4 +255,3 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onSuccess, source = 
     </form>
   );
 };
-

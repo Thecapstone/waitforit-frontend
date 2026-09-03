@@ -25,6 +25,15 @@ import {
   Zap, 
   Code2 
 } from 'lucide-react';
+import {
+  deleteWaitlistSubscriber,
+  exportWaitlistCsv,
+  fetchDashboardData,
+  joinWaitlist,
+  resendWelcomeEmail,
+  updateEmailTemplate,
+  updateWaitlistSubscriber,
+} from '../lib/api';
 
 interface DashboardPageProps {
   theme?: Theme;
@@ -38,6 +47,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [events, setEvents] = useState<AnalyticsEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [accessDenied, setAccessDenied] = useState(false);
 
   const isLight = theme === 'light';
 
@@ -63,32 +73,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
   const fetchData = async () => {
     setLoading(true);
+    setAccessDenied(false);
     try {
-      const [subRes, emailLogRes, templateRes, analyticsRes] = await Promise.all([
-        fetch('/api/v1/waitlist'),
-        fetch('/api/v1/email-pipeline/logs'),
-        fetch('/api/v1/email-template'),
-        fetch('/api/v1/analytics')
-      ]);
-
-      const subData = await subRes.json();
-      const emailLogData = await emailLogRes.json();
-      const templateData = await templateRes.json();
-      const analyticsData = await analyticsRes.json();
-
-      if (subData.success) setSubscribers(subData.subscribers);
-      if (emailLogData.success) setEmailLogs(emailLogData.logs);
-      if (templateData.success) {
-        setEmailTemplate(templateData.template);
-        setEditSubject(templateData.template.subject);
-        setEditBody(templateData.template.bodyTemplate);
-      }
-      if (analyticsData.success) {
-        setSummary(analyticsData.summary);
-        setEvents(analyticsData.events);
-      }
+      const data = await fetchDashboardData();
+      setSubscribers(data.subscribers);
+      setEmailLogs(data.emailLogs);
+      setEmailTemplate(data.emailTemplate);
+      setEditSubject(data.emailTemplate.subject);
+      setEditBody(data.emailTemplate.bodyTemplate);
+      setSummary(data.summary);
+      setEvents(data.events);
     } catch (err) {
       console.error("Dashboard fetch error:", err);
+      setAccessDenied(true);
     } finally {
       setLoading(false);
     }
@@ -100,15 +97,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
   const handleUpdateStatus = async (id: string, newStatus: string) => {
     try {
-      const res = await fetch(`/api/v1/waitlist/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus })
-      });
-      if (res.ok) {
-        setActionMessage(`Updated subscriber status to ${newStatus}`);
-        fetchData();
-      }
+      await updateWaitlistSubscriber(id, { status: newStatus as WaitlistSubmission['status'] });
+      setActionMessage(`Updated subscriber status to ${newStatus}`);
+      fetchData();
     } catch (err) {
       console.error(err);
     }
@@ -117,11 +108,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
   const handleDeleteSubscriber = async (id: string) => {
     if (!confirm("Are you sure you want to remove this subscriber?")) return;
     try {
-      const res = await fetch(`/api/v1/waitlist/${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        setActionMessage("Subscriber removed successfully.");
-        fetchData();
-      }
+      await deleteWaitlistSubscriber(id);
+      setActionMessage("Subscriber removed successfully.");
+      fetchData();
     } catch (err) {
       console.error(err);
     }
@@ -129,16 +118,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
   const handleResendWelcome = async (subscriberId: string) => {
     try {
-      const res = await fetch('/api/v1/email-pipeline/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ subscriber_id: subscriberId })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setActionMessage(data.message);
-        fetchData();
-      }
+      const data = await resendWelcomeEmail(subscriberId);
+      setActionMessage(data.message || "Welcome email queued.");
+      fetchData();
     } catch (err) {
       console.error(err);
     }
@@ -146,8 +128,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
   const handleExportCSV = async () => {
     try {
-      const response = await fetch('/api/v1/waitlist/export', { method: 'POST' });
-      const blob = await response.blob();
+      const blob = await exportWaitlistCsv();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -165,18 +146,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
     if (!newName || !newEmail) return;
 
     try {
-      const res = await fetch('/api/v1/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: newName,
-          email: newEmail,
-          is_developer: newIsDev,
-          role: newRole,
-          source: 'admin_dashboard'
-        })
+      const data = await joinWaitlist({
+        name: newName,
+        email: newEmail,
+        is_developer: newIsDev,
+        role: newRole,
+        source: 'admin_dashboard'
       });
-      const data = await res.json();
       if (data.success) {
         setActionMessage(data.duplicate ? "Subscriber already existed." : "New subscriber added & welcome email queued!");
         setShowAddModal(false);
@@ -191,19 +167,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
   const handleSaveTemplate = async () => {
     try {
-      const res = await fetch('/api/v1/email-template', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          subject: editSubject,
-          bodyTemplate: editBody
-        })
+      await updateEmailTemplate({
+        subject: editSubject,
+        bodyTemplate: editBody
       });
-      if (res.ok) {
-        setTemplateSaved(true);
-        setTimeout(() => setTemplateSaved(false), 3000);
-        fetchData();
-      }
+      setTemplateSaved(true);
+      setTimeout(() => setTemplateSaved(false), 3000);
+      fetchData();
     } catch (err) {
       console.error(err);
     }
@@ -216,6 +186,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
     const matchesStatus = statusFilter === 'all' || sub.status === statusFilter;
     return matchesSearch && matchesRole && matchesStatus;
   });
+
+  if (accessDenied) {
+    return (
+      <div className={`pt-28 pb-20 max-w-3xl mx-auto px-4 transition-colors ${
+        isLight ? 'text-[#2C2825]' : 'text-[#F5F2EA]'
+      }`}>
+        <div className={`border rounded-none p-8 space-y-3 shadow-sm ${
+          isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
+        }`}>
+          <span className="text-xs font-serif font-bold uppercase tracking-widest text-[#8C5E3C]">
+            Admin Access Required
+          </span>
+          <h1 className="text-2xl font-serif font-extrabold text-[#8C5E3C]">
+            Metrics are private.
+          </h1>
+          <p className="text-sm text-[#786E65]">
+            Sign in with an administrator account to manage subscribers, email pipeline logs, and system metrics.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 transition-colors ${
@@ -541,10 +533,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                   }`}
                 >
                   <option value="all">All Statuses</option>
-                  <option value="pending">Pending</option>
-                  <option value="welcomed">Welcomed</option>
-                  <option value="beta_invited">Beta Invited</option>
-                  <option value="archived">Archived</option>
+                  <option value="new">New</option>
+                  <option value="contacted">Contacted</option>
+                  <option value="converted">Converted</option>
+                  <option value="unsubscribed">Unsubscribed</option>
                 </select>
               </div>
             </div>
@@ -606,10 +598,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                               isLight ? 'bg-white border-[#DCD5C9] text-[#6B7A3D]' : 'bg-[#131513] border-[#2C3325] text-[#6B7A3D]'
                             }`}
                           >
-                            <option value="pending">Pending</option>
-                            <option value="welcomed">Welcomed</option>
-                            <option value="beta_invited">Beta Invited</option>
-                            <option value="archived">Archived</option>
+                            <option value="new">New</option>
+                            <option value="contacted">Contacted</option>
+                            <option value="converted">Converted</option>
+                            <option value="unsubscribed">Unsubscribed</option>
                           </select>
                         </td>
                         <td className="p-4 font-mono text-[11px]">
@@ -871,4 +863,3 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
     </div>
   );
 };
-
