@@ -20,6 +20,40 @@ async function startServer() {
 
   app.use(express.json());
 
+  const BACKEND_API_URL = process.env.BACKEND_API_URL || "http://127.0.0.1:8000";
+
+  app.use("/api", async (req, res, next) => {
+    try {
+      const target = new URL(req.originalUrl, BACKEND_API_URL);
+      const headers: Record<string, string> = {};
+
+      for (const [key, value] of Object.entries(req.headers)) {
+        if (!value || ["host", "connection", "content-length"].includes(key.toLowerCase())) {
+          continue;
+        }
+        headers[key] = Array.isArray(value) ? value.join(", ") : value;
+      }
+
+      const response = await fetch(target, {
+        method: req.method,
+        headers,
+        body: ["GET", "HEAD"].includes(req.method) ? undefined : JSON.stringify(req.body),
+        redirect: "manual",
+      });
+
+      response.headers.forEach((value, key) => {
+        if (!["content-encoding", "transfer-encoding", "connection"].includes(key.toLowerCase())) {
+          res.setHeader(key, value);
+        }
+      });
+
+      const body = Buffer.from(await response.arrayBuffer());
+      res.status(response.status).send(body);
+    } catch (error) {
+      next(error);
+    }
+  });
+
   // In-memory data store with default seed
   let subscribers: WaitlistSubmission[] = [...INITIAL_SUBSCRIBERS];
   let emailLogs: EmailDeliveryLog[] = [...INITIAL_EMAIL_LOGS];

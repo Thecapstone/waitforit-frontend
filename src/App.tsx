@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PageView, BlogPost, Theme } from './types';
+import { PageView, BlogPost, Theme, AuthUser } from './types';
 import { FEATURED_ARTICLES } from './data/initialData';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -18,13 +18,23 @@ import { ContactPage } from './pages/ContactPage';
 import { LoginPage } from './pages/LoginPage';
 import { IntegrationGuidePage } from './pages/IntegrationGuidePage';
 import { DashboardPage } from './pages/DashboardPage';
+import { TerminalAuthorizePage } from './pages/TerminalAuthorizePage';
+import { getCurrentUser, logoutUser, trackAnalyticsEvent } from './lib/api';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<PageView>('home');
+  const initialPage = window.location.pathname === '/terminal/authorize'
+    ? 'terminal-authorize'
+    : 'home';
+  const [currentPage, setCurrentPage] = useState<PageView>(initialPage);
   const [theme, setTheme] = useState<Theme>('light');
   const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
   const [waitlistSource, setWaitlistSource] = useState('modal');
   const [activeArticle, setActiveArticle] = useState<BlogPost | null>(null);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const pendingTerminalCode = new URLSearchParams(window.location.search).get('code')
+    || window.sessionStorage.getItem('wfi_pending_terminal_code')
+    || '';
 
   const isLight = theme === 'light';
 
@@ -34,32 +44,32 @@ export default function App() {
 
   // Track page view event
   useEffect(() => {
-    fetch('/api/v1/analytics/event', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event_name: 'page_view', page: currentPage })
-    }).catch(() => {});
+    trackAnalyticsEvent('page_view', currentPage).catch(() => {});
   }, [currentPage]);
+
+  useEffect(() => {
+    getCurrentUser()
+      .then(setCurrentUser)
+      .finally(() => setAuthLoading(false));
+  }, []);
 
   const handleOpenWaitlist = (source: string = 'header') => {
     setWaitlistSource(source);
     setWaitlistModalOpen(true);
 
     // Track CTA click event
-    fetch('/api/v1/analytics/event', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event_name: 'cta_click', page: currentPage, metadata: { source } })
-    }).catch(() => {});
+    trackAnalyticsEvent('cta_click', currentPage, { source }).catch(() => {});
   };
 
   const handleOpenArticle = (art?: BlogPost) => {
     setActiveArticle(art || FEATURED_ARTICLES[0]);
-    fetch('/api/v1/analytics/event', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event_name: 'blog_read', page: currentPage })
-    }).catch(() => {});
+    trackAnalyticsEvent('blog_read', currentPage).catch(() => {});
+  };
+
+  const handleLogout = async () => {
+    await logoutUser().catch(() => {});
+    setCurrentUser(null);
+    setCurrentPage('home');
   };
 
   return (
@@ -75,6 +85,9 @@ export default function App() {
         onOpenWaitlist={() => handleOpenWaitlist('header_btn')}
         theme={theme}
         onToggleTheme={handleToggleTheme}
+        currentUser={currentUser}
+        authLoading={authLoading}
+        onLogout={handleLogout}
       />
 
       {/* Main Active Page View */}
@@ -149,7 +162,12 @@ export default function App() {
         )}
 
         {currentPage === 'login' && (
-          <LoginPage setCurrentPage={setCurrentPage} theme={theme} />
+          <LoginPage
+            setCurrentPage={setCurrentPage}
+            theme={theme}
+            currentUser={currentUser}
+            onAuthenticated={setCurrentUser}
+          />
         )}
 
         {currentPage === 'integration-guide' && (
@@ -160,8 +178,27 @@ export default function App() {
           />
         )}
 
-        {currentPage === 'dashboard' && (
+        {currentPage === 'terminal-authorize' && (
+          <TerminalAuthorizePage
+            code={pendingTerminalCode}
+            currentUser={currentUser}
+            setCurrentPage={setCurrentPage}
+            theme={theme}
+          />
+        )}
+
+        {currentPage === 'dashboard' && currentUser?.role === 'admin' && (
           <DashboardPage theme={theme} />
+        )}
+
+        {currentPage === 'dashboard' && currentUser?.role !== 'admin' && (
+          <LoginPage
+            setCurrentPage={setCurrentPage}
+            theme={theme}
+            currentUser={currentUser}
+            onAuthenticated={setCurrentUser}
+            adminRequired
+          />
         )}
       </main>
 
@@ -190,4 +227,3 @@ export default function App() {
     </div>
   );
 }
-
