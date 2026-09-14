@@ -1,17 +1,17 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import { 
-  DEFAULT_EMAIL_TEMPLATE, 
-  INITIAL_SUBSCRIBERS, 
-  INITIAL_EMAIL_LOGS, 
-  INITIAL_ANALYTICS_EVENTS 
+import {
+  DEFAULT_EMAIL_TEMPLATE,
+  INITIAL_SUBSCRIBERS,
+  INITIAL_EMAIL_LOGS,
+  INITIAL_ANALYTICS_EVENTS,
 } from "./src/data/initialData.js";
-import { 
-  WaitlistSubmission, 
-  EmailDeliveryLog, 
-  EmailTemplateConfig, 
-  AnalyticsEvent 
+import {
+  WaitlistSubmission,
+  EmailDeliveryLog,
+  EmailTemplateConfig,
+  AnalyticsEvent,
 } from "./src/types.js";
 
 async function startServer() {
@@ -20,7 +20,8 @@ async function startServer() {
 
   app.use(express.json());
 
-  const BACKEND_API_URL = process.env.BACKEND_API_URL || "http://127.0.0.1:8000";
+  const BACKEND_API_URL =
+    process.env.BACKEND_API_URL || "http://127.0.0.1:8000";
 
   app.use("/api", async (req, res, next) => {
     try {
@@ -28,7 +29,10 @@ async function startServer() {
       const headers: Record<string, string> = {};
 
       for (const [key, value] of Object.entries(req.headers)) {
-        if (!value || ["host", "connection", "content-length"].includes(key.toLowerCase())) {
+        if (
+          !value ||
+          ["host", "connection", "content-length"].includes(key.toLowerCase())
+        ) {
           continue;
         }
         headers[key] = Array.isArray(value) ? value.join(", ") : value;
@@ -37,12 +41,27 @@ async function startServer() {
       const response = await fetch(target, {
         method: req.method,
         headers,
-        body: ["GET", "HEAD"].includes(req.method) ? undefined : JSON.stringify(req.body),
+        body: ["GET", "HEAD"].includes(req.method)
+          ? undefined
+          : JSON.stringify(req.body),
         redirect: "manual",
       });
 
+      const setCookies = response.headers.getSetCookie?.() || [];
+      if (setCookies.length > 0) {
+        res.setHeader("set-cookie", setCookies);
+      }
+
       response.headers.forEach((value, key) => {
-        if (!["content-encoding", "transfer-encoding", "connection"].includes(key.toLowerCase())) {
+        const normalizedKey = key.toLowerCase();
+        if (
+          ![
+            "content-encoding",
+            "transfer-encoding",
+            "connection",
+            "set-cookie",
+          ].includes(normalizedKey)
+        ) {
           res.setHeader(key, value);
         }
       });
@@ -50,7 +69,22 @@ async function startServer() {
       const body = Buffer.from(await response.arrayBuffer());
       res.status(response.status).send(body);
     } catch (error) {
-      next(error);
+      const message = error instanceof Error ? error.message : String(error);
+      const cause =
+        error instanceof Error && error.cause instanceof Error
+          ? error.cause.message
+          : undefined;
+
+      console.error(`Backend proxy request failed for ${req.originalUrl}:`, {
+        message,
+        cause,
+        backend: BACKEND_API_URL,
+      });
+
+      res.status(502).json({
+        message: "The backend API is unavailable.",
+        detail: cause ? `${message}: ${cause}` : message,
+      });
     }
   });
 
@@ -63,17 +97,21 @@ async function startServer() {
 
   // Helper to render email template mustache tags
   function renderTemplate(template: string, name: string): string {
-    return template.replace(/\{\{\s*name\s*\}\}/g, name || 'Developer');
+    return template.replace(/\{\{\s*name\s*\}\}/g, name || "Developer");
   }
 
   // Helper to log analytics
-  function trackEvent(name: AnalyticsEvent['event_name'], page: string = 'home', metadata?: Record<string, any>) {
+  function trackEvent(
+    name: AnalyticsEvent["event_name"],
+    page: string = "home",
+    metadata?: Record<string, any>,
+  ) {
     analyticsEvents.unshift({
       id: `evt_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
       event_name: name,
       page,
       timestamp: new Date().toISOString(),
-      metadata
+      metadata,
     });
   }
 
@@ -87,20 +125,26 @@ async function startServer() {
       if (!name || !email) {
         return res.status(400).json({
           success: false,
-          message: "Full Name and Email Address are required."
+          message: "Full Name and Email Address are required.",
         });
       }
 
       const normalizedEmail = email.trim().toLowerCase();
-      const existing = subscribers.find(s => s.email.toLowerCase() === normalizedEmail);
+      const existing = subscribers.find(
+        (s) => s.email.toLowerCase() === normalizedEmail,
+      );
 
       // Duplicate email check as specified in PRD Section 14
       if (existing) {
-        trackEvent('waitlist_signup', 'waitlist_form', { email: normalizedEmail, duplicate: true });
+        trackEvent("waitlist_signup", "waitlist_form", {
+          email: normalizedEmail,
+          duplicate: true,
+        });
         return res.json({
           success: true,
           duplicate: true,
-          message: "You're already on the waitlist. We'll keep you updated as we get closer to launch."
+          message:
+            "You're already on the waitlist. We'll keep you updated as we get closer to launch.",
         });
       }
 
@@ -110,18 +154,21 @@ async function startServer() {
         name: name.trim(),
         email: normalizedEmail,
         is_developer: Boolean(is_developer),
-        role: role ? String(role) : 'Backend Engineer',
+        role: role ? String(role) : "Backend Engineer",
         created_at: now,
-        status: 'welcomed',
+        status: "welcomed",
         welcome_email_sent: true,
         welcome_email_sent_at: now,
-        source: source || 'waitlist_form'
+        source: source || "waitlist_form",
       };
 
       subscribers.unshift(newSubscriber);
 
       // Email Pipeline Trigger (PRD Section 17)
-      const renderedBody = renderTemplate(emailTemplate.bodyTemplate, newSubscriber.name);
+      const renderedBody = renderTemplate(
+        emailTemplate.bodyTemplate,
+        newSubscriber.name,
+      );
       const emailLog: EmailDeliveryLog = {
         id: `log_${Date.now()}`,
         subscriber_id: newSubscriber.id,
@@ -129,26 +176,28 @@ async function startServer() {
         recipient_name: newSubscriber.name,
         subject: emailTemplate.subject,
         body_rendered: renderedBody,
-        status: 'sent',
+        status: "sent",
         sent_at: now,
-        trigger_source: 'auto_pipeline'
+        trigger_source: "auto_pipeline",
       };
       emailLogs.unshift(emailLog);
 
       // Track analytics
-      trackEvent('waitlist_signup', source || 'waitlist_form', { 
-        email: newSubscriber.email, 
-        role: newSubscriber.role 
+      trackEvent("waitlist_signup", source || "waitlist_form", {
+        email: newSubscriber.email,
+        role: newSubscriber.role,
       });
 
       return res.status(201).json({
         success: true,
         message: "You're on the list! Welcome to WaitForIt.",
-        data: newSubscriber
+        data: newSubscriber,
       });
     } catch (err: any) {
       console.error("Waitlist endpoint error:", err);
-      res.status(500).json({ success: false, message: "Internal server error." });
+      res
+        .status(500)
+        .json({ success: false, message: "Internal server error." });
     }
   });
 
@@ -159,20 +208,23 @@ async function startServer() {
 
     if (search) {
       const q = String(search).toLowerCase();
-      filtered = filtered.filter(s => s.name.toLowerCase().includes(q) || s.email.toLowerCase().includes(q));
+      filtered = filtered.filter(
+        (s) =>
+          s.name.toLowerCase().includes(q) || s.email.toLowerCase().includes(q),
+      );
     }
-    if (role && role !== 'all') {
-      filtered = filtered.filter(s => s.role === role);
+    if (role && role !== "all") {
+      filtered = filtered.filter((s) => s.role === role);
     }
-    if (status && status !== 'all') {
-      filtered = filtered.filter(s => s.status === status);
+    if (status && status !== "all") {
+      filtered = filtered.filter((s) => s.status === status);
     }
 
     res.json({
       success: true,
       total: subscribers.length,
       count: filtered.length,
-      subscribers: filtered
+      subscribers: filtered,
     });
   });
 
@@ -180,10 +232,12 @@ async function startServer() {
   app.put("/api/v1/waitlist/:id", (req, res) => {
     const { id } = req.params;
     const { status, role, is_developer, name, email } = req.body;
-    const sub = subscribers.find(s => s.id === id);
+    const sub = subscribers.find((s) => s.id === id);
 
     if (!sub) {
-      return res.status(404).json({ success: false, message: "Subscriber not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Subscriber not found" });
     }
 
     if (status) sub.status = status;
@@ -198,27 +252,42 @@ async function startServer() {
   // DELETE /api/v1/waitlist/:id - Delete subscriber
   app.delete("/api/v1/waitlist/:id", (req, res) => {
     const { id } = req.params;
-    subscribers = subscribers.filter(s => s.id !== id);
+    subscribers = subscribers.filter((s) => s.id !== id);
     res.json({ success: true, message: "Subscriber removed" });
   });
 
   // POST /api/v1/waitlist/export - CSV Export
   app.post("/api/v1/waitlist/export", (req, res) => {
-    const headers = ["ID", "Full Name", "Email Address", "Is Developer", "Role", "Created At", "Status", "Welcome Email Sent"];
-    const rows = subscribers.map(s => [
+    const headers = [
+      "ID",
+      "Full Name",
+      "Email Address",
+      "Is Developer",
+      "Role",
+      "Created At",
+      "Status",
+      "Welcome Email Sent",
+    ];
+    const rows = subscribers.map((s) => [
       s.id,
       `"${s.name.replace(/"/g, '""')}"`,
       `"${s.email.replace(/"/g, '""')}"`,
       s.is_developer ? "Yes" : "No",
-      `"${(s.role || '').replace(/"/g, '""')}"`,
+      `"${(s.role || "").replace(/"/g, '""')}"`,
       s.created_at,
       s.status,
-      s.welcome_email_sent ? "Yes" : "No"
+      s.welcome_email_sent ? "Yes" : "No",
     ]);
 
-    const csvContent = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
-    res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', 'attachment; filename=waitforit_waitlist.csv');
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((r) => r.join(",")),
+    ].join("\n");
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=waitforit_waitlist.csv",
+    );
     res.send(csvContent);
   });
 
@@ -230,10 +299,12 @@ async function startServer() {
   // POST /api/v1/email-pipeline/send - Re-send / Trigger Welcome Email manually
   app.post("/api/v1/email-pipeline/send", (req, res) => {
     const { subscriber_id } = req.body;
-    const sub = subscribers.find(s => s.id === subscriber_id);
+    const sub = subscribers.find((s) => s.id === subscriber_id);
 
     if (!sub) {
-      return res.status(404).json({ success: false, message: "Subscriber not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Subscriber not found" });
     }
 
     const now = new Date().toISOString();
@@ -245,9 +316,9 @@ async function startServer() {
       recipient_name: sub.name,
       subject: emailTemplate.subject,
       body_rendered: renderedBody,
-      status: 'sent',
+      status: "sent",
       sent_at: now,
-      trigger_source: 'manual_resend'
+      trigger_source: "manual_resend",
     };
 
     sub.welcome_email_sent = true;
@@ -257,7 +328,7 @@ async function startServer() {
     res.json({
       success: true,
       message: `Welcome email sent successfully to ${sub.email}`,
-      log: newLog
+      log: newLog,
     });
   });
 
@@ -273,25 +344,34 @@ async function startServer() {
     if (senderName) emailTemplate.senderName = senderName;
     if (senderEmail) emailTemplate.senderEmail = senderEmail;
 
-    res.json({ success: true, message: "Email template updated", template: emailTemplate });
+    res.json({
+      success: true,
+      message: "Email template updated",
+      template: emailTemplate,
+    });
   });
 
   // GET /api/v1/analytics - Conversion Funnel & Analytics Metrics
   app.get("/api/v1/analytics", (req, res) => {
     const total_signups = subscribers.length;
     const total_visitors = Math.max(visitorCount, total_signups + 85);
-    const conversion_rate = parseFloat(((total_signups / total_visitors) * 100).toFixed(1));
+    const conversion_rate = parseFloat(
+      ((total_signups / total_visitors) * 100).toFixed(1),
+    );
 
-    const devsCount = subscribers.filter(s => s.is_developer).length;
-    const developer_ratio = total_signups > 0 ? parseFloat(((devsCount / total_signups) * 100).toFixed(1)) : 100;
+    const devsCount = subscribers.filter((s) => s.is_developer).length;
+    const developer_ratio =
+      total_signups > 0
+        ? parseFloat(((devsCount / total_signups) * 100).toFixed(1))
+        : 100;
 
     const roleCounts: Record<string, number> = {};
-    subscribers.forEach(s => {
-      const r = s.role || 'Backend Engineer';
+    subscribers.forEach((s) => {
+      const r = s.role || "Backend Engineer";
       roleCounts[r] = (roleCounts[r] || 0) + 1;
     });
 
-    let top_role = 'Backend Engineer';
+    let top_role = "Backend Engineer";
     let maxRoleCount = 0;
     Object.entries(roleCounts).forEach(([role, count]) => {
       if (count > maxRoleCount) {
@@ -300,14 +380,20 @@ async function startServer() {
       }
     });
 
-    const ctaClicks = analyticsEvents.filter(e => e.event_name === 'cta_click').length + 38;
+    const ctaClicks =
+      analyticsEvents.filter((e) => e.event_name === "cta_click").length + 38;
 
     // Daily breakdown for visual metric charts
     const daily_metrics = [
       { date: "Aug 1", visitors: 24, signups: 1, cta_clicks: 8 },
       { date: "Aug 2", visitors: 35, signups: 1, cta_clicks: 12 },
       { date: "Aug 3", visitors: 48, signups: 2, cta_clicks: 19 },
-      { date: "Aug 4", visitors: Math.max(35, total_visitors - 107), signups: total_signups - 4, cta_clicks: Math.max(15, ctaClicks - 39) }
+      {
+        date: "Aug 4",
+        visitors: Math.max(35, total_visitors - 107),
+        signups: total_signups - 4,
+        cta_clicks: Math.max(15, ctaClicks - 39),
+      },
     ];
 
     res.json({
@@ -322,19 +408,19 @@ async function startServer() {
         top_role,
         cta_clicks: ctaClicks,
         role_breakdown: roleCounts,
-        daily_metrics
+        daily_metrics,
       },
-      events: analyticsEvents.slice(0, 50)
+      events: analyticsEvents.slice(0, 50),
     });
   });
 
   // POST /api/v1/analytics/event - Track client events
   app.post("/api/v1/analytics/event", (req, res) => {
     const { event_name, page, metadata } = req.body;
-    if (event_name === 'page_view') {
+    if (event_name === "page_view") {
       visitorCount++;
     }
-    trackEvent(event_name || 'page_view', page || 'home', metadata);
+    trackEvent(event_name || "page_view", page || "home", metadata);
     res.json({ success: true });
   });
 
@@ -346,15 +432,17 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(process.cwd(), 'dist');
+    const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(distPath, "index.html"));
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`WaitForIt Full-Stack Server listening on http://0.0.0.0:${PORT}`);
+  app.listen(PORT, "127.0.0.1", () => {
+    console.log(
+      `WaitForIt Full-Stack Server listening on http://127.0.0.1:${PORT}`,
+    );
   });
 }
 
