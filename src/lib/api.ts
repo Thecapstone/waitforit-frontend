@@ -1,5 +1,7 @@
 import {
   AuthUser,
+  CapsuleSummary,
+  Subscription,
   AnalyticsEvent,
   AnalyticsSummary,
   EmailDeliveryLog,
@@ -248,4 +250,32 @@ export async function approveTerminalLogin(userCode: string) {
     method: 'POST',
     body: { user_code: userCode },
   });
+}
+
+export async function getSubscription(): Promise<Subscription> {
+  return apiRequest<Subscription>('/api/payment/subscription/');
+}
+
+export async function initializeSubscriptionPayment() {
+  return apiRequest<{
+    payment_url: string;
+    access_code: string;
+    reference: string;
+  }>('/api/payment/subscription/', {
+    method: 'POST',
+    headers: { 'Idempotency-Key': crypto.randomUUID() },
+    body: {},
+  });
+}
+
+export async function cancelSubscription() {
+  return apiRequest<Subscription>('/api/payment/subscription/', { method: 'DELETE' });
+}
+
+export async function listCapsules(): Promise<CapsuleSummary[]> {
+  return apiRequest<CapsuleSummary[]>('/api/memories/');
+}
+
+export async function createCapsule(payload: { title: string; description: string; maturity_date: string }) {
+  return apiRequest<CapsuleSummary>('/api/memories/', { method: 'POST', body: payload });
 }

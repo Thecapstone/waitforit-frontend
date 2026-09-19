@@ -8,6 +8,27 @@ export interface AuthUser {
   is_premium?: boolean;
 }
 
+export interface Subscription {
+  plan_code: string;
+  amount: number;
+  currency: string;
+  status: 'trialing' | 'active' | 'past_due' | 'canceled' | 'expired' | string;
+  trial_ends_at?: string;
+  current_period_end?: string;
+  cancel_at_period_end: boolean;
+  has_access: boolean;
+}
+
+export interface CapsuleSummary {
+  id: string;
+  title: string;
+  description?: string;
+  maturity_date: string;
+  private: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export type RoleType = 
   | 'Backend Engineer' 
   | 'Full Stack' 

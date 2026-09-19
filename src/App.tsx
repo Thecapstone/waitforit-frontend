@@ -18,6 +18,7 @@ import { ContactPage } from './pages/ContactPage';
 import { LoginPage } from './pages/LoginPage';
 import { IntegrationGuidePage } from './pages/IntegrationGuidePage';
 import { DashboardPage } from './pages/DashboardPage';
+import { UserDashboardPage } from './pages/UserDashboardPage';
 import { TerminalAuthorizePage } from './pages/TerminalAuthorizePage';
 import { getCurrentUser, logoutUser, trackAnalyticsEvent } from './lib/api';
 
@@ -191,7 +192,11 @@ export default function App() {
           <DashboardPage theme={theme} />
         )}
 
-        {currentPage === 'dashboard' && currentUser?.role !== 'admin' && (
+        {currentPage === 'dashboard' && currentUser && currentUser.role !== 'admin' && (
+          <UserDashboardPage currentUser={currentUser} theme={theme} />
+        )}
+
+        {currentPage === 'dashboard' && !currentUser && (
           <LoginPage
             setCurrentPage={setCurrentPage}
             theme={theme}

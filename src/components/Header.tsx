@@ -149,6 +149,19 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
+          {currentUser && currentUser.role !== 'admin' && (
+            <button
+              onClick={() => { setCurrentPage('dashboard'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`p-2 rounded-none border text-xs flex items-center justify-center transition-all ${
+                isLight ? 'bg-[#F2ECE1] text-[#6B7A3D] border-[#DCD5C9] hover:bg-[#E8E0D2]' : 'bg-[#1A1D1A] text-[#8FAF9A] border-[#2C3325] hover:bg-[#252A25]'
+              }`}
+              title="Your workspace"
+              aria-label="Your workspace"
+            >
+              <UserCircle className="w-4 h-4" />
+            </button>
+          )}
+
           {currentUser ? (
             <button
               onClick={onLogout}
