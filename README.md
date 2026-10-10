@@ -86,7 +86,7 @@ Open the app:
 http://localhost:3000
 ```
 
-The dev command starts `server.ts`, which mounts the Express API and Vite middleware on the same server.
+The dev command starts Vite directly on port `3000`, so frontend transform errors and stack traces appear in the Vite terminal. Vite proxies `/api` requests to the Django backend at `http://127.0.0.1:8000` by default. Start Django in a second terminal; set `BACKEND_API_URL` to override its address. Keep `VITE_API_BASE_URL` unset in development so API requests use the Vite proxy.
 
 ## Available Scripts
 
@@ -94,7 +94,7 @@ The dev command starts `server.ts`, which mounts the Express API and Vite middle
 npm run dev
 ```
 
-Starts the local Express and Vite development server on port `3000`.
+Starts the Vite development server on port `3000` and proxies `/api` requests to Django. Run the Django backend separately.
 
 ```bash
 npm run build

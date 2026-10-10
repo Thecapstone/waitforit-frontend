@@ -1,5 +1,6 @@
 import {
   AuthUser,
+  ArticleRecord,
   CapsuleSummary,
   Subscription,
   AnalyticsEvent,
@@ -217,6 +218,14 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
   }
 }
 
+export async function updateUserProfile(payload: Partial<AuthUser>): Promise<AuthUser> {
+  const data = await apiRequest<{ user: AuthUser }>('/api/auth/me/', {
+    method: 'PATCH',
+    body: payload,
+  });
+  return data.user;
+}
+
 export async function loginUser(payload: { email: string; password: string }) {
   const data = await apiRequest<{ user: AuthUser }>('/api/auth/login/', {
     method: 'POST',
@@ -278,4 +287,16 @@ export async function listCapsules(): Promise<CapsuleSummary[]> {
 
 export async function createCapsule(payload: { title: string; description: string; maturity_date: string }) {
   return apiRequest<CapsuleSummary>('/api/memories/', { method: 'POST', body: payload });
+}
+
+export async function updateCapsule(id: string, payload: { aggregation_mode: 'PER_USER' | 'CAPSULE' }) {
+  return apiRequest<CapsuleSummary>(`/api/memories/${id}/`, { method: 'PATCH', body: payload });
+}
+
+export async function updateArticle(id: string, payload: Pick<ArticleRecord, 'title' | 'body' | 'conclusion'>) {
+  return apiRequest<ArticleRecord>(`/api/articles/${id}/`, { method: 'PATCH', body: payload });
+}
+
+export async function deleteArticle(id: string) {
+  return apiRequest<void>(`/api/articles/${id}/`, { method: 'DELETE' });
 }

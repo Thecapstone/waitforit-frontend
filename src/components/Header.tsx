@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AuthUser, PageView, Theme } from '../types';
-import { LogOut, Shield, Terminal, ArrowRight, Menu, X, Sun, Moon, UserCircle } from 'lucide-react';
+import { LogOut, Shield, Terminal, ArrowRight, Menu, X, Sun, Moon, UserCircle, Settings } from 'lucide-react';
 
 interface HeaderProps {
   currentPage: PageView;
@@ -151,14 +151,27 @@ export const Header: React.FC<HeaderProps> = ({
 
           {currentUser && currentUser.role !== 'admin' && (
             <button
-              onClick={() => { setCurrentPage('dashboard'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onClick={() => { setCurrentPage('profile'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className={`p-2 rounded-none border text-xs flex items-center justify-center transition-all ${
                 isLight ? 'bg-[#F2ECE1] text-[#6B7A3D] border-[#DCD5C9] hover:bg-[#E8E0D2]' : 'bg-[#1A1D1A] text-[#8FAF9A] border-[#2C3325] hover:bg-[#252A25]'
               }`}
-              title="Your workspace"
-              aria-label="Your workspace"
+              title="Your profile"
+              aria-label="Your profile"
             >
               <UserCircle className="w-4 h-4" />
+            </button>
+          )}
+
+          {currentUser && currentUser.role !== 'admin' && (
+            <button
+              onClick={() => { setCurrentPage('settings'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className={`p-2 rounded-none border text-xs flex items-center justify-center transition-all ${
+                isLight ? 'bg-[#F2ECE1] text-[#6B7A3D] border-[#DCD5C9] hover:bg-[#E8E0D2]' : 'bg-[#1A1D1A] text-[#8FAF9A] border-[#2C3325] hover:bg-[#252A25]'
+              }`}
+              title="Account settings"
+              aria-label="Account settings"
+            >
+              <Settings className="w-4 h-4" />
             </button>
           )}
 
@@ -262,6 +275,23 @@ export const Header: React.FC<HeaderProps> = ({
                 <Shield className="w-4 h-4" />
                 <span>Admin Dashboard</span>
               </button>
+            )}
+
+            {currentUser && currentUser.role !== 'admin' && (
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => { setCurrentPage('profile'); setMobileMenuOpen(false); }}
+                  className={`py-2.5 border text-xs font-mono flex items-center justify-center gap-2 ${isLight ? 'border-[#DCD5C9] bg-[#F2ECE1] text-[#6B7A3D]' : 'border-[#2C3325] bg-[#1A1D1A] text-[#8FAF9A]'}`}
+                >
+                  <UserCircle className="h-4 w-4" /> Profile
+                </button>
+                <button
+                  onClick={() => { setCurrentPage('settings'); setMobileMenuOpen(false); }}
+                  className={`py-2.5 border text-xs font-mono flex items-center justify-center gap-2 ${isLight ? 'border-[#DCD5C9] bg-[#F2ECE1] text-[#6B7A3D]' : 'border-[#2C3325] bg-[#1A1D1A] text-[#8FAF9A]'}`}
+                >
+                  <Settings className="h-4 w-4" /> Settings
+                </button>
+              </div>
             )}
 
             {currentUser ? (

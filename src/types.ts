@@ -3,6 +3,12 @@ export type Theme = 'light' | 'dark';
 export interface AuthUser {
   id?: string;
   email: string;
+  display_name?: string;
+  bio?: string;
+  avatar_url?: string;
+  location?: string;
+  website_url?: string;
+  github_url?: string;
   role?: 'user' | 'admin' | 'tester' | string;
   is_verified?: boolean;
   is_premium?: boolean;
@@ -27,6 +33,31 @@ export interface CapsuleSummary {
   private: boolean;
   created_at: string;
   updated_at: string;
+  aggregation_mode?: 'PER_USER' | 'CAPSULE';
+  logs?: LogRecord[];
+  articles?: ArticleRecord[];
+}
+
+export interface LogRecord {
+  id: string;
+  creator_id?: string;
+  title: string;
+  description: string;
+  code_language?: string;
+  code_framework?: string;
+  created_at: string;
+}
+
+export interface ArticleRecord {
+  id: string;
+  capsule: string;
+  author_id?: string;
+  title: string;
+  body?: string;
+  content?: string;
+  conclusion?: string;
+  created_at: string;
+  updated_at?: string;
 }
 
 export type RoleType = 
@@ -111,7 +142,15 @@ export type PageView =
   | 'login' 
   | 'integration-guide' 
   | 'terminal-authorize'
-  | 'dashboard';
+  | 'dashboard'
+  | 'profile'
+  | 'capsules'
+  | 'logs'
+  | 'articles'
+  | 'capsule-detail'
+  | 'log-detail'
+  | 'article-detail'
+  | 'settings';
 
 export interface BlogPost {
   id: string;

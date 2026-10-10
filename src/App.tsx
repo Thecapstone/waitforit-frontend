@@ -20,6 +20,7 @@ import { IntegrationGuidePage } from './pages/IntegrationGuidePage';
 import { DashboardPage } from './pages/DashboardPage';
 import { UserDashboardPage } from './pages/UserDashboardPage';
 import { TerminalAuthorizePage } from './pages/TerminalAuthorizePage';
+import { AccountPages } from './pages/AccountPages';
 import { getCurrentUser, logoutUser, trackAnalyticsEvent } from './lib/api';
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
   const [waitlistSource, setWaitlistSource] = useState('modal');
   const [activeArticle, setActiveArticle] = useState<BlogPost | null>(null);
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [selectedRecordId, setSelectedRecordId] = useState('');
   const [authLoading, setAuthLoading] = useState(true);
   const pendingTerminalCode = new URLSearchParams(window.location.search).get('code')
     || window.sessionStorage.getItem('wfi_pending_terminal_code')
@@ -203,6 +205,26 @@ export default function App() {
             currentUser={currentUser}
             onAuthenticated={setCurrentUser}
             adminRequired
+          />
+        )}
+
+        {['profile', 'capsules', 'logs', 'articles', 'capsule-detail', 'log-detail', 'article-detail', 'settings'].includes(currentPage) && currentUser && currentUser.role !== 'admin' && (
+          <AccountPages
+            page={currentPage}
+            currentUser={currentUser}
+            theme={theme}
+            setCurrentPage={setCurrentPage}
+            selectedRecordId={selectedRecordId}
+            setSelectedRecordId={setSelectedRecordId}
+          />
+        )}
+
+        {['profile', 'capsules', 'logs', 'articles', 'capsule-detail', 'log-detail', 'article-detail', 'settings'].includes(currentPage) && !currentUser && (
+          <LoginPage
+            setCurrentPage={setCurrentPage}
+            theme={theme}
+            currentUser={currentUser}
+            onAuthenticated={setCurrentUser}
           />
         )}
       </main>
