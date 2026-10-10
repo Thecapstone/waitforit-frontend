@@ -9,21 +9,23 @@ import {
   EmailTemplateConfig,
   WaitlistApiResponse,
   WaitlistSubmission,
-} from '../types';
+} from "../types";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 async function apiRequest<T>(
   path: string,
   options: { method?: HttpMethod; body?: unknown; headers?: HeadersInit } = {},
 ): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
-    method: options.method || 'GET',
-    credentials: 'include',
+    method: options.method || "GET",
+    credentials: "include",
     headers: {
-      ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
+      ...(options.body instanceof FormData
+        ? {}
+        : { "Content-Type": "application/json" }),
       ...options.headers,
     },
     body: options.body
@@ -39,7 +41,7 @@ async function apiRequest<T>(
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(data.message || data.detail || 'Request failed.');
+    throw new Error(data.message || data.detail || "Request failed.");
   }
 
   return data as T;
@@ -48,36 +50,38 @@ async function apiRequest<T>(
 function normalizeSubscriber(subscriber: any): WaitlistSubmission {
   return {
     ...subscriber,
-    status: subscriber.status || 'new',
+    status: subscriber.status || "new",
     welcome_email_sent: Boolean(
       subscriber.welcome_email_sent ||
-        subscriber.status === 'contacted' ||
-        subscriber.status === 'converted',
+      subscriber.status === "contacted" ||
+      subscriber.status === "converted",
     ),
-    welcome_email_sent_at: subscriber.welcome_email_sent_at || subscriber.created_at,
+    welcome_email_sent_at:
+      subscriber.welcome_email_sent_at || subscriber.created_at,
   };
 }
 
 function normalizeEmailLog(log: any): EmailDeliveryLog {
   return {
     id: log.id,
-    subscriber_id: log.subscriber?.id || log.subscriber_id || '',
+    subscriber_id: log.subscriber?.id || log.subscriber_id || "",
     recipient_email: log.recipient_email,
-    recipient_name: log.subscriber?.name || log.recipient_name || log.recipient_email,
+    recipient_name:
+      log.subscriber?.name || log.recipient_name || log.recipient_email,
     subject: log.subject,
-    body_rendered: log.body || log.body_rendered || '',
+    body_rendered: log.body || log.body_rendered || "",
     status: log.status,
     sent_at: log.created_at || log.sent_at,
-    trigger_source: log.trigger_source || 'auto_pipeline',
+    trigger_source: log.trigger_source || "auto_pipeline",
   };
 }
 
 function normalizeTemplate(template: any): EmailTemplateConfig {
   return {
     subject: template.subject,
-    bodyTemplate: template.body || template.bodyTemplate || '',
-    senderName: template.senderName || 'The WaitForIt Team',
-    senderEmail: template.senderEmail || 'welcome@waitforit.dev',
+    bodyTemplate: template.body || template.bodyTemplate || "",
+    senderName: template.senderName || "The WaitForIt Team",
+    senderEmail: template.senderEmail || "welcome@waitforit.dev",
   };
 }
 
@@ -96,20 +100,25 @@ function normalizeAnalytics(payload: any): {
       total_visitors: totalVisitors,
       total_signups: totalSignups,
       conversion_rate: summary.conversion_rate ?? 0,
-      developer_ratio: totalSignups > 0 ? Math.round((developers / totalSignups) * 100) : 0,
+      developer_ratio:
+        totalSignups > 0 ? Math.round((developers / totalSignups) * 100) : 0,
       emails_sent: summary.emails_sent ?? summary.email_logs ?? 0,
       email_open_rate: summary.email_open_rate ?? 0,
-      top_role: summary.top_role || payload.subscribers_by_role?.[0]?.role || 'Unknown',
+      top_role:
+        summary.top_role || payload.subscribers_by_role?.[0]?.role || "Unknown",
       cta_clicks: summary.cta_clicks ?? 0,
       role_breakdown: Object.fromEntries(
-        (payload.subscribers_by_role || []).map((item: any) => [item.role || 'Unknown', item.count]),
+        (payload.subscribers_by_role || []).map((item: any) => [
+          item.role || "Unknown",
+          item.count,
+        ]),
       ),
       daily_metrics: summary.daily_metrics || [],
     },
     events: recentEvents.map((event: any) => ({
       id: event.id,
-      event_name: event.event_name || event.event || 'page_view',
-      page: event.page || event.metadata?.page || 'unknown',
+      event_name: event.event_name || event.event || "page_view",
+      page: event.page || event.metadata?.page || "unknown",
       timestamp: event.timestamp || event.created_at,
       metadata: event.metadata || {},
     })),
@@ -123,8 +132,8 @@ export async function joinWaitlist(payload: {
   role: string;
   source: string;
 }): Promise<WaitlistApiResponse> {
-  const data = await apiRequest<any>('/api/v1/waitlist', {
-    method: 'POST',
+  const data = await apiRequest<any>("/api/v1/waitlist", {
+    method: "POST",
     body: payload,
   });
 
@@ -136,15 +145,15 @@ export async function joinWaitlist(payload: {
 }
 
 export async function trackAnalyticsEvent(
-  eventName: AnalyticsEvent['event_name'],
+  eventName: AnalyticsEvent["event_name"],
   page: string,
   metadata?: Record<string, unknown>,
 ) {
-  return apiRequest('/api/v1/analytics/event', {
-    method: 'POST',
+  return apiRequest("/api/v1/analytics/event", {
+    method: "POST",
     body: {
       event: eventName,
-      visitor_id: window.localStorage.getItem('wfi_visitor_id') || '',
+      visitor_id: window.localStorage.getItem("wfi_visitor_id") || "",
       metadata: { page, ...metadata },
     },
   });
@@ -152,43 +161,50 @@ export async function trackAnalyticsEvent(
 
 export async function fetchDashboardData() {
   const [subscribers, emailLogs, template, analytics] = await Promise.all([
-    apiRequest<any>('/api/v1/waitlist'),
-    apiRequest<any>('/api/v1/email-pipeline/logs'),
-    apiRequest<any>('/api/v1/email-template'),
-    apiRequest<any>('/api/v1/analytics'),
+    apiRequest<any>("/api/v1/waitlist"),
+    apiRequest<any>("/api/v1/email-pipeline/logs"),
+    apiRequest<any>("/api/v1/email-template"),
+    apiRequest<any>("/api/v1/analytics"),
   ]);
 
   return {
-    subscribers: (subscribers.data || subscribers.subscribers || []).map(normalizeSubscriber),
+    subscribers: (subscribers.data || subscribers.subscribers || []).map(
+      normalizeSubscriber,
+    ),
     emailLogs: (emailLogs.data || emailLogs.logs || []).map(normalizeEmailLog),
     emailTemplate: normalizeTemplate(template.data || template.template || {}),
     ...normalizeAnalytics(analytics),
   };
 }
 
-export async function updateWaitlistSubscriber(id: string, body: Partial<WaitlistSubmission>) {
+export async function updateWaitlistSubscriber(
+  id: string,
+  body: Partial<WaitlistSubmission>,
+) {
   return apiRequest(`/api/v1/waitlist/${id}`, {
-    method: 'PUT',
+    method: "PUT",
     body,
   });
 }
 
 export async function deleteWaitlistSubscriber(id: string) {
   return apiRequest(`/api/v1/waitlist/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
   });
 }
 
 export async function resendWelcomeEmail(subscriberId: string) {
-  return apiRequest<any>('/api/v1/email-pipeline/send', {
-    method: 'POST',
+  return apiRequest<any>("/api/v1/email-pipeline/send", {
+    method: "POST",
     body: { subscriber_id: subscriberId },
   });
 }
 
-export async function updateEmailTemplate(template: Partial<EmailTemplateConfig>) {
-  return apiRequest('/api/v1/email-template', {
-    method: 'PUT',
+export async function updateEmailTemplate(
+  template: Partial<EmailTemplateConfig>,
+) {
+  return apiRequest("/api/v1/email-template", {
+    method: "PUT",
     body: {
       subject: template.subject,
       body: template.bodyTemplate,
@@ -198,12 +214,12 @@ export async function updateEmailTemplate(template: Partial<EmailTemplateConfig>
 
 export async function exportWaitlistCsv() {
   const response = await fetch(`${API_BASE_URL}/api/v1/waitlist/export`, {
-    method: 'POST',
-    credentials: 'include',
+    method: "POST",
+    credentials: "include",
   });
 
   if (!response.ok) {
-    throw new Error('Unable to export waitlist.');
+    throw new Error("Unable to export waitlist.");
   }
 
   return response.blob();
@@ -211,58 +227,63 @@ export async function exportWaitlistCsv() {
 
 export async function getCurrentUser(): Promise<AuthUser | null> {
   try {
-    const data = await apiRequest<{ user: AuthUser }>('/api/auth/me/');
+    const data = await apiRequest<{ user: AuthUser }>("/api/auth/me/");
     return data.user;
   } catch {
     return null;
   }
 }
 
-export async function updateUserProfile(payload: Partial<AuthUser>): Promise<AuthUser> {
-  const data = await apiRequest<{ user: AuthUser }>('/api/auth/me/', {
-    method: 'PATCH',
+export async function updateUserProfile(
+  payload: Partial<AuthUser>,
+): Promise<AuthUser> {
+  const data = await apiRequest<{ user: AuthUser }>("/api/auth/me/", {
+    method: "PATCH",
     body: payload,
   });
   return data.user;
 }
 
 export async function loginUser(payload: { email: string; password: string }) {
-  const data = await apiRequest<{ user: AuthUser }>('/api/auth/login/', {
-    method: 'POST',
+  const data = await apiRequest<{ user: AuthUser }>("/api/auth/login/", {
+    method: "POST",
     body: payload,
   });
   return data.user;
 }
 
-export async function registerUser(payload: { email: string; password: string }) {
-  return apiRequest<{ message: string }>('/api/auth/register/', {
-    method: 'POST',
+export async function registerUser(payload: {
+  email: string;
+  password: string;
+}) {
+  return apiRequest<{ message: string }>("/api/auth/register/", {
+    method: "POST",
     body: payload,
   });
 }
 
 export async function logoutUser() {
-  return apiRequest('/api/auth/logout/', {
-    method: 'GET',
+  return apiRequest("/api/auth/logout/", {
+    method: "GET",
   });
 }
 
 export async function requestPasswordReset(email: string) {
-  return apiRequest<{ message: string }>('/api/auth/forgot-password/', {
-    method: 'POST',
+  return apiRequest<{ message: string }>("/api/auth/forgot-password/", {
+    method: "POST",
     body: { email },
   });
 }
 
 export async function approveTerminalLogin(userCode: string) {
-  return apiRequest<{ message: string }>('/api/auth/terminal/approve/', {
-    method: 'POST',
+  return apiRequest<{ message: string }>("/api/auth/terminal/approve/", {
+    method: "POST",
     body: { user_code: userCode },
   });
 }
 
 export async function getSubscription(): Promise<Subscription> {
-  return apiRequest<Subscription>('/api/payment/subscription/');
+  return apiRequest<Subscription>("/api/payment/subscription/");
 }
 
 export async function initializeSubscriptionPayment() {
@@ -270,33 +291,54 @@ export async function initializeSubscriptionPayment() {
     payment_url: string;
     access_code: string;
     reference: string;
-  }>('/api/payment/subscription/', {
-    method: 'POST',
-    headers: { 'Idempotency-Key': crypto.randomUUID() },
+  }>("/api/payment/subscription/", {
+    method: "POST",
+    headers: { "Idempotency-Key": crypto.randomUUID() },
     body: {},
   });
 }
 
 export async function cancelSubscription() {
-  return apiRequest<Subscription>('/api/payment/subscription/', { method: 'DELETE' });
+  return apiRequest<Subscription>("/api/payment/subscription/", {
+    method: "DELETE",
+  });
 }
 
 export async function listCapsules(): Promise<CapsuleSummary[]> {
-  return apiRequest<CapsuleSummary[]>('/api/memories/');
+  return apiRequest<CapsuleSummary[]>("/api/memories/");
 }
 
-export async function createCapsule(payload: { title: string; description: string; maturity_date: string }) {
-  return apiRequest<CapsuleSummary>('/api/memories/', { method: 'POST', body: payload });
+export async function createCapsule(payload: {
+  title: string;
+  description: string;
+  maturity_date: string;
+}) {
+  return apiRequest<CapsuleSummary>("/api/memories/", {
+    method: "POST",
+    body: payload,
+  });
 }
 
-export async function updateCapsule(id: string, payload: { aggregation_mode: 'PER_USER' | 'CAPSULE' }) {
-  return apiRequest<CapsuleSummary>(`/api/memories/${id}/`, { method: 'PATCH', body: payload });
+export async function updateCapsule(
+  id: string,
+  payload: { aggregation_mode: "PER_USER" | "CAPSULE" },
+) {
+  return apiRequest<CapsuleSummary>(`/api/memories/${id}/`, {
+    method: "PATCH",
+    body: payload,
+  });
 }
 
-export async function updateArticle(id: string, payload: Pick<ArticleRecord, 'title' | 'body' | 'conclusion'>) {
-  return apiRequest<ArticleRecord>(`/api/articles/${id}/`, { method: 'PATCH', body: payload });
+export async function updateArticle(
+  id: string,
+  payload: Pick<ArticleRecord, "title" | "body" | "conclusion">,
+) {
+  return apiRequest<ArticleRecord>(`/api/articles/${id}/`, {
+    method: "PATCH",
+    body: payload,
+  });
 }
 
 export async function deleteArticle(id: string) {
-  return apiRequest<void>(`/api/articles/${id}/`, { method: 'DELETE' });
+  return apiRequest<void>(`/api/articles/${id}/`, { method: "DELETE" });
 }

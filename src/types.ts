@@ -1,4 +1,4 @@
-export type Theme = 'light' | 'dark';
+export type Theme = "light" | "dark";
 
 export interface AuthUser {
   id?: string;
@@ -9,7 +9,7 @@ export interface AuthUser {
   location?: string;
   website_url?: string;
   github_url?: string;
-  role?: 'user' | 'admin' | 'tester' | string;
+  role?: "user" | "admin" | "tester" | string;
   is_verified?: boolean;
   is_premium?: boolean;
 }
@@ -18,7 +18,7 @@ export interface Subscription {
   plan_code: string;
   amount: number;
   currency: string;
-  status: 'trialing' | 'active' | 'past_due' | 'canceled' | 'expired' | string;
+  status: "trialing" | "active" | "past_due" | "canceled" | "expired" | string;
   trial_ends_at?: string;
   current_period_end?: string;
   cancel_at_period_end: boolean;
@@ -33,7 +33,7 @@ export interface CapsuleSummary {
   private: boolean;
   created_at: string;
   updated_at: string;
-  aggregation_mode?: 'PER_USER' | 'CAPSULE';
+  aggregation_mode?: "PER_USER" | "CAPSULE";
   logs?: LogRecord[];
   articles?: ArticleRecord[];
 }
@@ -60,14 +60,14 @@ export interface ArticleRecord {
   updated_at?: string;
 }
 
-export type RoleType = 
-  | 'Backend Engineer' 
-  | 'Full Stack' 
-  | 'Frontend' 
-  | 'DevOps' 
-  | 'Platform' 
-  | 'Student' 
-  | 'Other';
+export type RoleType =
+  | "Backend Engineer"
+  | "Full Stack"
+  | "Frontend"
+  | "DevOps"
+  | "Platform"
+  | "Student"
+  | "Other";
 
 export interface WaitlistSubmission {
   id: string;
@@ -76,7 +76,15 @@ export interface WaitlistSubmission {
   is_developer: boolean;
   role?: RoleType | string;
   created_at: string;
-  status: 'new' | 'contacted' | 'converted' | 'unsubscribed' | 'pending' | 'welcomed' | 'beta_invited' | 'archived';
+  status:
+    | "new"
+    | "contacted"
+    | "converted"
+    | "unsubscribed"
+    | "pending"
+    | "welcomed"
+    | "beta_invited"
+    | "archived";
   welcome_email_sent: boolean;
   welcome_email_sent_at?: string;
   source?: string;
@@ -96,9 +104,9 @@ export interface EmailDeliveryLog {
   recipient_name: string;
   subject: string;
   body_rendered: string;
-  status: 'queued' | 'rendering' | 'sent' | 'failed';
+  status: "queued" | "rendering" | "sent" | "failed";
   sent_at: string;
-  trigger_source: 'auto_pipeline' | 'manual_resend' | 'admin_batch';
+  trigger_source: "auto_pipeline" | "manual_resend" | "admin_batch";
 }
 
 export interface EmailTemplateConfig {
@@ -110,7 +118,14 @@ export interface EmailTemplateConfig {
 
 export interface AnalyticsEvent {
   id: string;
-  event_name: 'waitlist_signup' | 'cta_click' | 'demo_play' | 'guide_visit' | 'page_view' | 'email_opened' | 'blog_read';
+  event_name:
+    | "waitlist_signup"
+    | "cta_click"
+    | "demo_play"
+    | "guide_visit"
+    | "page_view"
+    | "email_opened"
+    | "blog_read";
   page: string;
   timestamp: string;
   metadata?: Record<string, any>;
@@ -126,31 +141,36 @@ export interface AnalyticsSummary {
   top_role: string;
   cta_clicks: number;
   role_breakdown: Record<string, number>;
-  daily_metrics: { date: string; visitors: number; signups: number; cta_clicks: number }[];
+  daily_metrics: {
+    date: string;
+    visitors: number;
+    signups: number;
+    cta_clicks: number;
+  }[];
 }
 
-export type PageView = 
-  | 'home' 
-  | 'why-waitforit' 
-  | 'how-it-works' 
-  | 'features' 
-  | 'developers' 
-  | 'roadmap' 
-  | 'blog' 
-  | 'about' 
-  | 'contact' 
-  | 'login' 
-  | 'integration-guide' 
-  | 'terminal-authorize'
-  | 'dashboard'
-  | 'profile'
-  | 'capsules'
-  | 'logs'
-  | 'articles'
-  | 'capsule-detail'
-  | 'log-detail'
-  | 'article-detail'
-  | 'settings';
+export type PageView =
+  | "home"
+  | "why-waitforit"
+  | "how-it-works"
+  | "features"
+  | "developers"
+  | "roadmap"
+  | "blog"
+  | "about"
+  | "contact"
+  | "login"
+  | "integration-guide"
+  | "terminal-authorize"
+  | "dashboard"
+  | "profile"
+  | "capsules"
+  | "logs"
+  | "articles"
+  | "capsule-detail"
+  | "log-detail"
+  | "article-detail"
+  | "settings";
 
 export interface BlogPost {
   id: string;
