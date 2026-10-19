@@ -24,10 +24,13 @@ import { AccountPages } from "./pages/AccountPages";
 import { getCurrentUser, logoutUser, trackAnalyticsEvent } from "./lib/api";
 
 export default function App() {
+  const paymentReturn = new URLSearchParams(window.location.search).has("payment");
   const initialPage =
     window.location.pathname === "/terminal/authorize"
       ? "terminal-authorize"
-      : "home";
+      : paymentReturn
+        ? "settings"
+        : "home";
   const [currentPage, setCurrentPage] = useState<PageView>(initialPage);
   const [theme, setTheme] = useState<Theme>("light");
   const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
@@ -54,7 +57,16 @@ export default function App() {
 
   useEffect(() => {
     getCurrentUser()
-      .then(setCurrentUser)
+      .then((user) => {
+        setCurrentUser(user);
+        if (
+          user &&
+          initialPage === "home" &&
+          window.location.pathname === "/"
+        ) {
+          setCurrentPage("profile");
+        }
+      })
       .finally(() => setAuthLoading(false));
   }, []);
 
@@ -225,7 +237,7 @@ export default function App() {
           "settings",
         ].includes(currentPage) &&
           currentUser &&
-          currentUser.role !== "admin" && (
+          (
             <AccountPages
               page={currentPage}
               currentUser={currentUser}

@@ -170,13 +170,13 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {currentUser && currentUser.role !== "admin" && (
+          {currentUser && <>
             <button
               onClick={() => {
                 setCurrentPage("profile");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className={`p-2 rounded-none border text-xs flex items-center justify-center transition-all ${
+              className={`px-3 py-2 rounded-none border text-xs flex items-center gap-2 transition-all ${
                 isLight
                   ? "bg-[#F2ECE1] text-[#6B7A3D] border-[#DCD5C9] hover:bg-[#E8E0D2]"
                   : "bg-[#1A1D1A] text-[#8FAF9A] border-[#2C3325] hover:bg-[#252A25]"
@@ -184,9 +184,21 @@ export const Header: React.FC<HeaderProps> = ({
               title="Your profile"
               aria-label="Your profile"
             >
-              <UserCircle className="w-4 h-4" />
+              <UserCircle className="w-4 h-4" /> <span>Profile</span>
             </button>
-          )}
+          </>}
+
+          {currentUser && <>
+            <button
+              onClick={() => {
+                setCurrentPage("capsules");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className={`px-3 py-2 rounded-none border text-xs transition-all ${isLight ? "bg-[#F2ECE1] text-[#6B7A3D] border-[#DCD5C9] hover:bg-[#E8E0D2]" : "bg-[#1A1D1A] text-[#8FAF9A] border-[#2C3325] hover:bg-[#252A25]"}`}
+            >
+              Collections
+            </button>
+          </>}
 
           {currentUser && currentUser.role !== "admin" && (
             <button
@@ -326,8 +338,8 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            {currentUser && currentUser.role !== "admin" && (
-              <div className="grid grid-cols-2 gap-2">
+            {currentUser && <>
+              <div className="grid grid-cols-3 gap-2">
                 <button
                   onClick={() => {
                     setCurrentPage("profile");
@@ -339,6 +351,15 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
                 <button
                   onClick={() => {
+                    setCurrentPage("capsules");
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`py-2.5 border text-xs font-mono flex items-center justify-center gap-2 ${isLight ? "border-[#DCD5C9] bg-[#F2ECE1] text-[#6B7A3D]" : "border-[#2C3325] bg-[#1A1D1A] text-[#8FAF9A]"}`}
+                >
+                  Collections
+                </button>
+                <button
+                  onClick={() => {
                     setCurrentPage("settings");
                     setMobileMenuOpen(false);
                   }}
@@ -347,7 +368,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <Settings className="h-4 w-4" /> Settings
                 </button>
               </div>
-            )}
+            </>}
 
             {currentUser ? (
               <button

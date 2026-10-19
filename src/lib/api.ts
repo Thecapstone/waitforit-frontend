@@ -305,7 +305,19 @@ export async function cancelSubscription() {
 }
 
 export async function listCapsules(): Promise<CapsuleSummary[]> {
-  return apiRequest<CapsuleSummary[]>("/api/memories/");
+  const payload = await apiRequest<
+    CapsuleSummary[] | { results?: CapsuleSummary[]; data?: CapsuleSummary[] }
+  >("/api/memories/");
+  if (Array.isArray(payload)) return payload;
+  return payload.results || payload.data || [];
+}
+
+export async function listArticles(): Promise<ArticleRecord[]> {
+  const payload = await apiRequest<
+    ArticleRecord[] | { results?: ArticleRecord[]; data?: ArticleRecord[] }
+  >("/api/articles/");
+  if (Array.isArray(payload)) return payload;
+  return payload.results || payload.data || [];
 }
 
 export async function createCapsule(payload: {

@@ -27,6 +27,7 @@ import {
   getSubscription,
   initializeSubscriptionPayment,
   listCapsules,
+  listArticles,
   updateArticle,
   updateCapsule,
   updateUserProfile,
@@ -82,11 +83,20 @@ export const AccountPages: React.FC<AccountPagesProps> = ({
   const isLight = theme === "light";
   const [profile, setProfile] = useState<AuthUser>(currentUser);
   const [capsules, setCapsules] = useState<CapsuleSummary[]>([]);
+  const [articles, setArticles] = useState<ArticleRecord[]>([]);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(() => {
+    const paymentStatus = new URLSearchParams(window.location.search).get("payment");
+    if (paymentStatus === "success")
+      return "Payment confirmed. Your subscription is active.";
+    if (paymentStatus === "pending")
+      return "Payment received. Verification is still pending; check your subscription status shortly.";
+    if (paymentStatus === "failed") return "Payment was not completed.";
+    return "";
+  });
   const [articleDraft, setArticleDraft] = useState({
     title: "",
     body: "",
@@ -101,14 +111,23 @@ export const AccountPages: React.FC<AccountPagesProps> = ({
 
   const loadData = async () => {
     setLoading(true);
-    const [userResult, capsulesResult] = await Promise.allSettled([
+    const [userResult, capsulesResult, articlesResult] = await Promise.allSettled([
       getCurrentUser(),
       listCapsules(),
+      listArticles(),
     ]);
     if (userResult.status === "fulfilled" && userResult.value)
       setProfile(userResult.value);
     if (capsulesResult.status === "fulfilled")
       setCapsules(capsulesResult.value);
+    else
+      setMessage(
+        capsulesResult.reason instanceof Error
+          ? `Unable to load your collections: ${capsulesResult.reason.message}`
+          : "Unable to load your collections. Please sign in again.",
+      );
+    if (articlesResult.status === "fulfilled")
+      setArticles(articlesResult.value);
     if (page === "settings") {
       try {
         setSubscription(await getSubscription());
@@ -132,13 +151,22 @@ export const AccountPages: React.FC<AccountPagesProps> = ({
       .filter((log) => !currentUser.id || log.creator_id === currentUser.id)
       .map((log) => ({ ...log, capsule })),
   );
-  const allArticles = capsules.flatMap((capsule) =>
-    (capsule.articles || [])
-      .filter(
-        (article) => !currentUser.id || article.author_id === currentUser.id,
-      )
-      .map((article) => ({ ...article, capsule })),
+  const capsuleById = new Map<string, CapsuleSummary>(
+    capsules.map((capsule) => [capsule.id, capsule]),
   );
+  const articleRecords = new Map<string, ArticleRecord>();
+  capsules.forEach((capsule) =>
+    (capsule.articles || []).forEach((article) =>
+      articleRecords.set(article.id, article),
+    ),
+  );
+  articles.forEach((article) => articleRecords.set(article.id, article));
+  const allArticles = [...articleRecords.values()]
+    .flatMap((article) => {
+      const capsule = capsuleById.get(article.capsule);
+      return capsule ? [{ ...article, capsule }] : [];
+    })
+    .filter(({ author_id }) => !currentUser.id || author_id === currentUser.id);
   const latestLogs = [...allLogs]
     .sort(
       (left, right) =>
@@ -227,7 +255,9 @@ export const AccountPages: React.FC<AccountPagesProps> = ({
     }
   };
 
-  const beginArticleEdit = (article: ArticleRecord) => {
+  const beginArticleEdit = (
+    article: Pick<ArticleRecord, "title" | "body" | "content" | "conclusion">,
+  ) => {
     setArticleDraft({
       title: article.title,
       body: article.body || article.content || "",

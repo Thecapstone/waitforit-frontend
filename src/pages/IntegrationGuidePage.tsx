@@ -11,7 +11,7 @@ interface IntegrationGuidePageProps {
 
 export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setCurrentPage, onOpenWaitlist, theme = 'light' }) => {
   const [copied, setCopied] = useState(false);
-  const installCmd = 'npm install -g @waitforit/cli';
+  const installCmd = 'python -m pip install waitforit-tech';
   const isLight = theme === 'light';
 
   const handleCopy = () => {
@@ -71,11 +71,11 @@ export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setC
         </div>
 
         <h1 className="text-4xl sm:text-5xl font-serif font-extrabold text-[#8C5E3C] tracking-tight">
-          Integration Guide Coming Soon
+          Connect your terminal to WaitForIt
         </h1>
 
         <p className="text-base text-[#786E65]">
-          We're finalizing the WaitForIt CLI and IDE integrations. Full interactive documentation will be available before the private beta begins.
+          Create an account on the website, then sign in from the terminal with the same account. The CLI can also open the website to approve a terminal session.
         </p>
       </div>
 
@@ -85,7 +85,7 @@ export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setC
       }`}>
         <h3 className="text-base font-serif font-bold text-[#8C5E3C] flex items-center space-x-2">
           <Terminal className="w-4 h-4 text-[#8C5E3C]" />
-          <span>Quick Terminal Setup (Preview)</span>
+          <span>Install and sign in</span>
         </h3>
 
         <div className={`p-4 rounded-none border flex items-center justify-between text-xs font-mono ${
@@ -100,6 +100,12 @@ export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setC
             <span>{copied ? 'Copied' : 'Copy'}</span>
           </button>
         </div>
+      </div>
+
+      <div className={`border p-6 space-y-3 ${isLight ? 'bg-white border-[#DCD5C9]' : 'bg-[#1A1D1A] border-[#2C3325]'}`}>
+        <h3 className="font-serif font-bold text-[#8C5E3C]">First commands</h3>
+        <pre className="overflow-x-auto whitespace-pre-wrap text-xs leading-7"><code>{`wfi --help\nwfi login\nwfi capsules\nwfi create-capsule --title "my-project" --description "Project notes"\nwfi set-capsule "my-project"\nwfi log --title "Cache decision" --message "Chose Redis for shared cache state."\nwfi search "Redis"`}</code></pre>
+        <p className="text-xs text-[#786E65]">Website users can create an account and sign in there. Terminal users run <code>wfi login</code>, then approve the one-time code in their browser.</p>
       </div>
 
       {/* Preview Cards */}

@@ -29,7 +29,7 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
           <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
           <span className="ml-2 text-[11px] text-[#A0A8B0] flex items-center space-x-1.5 font-sans font-medium">
             <TerminalIcon className="w-3.5 h-3.5 text-[#5E81AC]" />
-            <span>zsh — wfi cli v0.9.4</span>
+            <span>terminal — WaitForIt CLI</span>
           </span>
         </div>
 
@@ -58,11 +58,11 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
         <div className="space-y-1">
           <div className="flex items-center space-x-2 text-[#5E81AC]">
             <span className="text-[#8FAF9A] font-bold">$</span>
-            <span className="font-semibold">wfi init</span>
+            <span className="font-semibold">python -m pip install waitforit-tech</span>
           </div>
           <div className="text-[#8FAF9A] flex items-center space-x-1.5 pl-4">
             <Check className="w-3.5 h-3.5" />
-            <span>WaitForIt initialized in repository.</span>
+            <span>CLI installed. Run wfi login to connect your account.</span>
           </div>
         </div>
 
@@ -71,11 +71,11 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
           <div className="space-y-1 animate-fadeIn">
             <div className="flex items-center space-x-2 text-[#5E81AC]">
               <span className="text-[#8FAF9A] font-bold">$</span>
-              <span className="font-semibold">wfi capsule create inventory-service</span>
+              <span className="font-semibold">wfi login</span>
             </div>
             <div className="text-[#8FAF9A] flex items-center space-x-1.5 pl-4">
               <Check className="w-3.5 h-3.5" />
-              <span>Capsule "inventory-service" created. Ready for logs.</span>
+              <span>Approve the one-time code in your browser to sign in.</span>
             </div>
           </div>
         )}
@@ -85,16 +85,16 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
           <div className="space-y-2.5 animate-fadeIn">
             <div className="flex items-center space-x-2 text-[#5E81AC]">
               <span className="text-[#8FAF9A] font-bold">$</span>
-              <span className="font-semibold">wfi log</span>
+              <span className="font-semibold">wfi create-capsule --title "inventory-service"</span>
             </div>
             <div className="bg-[#1A1D21]/90 border border-[#6B7A3D]/40 p-3.5 rounded-xl space-y-1 text-slate-300">
-              <p className="text-[#E8C8D8] font-bold text-[11px] uppercase tracking-wider">Today's Progress:</p>
-              <p>Implemented Redis Streams to eliminate race conditions in the inventory service.</p>
-              <p className="text-[#A0A8B0]">After profiling, optimistic locking proved insufficient under concurrent writes. Switched to Streams for guaranteed ordering.</p>
+              <p className="text-[#E8C8D8] font-bold text-[11px] uppercase tracking-wider">Select the capsule</p>
+              <p>wfi set-capsule "inventory-service"</p>
+              <p className="text-[#A0A8B0]">New terminal logs now go to this capsule.</p>
             </div>
             <div className="text-[#8FAF9A] flex items-center space-x-1.5 pl-4">
               <Check className="w-3.5 h-3.5" />
-              <span>Log saved to capsule timeline.</span>
+              <span>Capsule created. Ready for logs.</span>
             </div>
           </div>
         )}
@@ -103,7 +103,7 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
         {step >= 3 && (
           <div className="space-y-1 text-[#E8C8D8] flex items-center space-x-2 animate-pulse pl-4 pt-1">
             <span className="text-sm">⏳</span>
-            <span>Collecting engineering context across 4 commits...</span>
+            <span>wfi log --title "Redis decision" --message "Using Streams for ordered writes."</span>
           </div>
         )}
 
@@ -112,7 +112,7 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
           <div className="pt-2 animate-fadeIn space-y-3">
             <div className="flex items-center space-x-2 text-[#8FAF9A]">
               <Sparkles className="w-4 h-4" />
-              <span className="font-bold">Article Generated:</span>
+              <span className="font-bold">Search your saved logs:</span>
             </div>
 
             <div 
@@ -124,11 +124,11 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
                   <div className="flex items-center space-x-2">
                     <FileText className="w-4 h-4 text-[#5E81AC]" />
                     <span className="font-bold text-sm text-[#F3F5F7] group-hover:text-[#5E81AC] transition-colors font-sans">
-                      Building Reliable Inventory Synchronization with Redis Streams
+                      wfi search "Redis"
                     </span>
                   </div>
                   <p className="text-xs text-[#A0A8B0] font-sans line-clamp-2">
-                    Under concurrent inventory updates, optimistic locking proved insufficient for real-time race prevention. Here is how we redesigned our stream consumer pipeline...
+                    Search prints matching log titles, capsule names, and saved message details in your terminal.
                   </p>
                 </div>
               </div>
@@ -136,9 +136,9 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
               <div className="mt-3 flex items-center justify-between text-[11px] text-[#5E81AC] font-sans pt-2 border-t border-white/5">
                 <span className="flex items-center space-x-1">
                   <span className="w-2 h-2 rounded-full bg-[#8FAF9A]"></span>
-                  <span>Preserved in Knowledge Base</span>
+                  <span>Matching logs found</span>
                 </span>
-                <span className="group-hover:translate-x-1 transition-transform font-medium">Read Article →</span>
+                <span className="group-hover:translate-x-1 transition-transform font-medium">wfi --help</span>
               </div>
             </div>
           </div>

@@ -49,7 +49,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           setCurrentPage('terminal-authorize');
           return;
         }
-        setCurrentPage('dashboard');
+        setCurrentPage(user.role === 'admin' ? 'dashboard' : 'profile');
         return;
       }
 
@@ -93,7 +93,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             <p className="text-sm text-[#786E65]">{currentUser.email}</p>
           </div>
           <button
-            onClick={() => setCurrentPage('dashboard')}
+            onClick={() => setCurrentPage(currentUser.role === 'admin' ? 'dashboard' : 'profile')}
             className="px-5 py-2.5 rounded-none bg-[#6B7A3D] text-[#FAF8F3] text-xs font-serif uppercase tracking-wider font-bold border border-[#576431]"
           >
             Continue
