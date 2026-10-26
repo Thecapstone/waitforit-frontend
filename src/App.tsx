@@ -32,7 +32,9 @@ export default function App() {
         ? "settings"
         : "home";
   const [currentPage, setCurrentPage] = useState<PageView>(initialPage);
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>(() =>
+    window.localStorage.getItem("wfi_theme") === "dark" ? "dark" : "light",
+  );
   const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
   const [waitlistSource, setWaitlistSource] = useState("modal");
   const [activeArticle, setActiveArticle] = useState<BlogPost | null>(null);
@@ -45,6 +47,10 @@ export default function App() {
     "";
 
   const isLight = theme === "light";
+
+  useEffect(() => {
+    window.localStorage.setItem("wfi_theme", theme);
+  }, [theme]);
 
   const handleToggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));

@@ -132,26 +132,8 @@ export const Header: React.FC<HeaderProps> = ({
           })}
         </nav>
 
-        {/* Right Actions: Theme Toggle, Auth, Olive Join Waitlist CTA */}
+        {/* Right Actions: Auth and Olive Join Waitlist CTA */}
         <div className="hidden md:flex items-center space-x-3">
-          {/* Dark/Light Mode Switch */}
-          <button
-            onClick={onToggleTheme}
-            className={`p-2 rounded-none border text-xs flex items-center justify-center transition-all ${
-              isLight
-                ? "bg-[#F2ECE1] text-[#4A423A] border-[#DCD5C9] hover:bg-[#E8E0D2]"
-                : "bg-[#1A1D1A] text-[#D8E0CC] border-[#2C3325] hover:bg-[#252A25]"
-            }`}
-            title={isLight ? "Switch to Dark Mode" : "Switch to Light Mode"}
-            aria-label="Toggle theme"
-          >
-            {isLight ? (
-              <Moon className="w-4 h-4 text-[#8C5E3C]" />
-            ) : (
-              <Sun className="w-4 h-4 text-[#D8E0CC]" />
-            )}
-          </button>
-
           {currentUser?.role === "admin" && (
             <button
               onClick={() => {

@@ -23,11 +23,18 @@ export const TerminalAuthorizePage: React.FC<TerminalAuthorizePageProps> = ({
   const isLight = theme === 'light';
 
   const approve = async () => {
+    const normalizedCode = userCode.replace(/[^0-9a-f]/gi, '').toUpperCase();
+    if (!/^[0-9A-F]{6}$/.test(normalizedCode)) {
+      setError('Enter the six-character code shown by `wfi login`.');
+      setMessage(null);
+      return;
+    }
+
     setLoading(true);
     setMessage(null);
     setError(null);
     try {
-      const response = await approveTerminalLogin(userCode);
+      const response = await approveTerminalLogin(normalizedCode);
       window.sessionStorage.removeItem('wfi_pending_terminal_code');
       setMessage(response.message || 'Terminal login approved.');
     } catch (err: any) {
@@ -81,7 +88,20 @@ export const TerminalAuthorizePage: React.FC<TerminalAuthorizePageProps> = ({
                 <KeyRound className="w-4 h-4 absolute left-3 top-3 text-[#786E65]" />
                 <input
                   value={userCode}
-                  onChange={(event) => setUserCode(event.target.value)}
+                  onChange={(event) => {
+                    const normalized = event.target.value
+                      .replace(/[^0-9a-f]/gi, '')
+                      .slice(0, 6)
+                      .toUpperCase();
+                    setUserCode(
+                      normalized.length > 3
+                        ? `${normalized.slice(0, 3)}-${normalized.slice(3)}`
+                        : normalized,
+                    );
+                    setError(null);
+                  }}
+                  maxLength={7}
+                  placeholder="ABC-DEF"
                   className={`w-full border rounded-none pl-9 pr-3 py-2.5 text-sm tracking-widest uppercase focus:outline-none focus:border-[#6B7A3D] ${
                     isLight ? 'bg-white border-[#DCD5C9] text-[#1C1917]' : 'bg-[#131513] border-[#2C3325] text-white'
                   }`}
