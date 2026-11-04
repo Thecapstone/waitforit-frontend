@@ -88,6 +88,13 @@ http://localhost:3000
 
 The dev command starts Vite directly on port `3000`, so frontend transform errors and stack traces appear in the Vite terminal. Vite proxies `/api` requests to the Django backend at `http://127.0.0.1:8000` by default. Start Django in a second terminal; set `BACKEND_API_URL` to override its address. Keep `VITE_API_BASE_URL` unset in development so API requests use the Vite proxy.
 
+For Railway, deploy this frontend as its own service from this project, with
+`npm run build` as the build command and `npm start` as the start command. Set
+`NODE_ENV=production` and `BACKEND_API_URL` to the public Django API origin, such as
+`https://wait-for-it.up.railway.app`, without a trailing path. Railway provides
+`PORT`; the server binds to that port on `0.0.0.0`. In local development, use
+`http://127.0.0.1:8000` for `BACKEND_API_URL`.
+
 ## Available Scripts
 
 ```bash
