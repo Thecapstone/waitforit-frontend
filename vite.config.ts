@@ -21,6 +21,7 @@ export default defineConfig(({ mode }) => {
         "/api": {
           target: env.BACKEND_API_URL || "http://127.0.0.1:8000",
           changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/+/, "/"),
         },
       },
       // HMR is disabled in AI Studio via DISABLE_HMR env var.

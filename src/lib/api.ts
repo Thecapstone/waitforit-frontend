@@ -15,11 +15,17 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
+function buildApiUrl(path: string): string {
+  const baseUrl = API_BASE_URL.replace(/\/+$/, "");
+  const apiPath = `/${path.replace(/^\/+/, "")}`;
+  return `${baseUrl}${apiPath}`;
+}
+
 async function apiRequest<T>(
   path: string,
   options: { method?: HttpMethod; body?: unknown; headers?: HeadersInit } = {},
 ): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const response = await fetch(buildApiUrl(path), {
     method: options.method || "GET",
     credentials: "include",
     headers: {
