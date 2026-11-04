@@ -16,16 +16,29 @@ import {
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = Number(process.env.PORT) || 3000;
 
   app.use(express.json());
 
-  const BACKEND_API_URL =
-    process.env.BACKEND_API_URL || "http://127.0.0.1:8000";
+  app.use((req, _res, next) => {
+    if (req.url.startsWith("//")) {
+      req.url = req.url.replace(/^\/+/, "/");
+    }
+    next();
+  });
+
+  const isProduction = process.env.NODE_ENV === "production";
+  const backendApiUrl = process.env.BACKEND_API_URL;
+  if (isProduction && !backendApiUrl) {
+    throw new Error("BACKEND_API_URL must be set in production.");
+  }
+
+  const BACKEND_API_URL = new URL(backendApiUrl || "http://127.0.0.1:8000");
 
   app.use("/api", async (req, res, next) => {
     try {
-      const target = new URL(req.originalUrl, BACKEND_API_URL);
+      const requestPath = req.originalUrl.replace(/^\/+/, "/");
+      const target = new URL(requestPath, BACKEND_API_URL);
       const headers: Record<string, string> = {};
 
       for (const [key, value] of Object.entries(req.headers)) {
@@ -78,7 +91,7 @@ async function startServer() {
       console.error(`Backend proxy request failed for ${req.originalUrl}:`, {
         message,
         cause,
-        backend: BACKEND_API_URL,
+        backend: BACKEND_API_URL.origin,
       });
 
       res.status(502).json({
@@ -425,7 +438,7 @@ async function startServer() {
   });
 
   // --- VITE / STATIC FILE SERVING ---
-  if (process.env.NODE_ENV !== "production") {
+  if (!isProduction) {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
@@ -439,10 +452,8 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "127.0.0.1", () => {
-    console.log(
-      `WaitForIt Full-Stack Server listening on http://127.0.0.1:${PORT}`,
-    );
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`WaitForIt Full-Stack Server listening on port ${PORT}`);
   });
 }
 
