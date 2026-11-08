@@ -27,6 +27,7 @@ export interface Subscription {
 
 export interface CapsuleSummary {
   id: string;
+  creator_id?: string;
   title: string;
   description?: string;
   maturity_date: string;

@@ -17,11 +17,13 @@ import {
   Save,
   Settings2,
   ShieldCheck,
+  Sparkles,
   Trash2,
   X,
 } from "lucide-react";
 import {
   cancelSubscription,
+  createArticle,
   deleteArticle,
   getCurrentUser,
   getSubscription,
@@ -89,7 +91,9 @@ export const AccountPages: React.FC<AccountPagesProps> = ({
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(() => {
-    const paymentStatus = new URLSearchParams(window.location.search).get("payment");
+    const paymentStatus = new URLSearchParams(window.location.search).get(
+      "payment",
+    );
     if (paymentStatus === "success")
       return "Payment confirmed. Your subscription is active.";
     if (paymentStatus === "pending")
@@ -102,6 +106,10 @@ export const AccountPages: React.FC<AccountPagesProps> = ({
     body: "",
     conclusion: "",
   });
+  const [articleCapsuleId, setArticleCapsuleId] = useState("");
+  const [articlePrompt, setArticlePrompt] = useState("");
+  const [articleStyleSample, setArticleStyleSample] = useState("");
+  const [generatingArticle, setGeneratingArticle] = useState(false);
 
   const ink = isLight ? "text-[#2C2825]" : "text-[#F5F2EA]";
   const muted = isLight ? "text-[#786E65]" : "text-[#A0A8B0]";
@@ -111,11 +119,12 @@ export const AccountPages: React.FC<AccountPagesProps> = ({
 
   const loadData = async () => {
     setLoading(true);
-    const [userResult, capsulesResult, articlesResult] = await Promise.allSettled([
-      getCurrentUser(),
-      listCapsules(),
-      listArticles(),
-    ]);
+    const [userResult, capsulesResult, articlesResult] =
+      await Promise.allSettled([
+        getCurrentUser(),
+        listCapsules(),
+        listArticles(),
+      ]);
     if (userResult.status === "fulfilled" && userResult.value)
       setProfile(userResult.value);
     if (capsulesResult.status === "fulfilled")
@@ -167,6 +176,9 @@ export const AccountPages: React.FC<AccountPagesProps> = ({
       return capsule ? [{ ...article, capsule }] : [];
     })
     .filter(({ author_id }) => !currentUser.id || author_id === currentUser.id);
+  const ownedCapsules = currentUser.id
+    ? capsules.filter((capsule) => capsule.creator_id === currentUser.id)
+    : [];
   const latestLogs = [...allLogs]
     .sort(
       (left, right) =>
@@ -281,6 +293,30 @@ export const AccountPages: React.FC<AccountPagesProps> = ({
       );
     } finally {
       setSaving(false);
+    }
+  };
+
+  const generateArticle = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!articleCapsuleId) return;
+    setGeneratingArticle(true);
+    setMessage("");
+    try {
+      await createArticle(
+        articleCapsuleId,
+        articlePrompt.trim(),
+        articleStyleSample.trim(),
+      );
+      setArticlePrompt("");
+      setArticleStyleSample("");
+      setMessage("Article generated from this capsule's recorded logs.");
+      await loadData();
+    } catch (error) {
+      setMessage(
+        error instanceof Error ? error.message : "Unable to generate article.",
+      );
+    } finally {
+      setGeneratingArticle(false);
     }
   };
 
@@ -908,30 +944,102 @@ export const AccountPages: React.FC<AccountPagesProps> = ({
           )}
 
           {page === "articles" && (
-            <section className="grid gap-3 md:grid-cols-2">
-              {allArticles.map(({ capsule, ...article }) => (
-                <button
-                  key={article.id}
-                  onClick={() => goTo("article-detail", article.id)}
-                  className={`border p-5 text-left transition-colors hover:border-[#6B7A3D] ${line} ${surface}`}
-                >
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[#8C5E3C]">
-                    {capsule.title} · {formatDate(article.created_at)}
-                  </span>
-                  <h2 className="mt-3 font-serif text-lg font-bold">
-                    {article.title}
-                  </h2>
-                  <p className={`mt-2 text-sm leading-6 ${muted}`}>
-                    {excerpt(article.body || article.content || "", 155)}
+            <div className="space-y-8">
+              <form
+                onSubmit={generateArticle}
+                className={`grid gap-4 border p-5 sm:p-6 ${line} ${soft}`}
+              >
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-[#8C5E3C]">
+                    From recorded work
                   </p>
-                </button>
-              ))}
-              {!allArticles.length && (
-                <p className={`border p-5 text-sm ${line} ${muted}`}>
-                  Generated articles will be collected here.
-                </p>
-              )}
-            </section>
+                  <h2 className="mt-1 flex items-center gap-2 font-serif text-xl font-bold">
+                    <Sparkles className="h-5 w-5 text-[#6B7A3D]" />
+                    Generate an article
+                  </h2>
+                  <p className={`mt-2 max-w-2xl text-sm ${muted}`}>
+                    The article is generated from this capsule's saved logs. Add
+                    optional style or focus guidance; factual content should
+                    stay grounded in those logs.
+                  </p>
+                </div>
+                <label className={`block text-xs font-bold ${muted}`}>
+                  Capsule
+                  <select
+                    required
+                    value={articleCapsuleId}
+                    onChange={(event) =>
+                      setArticleCapsuleId(event.target.value)
+                    }
+                    className={`mt-2 w-full border bg-transparent p-3 text-sm ${line} ${ink}`}
+                  >
+                    <option value="">Select one of your capsules</option>
+                    {ownedCapsules.map((capsule) => (
+                      <option key={capsule.id} value={capsule.id}>
+                        {capsule.title}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className={`block text-xs font-bold ${muted}`}>
+                  Style or focus instructions
+                  <textarea
+                    rows={4}
+                    maxLength={5000}
+                    value={articlePrompt}
+                    onChange={(event) => setArticlePrompt(event.target.value)}
+                    placeholder="For example: use a concise engineering postmortem structure, explain trade-offs, and avoid promotional language."
+                    className={`mt-2 w-full border bg-transparent p-3 text-sm leading-6 ${line} ${ink}`}
+                  />
+                </label>
+                <label className={`block text-xs font-bold ${muted}`}>
+                  Optional sample article for style reference
+                  <textarea
+                    rows={6}
+                    maxLength={12000}
+                    value={articleStyleSample}
+                    onChange={(event) =>
+                      setArticleStyleSample(event.target.value)
+                    }
+                    placeholder="Paste a sample. Its tone and structure may guide the writing; its facts will not be used as evidence."
+                    className={`mt-2 w-full border bg-transparent p-3 text-sm leading-6 ${line} ${ink}`}
+                  />
+                </label>
+                <div>
+                  <button
+                    disabled={generatingArticle || ownedCapsules.length === 0}
+                    className="inline-flex items-center gap-2 bg-[#6B7A3D] px-4 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    {generatingArticle ? "Generating..." : "Generate article"}
+                  </button>
+                </div>
+              </form>
+              <section className="grid gap-3 md:grid-cols-2">
+                {allArticles.map(({ capsule, ...article }) => (
+                  <button
+                    key={article.id}
+                    onClick={() => goTo("article-detail", article.id)}
+                    className={`border p-5 text-left transition-colors hover:border-[#6B7A3D] ${line} ${surface}`}
+                  >
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-[#8C5E3C]">
+                      {capsule.title} · {formatDate(article.created_at)}
+                    </span>
+                    <h2 className="mt-3 font-serif text-lg font-bold">
+                      {article.title}
+                    </h2>
+                    <p className={`mt-2 text-sm leading-6 ${muted}`}>
+                      {excerpt(article.body || article.content || "", 155)}
+                    </p>
+                  </button>
+                ))}
+                {!allArticles.length && (
+                  <p className={`border p-5 text-sm ${line} ${muted}`}>
+                    Generated articles will be collected here.
+                  </p>
+                )}
+              </section>
+            </div>
           )}
 
           {page === "capsule-detail" && selectedCapsule && (

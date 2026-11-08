@@ -326,6 +326,17 @@ export async function listArticles(): Promise<ArticleRecord[]> {
   return payload.results || payload.data || [];
 }
 
+export async function createArticle(
+  capsuleId: string,
+  prompt = "",
+  styleSample = "",
+): Promise<ArticleRecord> {
+  return apiRequest<ArticleRecord>("/api/articles/", {
+    method: "POST",
+    body: { capsule: capsuleId, prompt, style_sample: styleSample },
+  });
+}
+
 export async function createCapsule(payload: {
   title: string;
   description: string;
