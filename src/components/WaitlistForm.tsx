@@ -63,12 +63,12 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onSuccess, source = 
 
   if (response) {
     return (
-      <div className={`border rounded-none p-6 sm:p-8 text-center space-y-4 shadow-sm ${
+      <div className={`border rounded-3xl p-6 sm:p-8 text-center space-y-4 shadow-soft ${
         isLight
           ? 'bg-[#FAF8F3] border-[#6B7A3D] text-[#2C2825]'
           : 'bg-[#1A1D1A] border-[#6B7A3D] text-[#F5F2EA]'
       }`}>
-        <div className="w-14 h-14 rounded-none bg-[#6B7A3D]/20 text-[#6B7A3D] mx-auto flex items-center justify-center border border-[#6B7A3D]/40">
+        <div className="w-14 h-14 rounded-xl bg-[#6B7A3D]/20 text-[#6B7A3D] mx-auto flex items-center justify-center border border-[#6B7A3D]/40">
           <Check className="w-7 h-7" />
         </div>
         
@@ -83,7 +83,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onSuccess, source = 
           </p>
         </div>
 
-        <div className={`p-4 rounded-none text-left border text-xs font-mono space-y-2 ${
+        <div className={`shadow-soft p-4 rounded-xl text-left border text-xs font-mono space-y-2 ${
           isLight ? 'bg-[#F2ECE1] border-[#DCD5C9]' : 'bg-[#111315] border-white/10'
         }`}>
           <div className="flex items-center space-x-2 text-[#6B7A3D]">
@@ -115,7 +115,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onSuccess, source = 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="p-3.5 rounded-none bg-red-950/20 border border-red-500/40 text-red-700 dark:text-red-300 text-xs flex items-center space-x-2">
+        <div className="shadow-soft p-3.5 rounded-xl bg-red-950/20 border border-red-500/40 text-red-700 dark:text-red-300 text-xs flex items-center space-x-2">
           <AlertCircle className="w-4 h-4 flex-shrink-0" />
           <span>{error}</span>
         </div>
@@ -136,7 +136,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onSuccess, source = 
             placeholder="Jane Doe"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className={`w-full border rounded-none pl-9 pr-3 py-2.5 text-sm transition-all focus:outline-none ${
+            className={`w-full border rounded-xl pl-9 pr-3 py-2.5 text-sm transition-all focus:outline-none ${
               isLight
                 ? 'bg-white border-[#DCD5C9] text-[#1C1917] placeholder-[#786E65]/60 focus:border-[#6B7A3D]'
                 : 'bg-[#1A1D1A] border-[#2C3325] text-white placeholder-[#A0A8B0]/50 focus:border-[#6B7A3D]'
@@ -160,7 +160,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onSuccess, source = 
             placeholder="jane@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={`w-full border rounded-none pl-9 pr-3 py-2.5 text-sm transition-all focus:outline-none ${
+            className={`w-full border rounded-xl pl-9 pr-3 py-2.5 text-sm transition-all focus:outline-none ${
               isLight
                 ? 'bg-white border-[#DCD5C9] text-[#1C1917] placeholder-[#786E65]/60 focus:border-[#6B7A3D]'
                 : 'bg-[#1A1D1A] border-[#2C3325] text-white placeholder-[#A0A8B0]/50 focus:border-[#6B7A3D]'
@@ -178,7 +178,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onSuccess, source = 
           <button
             type="button"
             onClick={() => setIsDeveloper(true)}
-            className={`py-2 px-3 rounded-none text-xs font-serif border flex items-center justify-center space-x-2 transition-all ${
+            className={`py-2 px-3 rounded-full text-xs font-serif border flex items-center justify-center space-x-2 transition-all ${
               isDeveloper
                 ? 'bg-[#6B7A3D] text-white border-[#576431] font-semibold'
                 : isLight
@@ -193,7 +193,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onSuccess, source = 
           <button
             type="button"
             onClick={() => setIsDeveloper(false)}
-            className={`py-2 px-3 rounded-none text-xs font-serif border flex items-center justify-center space-x-2 transition-all ${
+            className={`py-2 px-3 rounded-full text-xs font-serif border flex items-center justify-center space-x-2 transition-all ${
               !isDeveloper
                 ? 'bg-[#6B7A3D] text-white border-[#576431] font-semibold'
                 : isLight
@@ -214,7 +214,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onSuccess, source = 
         <select
           value={role}
           onChange={(e) => setRole(e.target.value as RoleType)}
-          className={`w-full border rounded-none px-3 py-2.5 text-sm transition-all focus:outline-none ${
+          className={`w-full border rounded-xl px-3 py-2.5 text-sm transition-all focus:outline-none ${
             isLight
               ? 'bg-white border-[#DCD5C9] text-[#1C1917] focus:border-[#6B7A3D]'
               : 'bg-[#1A1D1A] border-[#2C3325] text-white focus:border-[#6B7A3D]'
@@ -234,7 +234,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ onSuccess, source = 
       <button
         type="submit"
         disabled={loading}
-        className="w-full mt-3 py-3 rounded-none bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] text-xs font-serif uppercase tracking-widest font-bold border border-[#576431] shadow-md flex items-center justify-center space-x-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60"
+        className="shadow-glow w-full mt-3 py-3 rounded-full bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] text-xs font-serif uppercase tracking-widest font-bold border border-[#576431] flex items-center justify-center space-x-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60"
       >
         {loading ? (
           <>

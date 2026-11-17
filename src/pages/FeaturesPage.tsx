@@ -108,7 +108,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({
           return (
             <div
               key={feat.num}
-              className={`border rounded-none p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-sm transition-all ${
+              className={`border rounded-3xl p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-soft transition-all ${
                 isLight
                   ? "bg-[#F2ECE1]/70 border-[#DCD5C9]"
                   : "bg-[#1A1D1A]/70 border-[#2C3325]"
@@ -117,7 +117,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({
               <div className="lg:col-span-7 space-y-4">
                 <div className="flex items-center space-x-3">
                   <div
-                    className="w-10 h-10 rounded-none flex items-center justify-center border"
+                    className="w-10 h-10 rounded-xl flex items-center justify-center border"
                     style={{
                       backgroundColor: `${feat.color}15`,
                       borderColor: `${feat.color}40`,
@@ -147,7 +147,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({
               </div>
 
               <div
-                className={`lg:col-span-5 p-5 rounded-none border font-mono text-xs space-y-2 ${
+                className={`shadow-soft lg:col-span-5 p-5 rounded-2xl border font-mono text-xs space-y-2 ${
                   isLight
                     ? "bg-[#212521] text-[#E0E5DF] border-[#323832]"
                     : "bg-[#0B0C0B] text-[#E0E5DF] border-[#2C3325]"
@@ -167,7 +167,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({
 
       {/* Closing CTA */}
       <div
-        className={`border rounded-none p-8 text-center space-y-6 ${
+        className={`shadow-soft border rounded-3xl p-8 text-center space-y-6 ${
           isLight
             ? "bg-[#F2ECE1] border-[#DCD5C9]"
             : "bg-[#111315] border-[#2C3325]"

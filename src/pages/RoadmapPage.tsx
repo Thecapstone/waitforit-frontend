@@ -92,7 +92,7 @@ export const RoadmapPage: React.FC<RoadmapPageProps> = ({
     >
       {/* Hero */}
       <div className="text-center space-y-4 max-w-2xl mx-auto">
-        <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-none bg-[#8C5E3C]/10 border border-[#8C5E3C]/30 text-[#8C5E3C] text-xs font-serif uppercase tracking-widest font-bold">
+        <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-[#8C5E3C]/10 border border-[#8C5E3C]/30 text-[#8C5E3C] text-xs font-serif uppercase tracking-widest font-bold">
           <Rocket className="w-3.5 h-3.5" />
           <span>Public Development Roadmap</span>
         </div>
@@ -113,7 +113,7 @@ export const RoadmapPage: React.FC<RoadmapPageProps> = ({
         {phases.map((p) => (
           <div
             key={p.phase}
-            className={`border rounded-none p-6 sm:p-8 space-y-4 shadow-sm transition-all ${
+            className={`border rounded-3xl p-6 sm:p-8 space-y-4 shadow-soft transition-all ${
               isLight
                 ? "bg-[#F2ECE1]/70 border-[#DCD5C9]"
                 : "bg-[#1A1D1A]/70 border-[#2C3325]"
@@ -125,7 +125,7 @@ export const RoadmapPage: React.FC<RoadmapPageProps> = ({
               }`}
             >
               <div className="flex items-center space-x-3">
-                <span className="text-xs font-serif font-bold uppercase tracking-wider px-3 py-1 rounded-none bg-[#8C5E3C]/10 text-[#8C5E3C] border border-[#8C5E3C]/30">
+                <span className="text-xs font-serif font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#8C5E3C]/10 text-[#8C5E3C] border border-[#8C5E3C]/30">
                   {p.phase}
                 </span>
                 <h2 className="text-xl font-serif font-bold text-[#2C2825] dark:text-[#8C5E3C]">
@@ -134,7 +134,7 @@ export const RoadmapPage: React.FC<RoadmapPageProps> = ({
               </div>
 
               <span
-                className="text-xs font-serif font-bold uppercase tracking-wider px-3 py-1 rounded-none flex items-center space-x-1.5"
+                className="text-xs font-serif font-bold uppercase tracking-wider px-3 py-1 rounded-full flex items-center space-x-1.5"
                 style={{
                   backgroundColor: `${p.statusColor}15`,
                   color: p.statusColor,
@@ -142,7 +142,7 @@ export const RoadmapPage: React.FC<RoadmapPageProps> = ({
                 }}
               >
                 <span
-                  className="w-2 h-2 rounded-none animate-pulse"
+                  className="w-2 h-2 rounded-full animate-pulse"
                   style={{ backgroundColor: p.statusColor }}
                 ></span>
                 <span>{p.status}</span>
@@ -159,7 +159,7 @@ export const RoadmapPage: React.FC<RoadmapPageProps> = ({
               {p.items.map((item) => (
                 <div
                   key={item}
-                  className={`p-3 rounded-none border text-xs font-mono flex items-center space-x-2 ${
+                  className={`shadow-soft p-3 rounded-xl border text-xs font-mono flex items-center space-x-2 ${
                     isLight
                       ? "bg-white border-[#DCD5C9] text-[#2C2825]"
                       : "bg-[#131513] border-[#2C3325] text-[#F5F2EA]"
@@ -176,7 +176,7 @@ export const RoadmapPage: React.FC<RoadmapPageProps> = ({
 
       {/* Final CTA */}
       <div
-        className={`border rounded-none p-8 text-center space-y-6 ${
+        className={`shadow-soft border rounded-3xl p-8 text-center space-y-6 ${
           isLight
             ? "bg-[#F2ECE1] border-[#DCD5C9]"
             : "bg-[#111315] border-[#2C3325]"

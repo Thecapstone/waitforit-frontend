@@ -65,7 +65,7 @@ export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setC
     }`}>
       {/* Hero */}
       <div className="text-center space-y-4 max-w-2xl mx-auto">
-        <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-none bg-[#8C5E3C]/10 border border-[#8C5E3C]/30 text-[#8C5E3C] text-xs font-serif uppercase tracking-widest font-bold">
+        <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-[#8C5E3C]/10 border border-[#8C5E3C]/30 text-[#8C5E3C] text-xs font-serif uppercase tracking-widest font-bold">
           <Terminal className="w-3.5 h-3.5" />
           <span>Integration Documentation</span>
         </div>
@@ -80,7 +80,7 @@ export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setC
       </div>
 
       {/* CLI Installation Box */}
-      <div className={`border rounded-none p-6 sm:p-8 space-y-4 shadow-sm ${
+      <div className={`border rounded-3xl p-6 sm:p-8 space-y-4 shadow-soft ${
         isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
       }`}>
         <h3 className="text-base font-serif font-bold text-[#8C5E3C] flex items-center space-x-2">
@@ -88,13 +88,13 @@ export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setC
           <span>Install and sign in</span>
         </h3>
 
-        <div className={`p-4 rounded-none border flex items-center justify-between text-xs font-mono ${
+        <div className={`shadow-soft p-4 rounded-xl border flex items-center justify-between text-xs font-mono ${
           isLight ? 'bg-[#212521] text-[#FAF8F3] border-[#323832]' : 'bg-[#111315] text-[#FAF8F3] border-[#2C3325]'
         }`}>
           <span className="text-[#A8C898]">$ {installCmd}</span>
           <button
             onClick={handleCopy}
-            className="p-1.5 rounded-none bg-[#323832] text-[#FAF8F3] hover:bg-[#6B7A3D] text-xs flex items-center space-x-1 font-serif font-bold uppercase transition-colors"
+            className="p-1.5 rounded-full bg-[#323832] text-[#FAF8F3] hover:bg-[#6B7A3D] text-xs flex items-center space-x-1 font-serif font-bold uppercase transition-colors"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copied ? 'Copied' : 'Copy'}</span>
@@ -102,7 +102,7 @@ export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setC
         </div>
       </div>
 
-      <div className={`border p-6 space-y-3 ${isLight ? 'bg-white border-[#DCD5C9]' : 'bg-[#1A1D1A] border-[#2C3325]'}`}>
+      <div className={`rounded-2xl shadow-soft border p-6 space-y-3 ${isLight ? 'bg-white border-[#DCD5C9]' : 'bg-[#1A1D1A] border-[#2C3325]'}`}>
         <h3 className="font-serif font-bold text-[#8C5E3C]">First commands</h3>
         <pre className="overflow-x-auto whitespace-pre-wrap text-xs leading-7"><code>{`wfi --help\nwfi login\nwfi capsules\nwfi create-capsule --title "my-project" --description "Project notes"\nwfi set-capsule "my-project"\nwfi log --title "Cache decision" --message "Chose Redis for shared cache state."\nwfi search "Redis"`}</code></pre>
         <p className="text-xs text-[#786E65]">Website users can create an account and sign in there. Terminal users run <code>wfi login</code>, then approve the one-time code in their browser.</p>
@@ -111,11 +111,11 @@ export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setC
       {/* Preview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {integrations.map((item) => (
-          <div key={item.title} className={`p-6 rounded-none border space-y-3 ${
+          <div key={item.title} className={`shadow-soft p-6 rounded-2xl border space-y-3 ${
             isLight ? 'bg-white border-[#DCD5C9]' : 'bg-[#1A1D1A] border-[#2C3325]'
           }`}>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-serif font-bold uppercase tracking-wider text-[#8C5E3C] bg-[#8C5E3C]/10 px-2.5 py-1 rounded-none border border-[#8C5E3C]/20">
+              <span className="text-xs font-serif font-bold uppercase tracking-wider text-[#8C5E3C] bg-[#8C5E3C]/10 px-2.5 py-1 rounded-full border border-[#8C5E3C]/20">
                 {item.badge}
               </span>
               <span className="text-[11px] font-mono text-[#786E65]">{item.status}</span>
@@ -128,7 +128,7 @@ export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setC
       </div>
 
       {/* Final CTA */}
-      <div className={`border rounded-none p-8 text-center space-y-6 ${
+      <div className={`shadow-soft border rounded-3xl p-8 text-center space-y-6 ${
         isLight ? 'bg-[#F2ECE1] border-[#DCD5C9]' : 'bg-[#111315] border-[#2C3325]'
       }`}>
         <h3 className="text-2xl font-serif font-bold text-[#8C5E3C]">Be among the first developers to integrate WaitForIt.</h3>

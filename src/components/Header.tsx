@@ -59,17 +59,19 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? isLight
-            ? "bg-[#FAF8F3]/90 backdrop-blur-md border-b border-[#DCD5C9] py-3.5 shadow-sm"
-            : "bg-[#131513]/90 backdrop-blur-md border-b border-[#2C3325] py-3.5 shadow-lg"
-          : isLight
-            ? "bg-[#FAF8F3]/70 backdrop-blur-sm border-b border-[#DCD5C9]/50 py-5"
-            : "bg-[#131513]/60 backdrop-blur-sm py-5"
+      className={`fixed top-0 left-0 right-0 z-50 px-3 sm:px-4 transition-all duration-300 ${
+        scrolled ? "pt-2" : "pt-4"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <div
+        className={`max-w-7xl mx-auto px-3 sm:px-5 py-2.5 rounded-2xl border flex items-center justify-between transition-all duration-300 ${
+          scrolled
+            ? isLight
+              ? "bg-[#FAF8F3]/85 backdrop-blur-md border-[#DCD5C9]/80 shadow-soft"
+              : "bg-[#171A17]/85 backdrop-blur-md border-[#2C3325] shadow-soft"
+            : "bg-transparent border-transparent"
+        }`}
+      >
         {/* Brand Logo - Warm Brown WaitForIt with Lora Font */}
         <div
           onClick={() => {
@@ -79,7 +81,7 @@ export const Header: React.FC<HeaderProps> = ({
           className="flex items-center space-x-3 cursor-pointer group"
         >
           <div
-            className={`w-9 h-9 rounded-none border flex items-center justify-center transition-all duration-200 ${
+            className={`w-9 h-9 rounded-xl border flex items-center justify-center transition-all duration-200 ${
               isLight
                 ? "bg-[#8C5E3C]/10 border-[#8C5E3C]/30 text-[#8C5E3C] group-hover:bg-[#8C5E3C] group-hover:text-white"
                 : "bg-[#8C5E3C]/20 border-[#8C5E3C]/40 text-[#C49A6C] group-hover:bg-[#C49A6C] group-hover:text-black"
@@ -99,11 +101,11 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Desktop Navigation - Sharp borders, Editorial spacing */}
+        {/* Desktop Navigation - pill rail */}
         <nav
-          className={`hidden lg:flex items-center space-x-1 px-3 py-1.5 rounded-none border ${
+          className={`hidden lg:flex items-center gap-0.5 p-1 rounded-full border shadow-soft ${
             isLight
-              ? "bg-[#F2ECE1]/80 border-[#DCD5C9]"
+              ? "bg-[#F2ECE1]/80 border-[#DCD5C9]/80"
               : "bg-[#1A1D1A]/80 border-[#2C3325]"
           }`}
         >
@@ -116,11 +118,11 @@ export const Header: React.FC<HeaderProps> = ({
                   setCurrentPage(item.page);
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                className={`px-3 py-1 text-xs font-serif tracking-wide transition-all duration-200 rounded-none ${
+                className={`px-3.5 py-1.5 text-xs font-serif tracking-wide transition-all duration-200 rounded-full ${
                   isActive
                     ? isLight
-                      ? "bg-[#6B7A3D] text-white font-medium shadow-xs"
-                      : "bg-[#6B7A3D] text-white font-medium"
+                      ? "bg-[#6B7A3D] text-white font-medium shadow-glow"
+                      : "bg-[#6B7A3D] text-white font-medium shadow-glow"
                     : isLight
                       ? "text-[#4A423A] hover:text-[#1C1917] hover:bg-[#E8E0D2]"
                       : "text-[#A0A8B0] hover:text-[#F5F2EA] hover:bg-white/5"
@@ -133,14 +135,27 @@ export const Header: React.FC<HeaderProps> = ({
         </nav>
 
         {/* Right Actions: Auth and Olive Join Waitlist CTA */}
-        <div className="hidden md:flex items-center space-x-3">
+        <div className="hidden md:flex items-center space-x-2.5">
+          <button
+            onClick={onToggleTheme}
+            className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all hover:-translate-y-0.5 ${
+              isLight
+                ? "bg-[#F2ECE1] border-[#DCD5C9] text-[#8C5E3C] hover:bg-[#E8E0D2]"
+                : "bg-[#1A1D1A] border-[#2C3325] text-[#D8E0CC] hover:bg-[#252A25]"
+            }`}
+            title={isLight ? "Switch to dark theme" : "Switch to light theme"}
+            aria-label={isLight ? "Switch to dark theme" : "Switch to light theme"}
+          >
+            {isLight ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+          </button>
+
           {currentUser?.role === "admin" && (
             <button
               onClick={() => {
                 setCurrentPage("dashboard");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className={`p-2 rounded-none border text-xs flex items-center justify-center transition-all ${
+              className={`p-2 rounded-full border text-xs flex items-center justify-center transition-all ${
                 isLight
                   ? "bg-[#F2ECE1] text-[#6B7A3D] border-[#DCD5C9] hover:bg-[#E8E0D2]"
                   : "bg-[#1A1D1A] text-[#8FAF9A] border-[#2C3325] hover:bg-[#252A25]"
@@ -158,7 +173,7 @@ export const Header: React.FC<HeaderProps> = ({
                 setCurrentPage("profile");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className={`px-3 py-2 rounded-none border text-xs flex items-center gap-2 transition-all ${
+              className={`px-3 py-2 rounded-full border text-xs flex items-center gap-2 transition-all ${
                 isLight
                   ? "bg-[#F2ECE1] text-[#6B7A3D] border-[#DCD5C9] hover:bg-[#E8E0D2]"
                   : "bg-[#1A1D1A] text-[#8FAF9A] border-[#2C3325] hover:bg-[#252A25]"
@@ -176,7 +191,7 @@ export const Header: React.FC<HeaderProps> = ({
                 setCurrentPage("capsules");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className={`px-3 py-2 rounded-none border text-xs transition-all ${isLight ? "bg-[#F2ECE1] text-[#6B7A3D] border-[#DCD5C9] hover:bg-[#E8E0D2]" : "bg-[#1A1D1A] text-[#8FAF9A] border-[#2C3325] hover:bg-[#252A25]"}`}
+              className={`px-3 py-2 rounded-full border text-xs transition-all ${isLight ? "bg-[#F2ECE1] text-[#6B7A3D] border-[#DCD5C9] hover:bg-[#E8E0D2]" : "bg-[#1A1D1A] text-[#8FAF9A] border-[#2C3325] hover:bg-[#252A25]"}`}
             >
               Collections
             </button>
@@ -188,7 +203,7 @@ export const Header: React.FC<HeaderProps> = ({
                 setCurrentPage("settings");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className={`p-2 rounded-none border text-xs flex items-center justify-center transition-all ${
+              className={`p-2 rounded-full border text-xs flex items-center justify-center transition-all ${
                 isLight
                   ? "bg-[#F2ECE1] text-[#6B7A3D] border-[#DCD5C9] hover:bg-[#E8E0D2]"
                   : "bg-[#1A1D1A] text-[#8FAF9A] border-[#2C3325] hover:bg-[#252A25]"
@@ -203,7 +218,7 @@ export const Header: React.FC<HeaderProps> = ({
           {currentUser ? (
             <button
               onClick={onLogout}
-              className={`px-3 py-2 rounded-none text-xs font-mono flex items-center space-x-1.5 border transition-all ${
+              className={`px-3 py-2 rounded-full text-xs font-mono flex items-center space-x-1.5 border transition-all ${
                 isLight
                   ? "bg-[#F2ECE1] text-[#554D44] border-[#DCD5C9] hover:border-[#8C5E3C]"
                   : "bg-[#1A1D1A] text-[#A0A8B0] border-[#2C3325] hover:border-[#8C5E3C]"
@@ -220,7 +235,7 @@ export const Header: React.FC<HeaderProps> = ({
                 setCurrentPage("login");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className={`px-3 py-2 rounded-none text-xs font-mono flex items-center space-x-1.5 border transition-all ${
+              className={`px-3 py-2 rounded-full text-xs font-mono flex items-center space-x-1.5 border transition-all ${
                 currentPage === "login"
                   ? "bg-[#6B7A3D]/20 text-[#6B7A3D] border-[#6B7A3D]"
                   : isLight
@@ -236,7 +251,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Olive Button for Join Waitlist */}
           <button
             onClick={onOpenWaitlist}
-            className="px-4 py-2 rounded-none bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] text-xs font-serif uppercase tracking-wider font-semibold border border-[#576431] shadow-sm flex items-center space-x-2 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0"
+            className="shadow-glow px-4 py-2 rounded-full bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] text-xs font-serif uppercase tracking-wider font-semibold border border-[#576431] flex items-center space-x-2 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0"
           >
             <span>Join Waitlist</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -247,7 +262,8 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="lg:hidden flex items-center space-x-2">
           <button
             onClick={onToggleTheme}
-            className={`p-2 rounded-none border text-xs ${
+            aria-label={isLight ? "Switch to dark theme" : "Switch to light theme"}
+            className={`md:hidden p-2 rounded-full border text-xs ${
               isLight
                 ? "bg-[#F2ECE1] border-[#DCD5C9] text-[#8C5E3C]"
                 : "bg-[#1A1D1A] border-[#2C3325] text-[#D8E0CC]"
@@ -262,7 +278,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`p-2 rounded-none border ${
+            className={`p-2 rounded-full border ${
               isLight
                 ? "bg-[#F2ECE1] border-[#DCD5C9] text-[#2C2825]"
                 : "bg-[#1A1D1A] border-[#2C3325] text-[#F5F2EA]"
@@ -280,10 +296,10 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div
-          className={`lg:hidden border-b px-4 pt-4 pb-6 space-y-3 animate-fadeIn ${
+          className={`lg:hidden max-w-7xl mx-auto mt-2 rounded-2xl border shadow-lift px-4 pt-4 pb-5 space-y-2 animate-fadeIn ${
             isLight
-              ? "bg-[#FAF8F3] border-[#DCD5C9] text-[#2C2825]"
-              : "bg-[#131513] border-[#2C3325] text-[#F5F2EA]"
+              ? "bg-[#FAF8F3]/95 backdrop-blur-md border-[#DCD5C9] text-[#2C2825]"
+              : "bg-[#171A17]/95 backdrop-blur-md border-[#2C3325] text-[#F5F2EA]"
           }`}
         >
           {navItems.map((item) => (
@@ -293,7 +309,7 @@ export const Header: React.FC<HeaderProps> = ({
                 setCurrentPage(item.page);
                 setMobileMenuOpen(false);
               }}
-              className={`w-full text-left px-3 py-2.5 rounded-none text-sm font-serif ${
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-serif ${
                 currentPage === item.page
                   ? "bg-[#6B7A3D] text-white font-medium"
                   : isLight
@@ -313,7 +329,7 @@ export const Header: React.FC<HeaderProps> = ({
                   setCurrentPage("dashboard");
                   setMobileMenuOpen(false);
                 }}
-                className="w-full text-center py-2.5 rounded-none bg-[#6B7A3D]/15 text-[#6B7A3D] text-xs font-mono border border-[#6B7A3D]/40 flex items-center justify-center space-x-2"
+                className="w-full text-center py-2.5 rounded-xl bg-[#6B7A3D]/15 text-[#6B7A3D] text-xs font-mono border border-[#6B7A3D]/40 flex items-center justify-center space-x-2"
               >
                 <Shield className="w-4 h-4" />
                 <span>Admin Dashboard</span>
@@ -327,7 +343,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setCurrentPage("profile");
                     setMobileMenuOpen(false);
                   }}
-                  className={`py-2.5 border text-xs font-mono flex items-center justify-center gap-2 ${isLight ? "border-[#DCD5C9] bg-[#F2ECE1] text-[#6B7A3D]" : "border-[#2C3325] bg-[#1A1D1A] text-[#8FAF9A]"}`}
+                  className={`rounded-full py-2.5 border text-xs font-mono flex items-center justify-center gap-2 ${isLight ? "border-[#DCD5C9] bg-[#F2ECE1] text-[#6B7A3D]" : "border-[#2C3325] bg-[#1A1D1A] text-[#8FAF9A]"}`}
                 >
                   <UserCircle className="h-4 w-4" /> Profile
                 </button>
@@ -336,7 +352,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setCurrentPage("capsules");
                     setMobileMenuOpen(false);
                   }}
-                  className={`py-2.5 border text-xs font-mono flex items-center justify-center gap-2 ${isLight ? "border-[#DCD5C9] bg-[#F2ECE1] text-[#6B7A3D]" : "border-[#2C3325] bg-[#1A1D1A] text-[#8FAF9A]"}`}
+                  className={`rounded-full py-2.5 border text-xs font-mono flex items-center justify-center gap-2 ${isLight ? "border-[#DCD5C9] bg-[#F2ECE1] text-[#6B7A3D]" : "border-[#2C3325] bg-[#1A1D1A] text-[#8FAF9A]"}`}
                 >
                   Collections
                 </button>
@@ -345,7 +361,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setCurrentPage("settings");
                     setMobileMenuOpen(false);
                   }}
-                  className={`py-2.5 border text-xs font-mono flex items-center justify-center gap-2 ${isLight ? "border-[#DCD5C9] bg-[#F2ECE1] text-[#6B7A3D]" : "border-[#2C3325] bg-[#1A1D1A] text-[#8FAF9A]"}`}
+                  className={`rounded-full py-2.5 border text-xs font-mono flex items-center justify-center gap-2 ${isLight ? "border-[#DCD5C9] bg-[#F2ECE1] text-[#6B7A3D]" : "border-[#2C3325] bg-[#1A1D1A] text-[#8FAF9A]"}`}
                 >
                   <Settings className="h-4 w-4" /> Settings
                 </button>
@@ -358,7 +374,7 @@ export const Header: React.FC<HeaderProps> = ({
                   onLogout();
                   setMobileMenuOpen(false);
                 }}
-                className="w-full text-center py-2.5 rounded-none bg-[#8C5E3C]/15 text-[#8C5E3C] text-xs font-mono border border-[#8C5E3C]/40 flex items-center justify-center space-x-2"
+                className="w-full text-center py-2.5 rounded-xl bg-[#8C5E3C]/15 text-[#8C5E3C] text-xs font-mono border border-[#8C5E3C]/40 flex items-center justify-center space-x-2"
               >
                 <LogOut className="w-4 h-4" />
                 <span>Logout</span>
@@ -369,7 +385,7 @@ export const Header: React.FC<HeaderProps> = ({
                   setCurrentPage("login");
                   setMobileMenuOpen(false);
                 }}
-                className="w-full text-center py-2.5 rounded-none bg-[#6B7A3D]/15 text-[#6B7A3D] text-xs font-mono border border-[#6B7A3D]/40 flex items-center justify-center space-x-2"
+                className="w-full text-center py-2.5 rounded-xl bg-[#6B7A3D]/15 text-[#6B7A3D] text-xs font-mono border border-[#6B7A3D]/40 flex items-center justify-center space-x-2"
               >
                 <UserCircle className="w-4 h-4" />
                 <span>Sign In</span>
@@ -381,7 +397,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onOpenWaitlist();
                 setMobileMenuOpen(false);
               }}
-              className="w-full text-center py-2.5 rounded-none bg-[#6B7A3D] hover:bg-[#576431] text-white text-xs font-serif uppercase tracking-wider font-semibold border border-[#576431]"
+              className="shadow-glow w-full text-center py-2.5 rounded-xl bg-[#6B7A3D] hover:bg-[#576431] text-white text-xs font-serif uppercase tracking-wider font-semibold border border-[#576431]"
             >
               Join the Waitlist
             </button>

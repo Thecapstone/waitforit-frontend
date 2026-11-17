@@ -115,7 +115,7 @@ export const DevelopersPage: React.FC<DevelopersPageProps> = ({ setCurrentPage, 
             <button
               key={r.id}
               onClick={() => setActiveRole(r.id)}
-              className={`px-4 py-2.5 rounded-none text-xs font-serif uppercase tracking-wider font-semibold border flex items-center space-x-2 transition-all ${
+              className={`px-4 py-2.5 rounded-full text-xs font-serif uppercase tracking-wider font-semibold border flex items-center space-x-2 transition-all ${
                 isActive
                   ? 'bg-[#6B7A3D] text-[#FAF8F3] border-[#576431] shadow-sm'
                   : isLight
@@ -131,11 +131,11 @@ export const DevelopersPage: React.FC<DevelopersPageProps> = ({ setCurrentPage, 
       </div>
 
       {/* Role Detail View */}
-      <div className={`border rounded-none p-8 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-sm ${
+      <div className={`border rounded-3xl p-8 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-soft ${
         isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
       }`}>
         <div className="lg:col-span-7 space-y-5">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-none bg-[#8C5E3C]/10 border border-[#8C5E3C]/30 text-[#8C5E3C] text-xs font-serif font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-xl bg-[#8C5E3C]/10 border border-[#8C5E3C]/30 text-[#8C5E3C] text-xs font-serif font-bold uppercase tracking-wider">
             <Icon className="w-3.5 h-3.5" />
             <span>{current.badge}</span>
           </div>
@@ -160,22 +160,22 @@ export const DevelopersPage: React.FC<DevelopersPageProps> = ({ setCurrentPage, 
           </div>
         </div>
 
-        <div className={`lg:col-span-5 p-6 rounded-none border space-y-3 font-mono text-xs ${
+        <div className={`shadow-soft lg:col-span-5 p-6 rounded-2xl border space-y-3 font-mono text-xs ${
           isLight ? 'bg-[#212521] text-[#E0E5DF] border-[#323832]' : 'bg-[#0B0C0B] text-[#E0E5DF] border-[#2C3325]'
         }`}>
           <span className="text-xs text-[#A8C898] font-bold uppercase">Terminal Snapshot:</span>
-          <pre className="whitespace-pre-wrap text-[#FAF8F3] bg-[#141714] p-4 rounded-none border border-white/10 leading-relaxed font-mono">
+          <pre className="shadow-soft whitespace-pre-wrap text-[#FAF8F3] bg-[#141714] p-4 rounded-xl border border-white/10 leading-relaxed font-mono">
             {current.terminalSnippet}
           </pre>
           <div className="text-[11px] text-[#C49A6C] font-mono flex items-center space-x-1.5">
-            <span className="w-2 h-2 rounded-none bg-[#A8C898]"></span>
+            <span className="w-2 h-2 rounded-full bg-[#A8C898]"></span>
             <span>Captured live from terminal CLI</span>
           </div>
         </div>
       </div>
 
       {/* Final CTA */}
-      <div className={`border rounded-none p-8 text-center space-y-6 ${
+      <div className={`shadow-soft border rounded-3xl p-8 text-center space-y-6 ${
         isLight ? 'bg-[#F2ECE1] border-[#DCD5C9]' : 'bg-[#111315] border-[#2C3325]'
       }`}>
         <h3 className="text-2xl font-serif font-bold text-[#8C5E3C]">Join the waitlist for your engineering team.</h3>

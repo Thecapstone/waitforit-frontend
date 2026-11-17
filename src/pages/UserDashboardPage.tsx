@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Archive, CalendarClock, CreditCard, FolderGit2, Plus, ShieldCheck, X } from 'lucide-react';
+import { Archive, CalendarClock, CreditCard, FolderGit2, Layers3, Plus, ShieldCheck, X } from 'lucide-react';
 import { cancelSubscription, createCapsule, getSubscription, initializeSubscriptionPayment, listCapsules } from '../lib/api';
-import { AuthUser, CapsuleSummary, Subscription, Theme } from '../types';
+import { formatDate } from '../lib/articles';
+import { CollectionHeader, EmptyState, useCollectionStyles } from '../components/CollectionChrome';
+import { AuthUser, CapsuleSummary, PageView, Subscription, Theme } from '../types';
 
-interface UserDashboardPageProps { currentUser: AuthUser; theme: Theme; }
+interface UserDashboardPageProps {
+  currentUser: AuthUser;
+  theme: Theme;
+  setCurrentPage: (page: PageView) => void;
+}
 
-export const UserDashboardPage: React.FC<UserDashboardPageProps> = ({ currentUser, theme }) => {
+export const UserDashboardPage: React.FC<UserDashboardPageProps> = ({ currentUser, theme, setCurrentPage }) => {
+  const s = useCollectionStyles(theme);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [capsules, setCapsules] = useState<CapsuleSummary[]>([]);
   const [title, setTitle] = useState('');
@@ -13,7 +20,6 @@ export const UserDashboardPage: React.FC<UserDashboardPageProps> = ({ currentUse
   const [maturityDate, setMaturityDate] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
-  const isLight = theme === 'light';
 
   const refresh = async () => {
     setLoading(true);
@@ -29,8 +35,10 @@ export const UserDashboardPage: React.FC<UserDashboardPageProps> = ({ currentUse
   useEffect(() => { refresh(); }, []);
 
   const startPayment = async () => {
-    const payment = await initializeSubscriptionPayment();
-    window.location.assign(payment.payment_url);
+    try {
+      const payment = await initializeSubscriptionPayment();
+      window.location.assign(payment.payment_url);
+    } catch (error: any) { setMessage(error.message || 'Unable to start payment.'); }
   };
 
   const submitCapsule = async (event: React.FormEvent) => {
@@ -41,29 +49,129 @@ export const UserDashboardPage: React.FC<UserDashboardPageProps> = ({ currentUse
     } catch (error: any) { setMessage(error.message || 'Unable to create capsule.'); }
   };
 
-  const trialEnd = subscription?.trial_ends_at ? new Date(subscription.trial_ends_at).toLocaleDateString() : null;
-  return <div className={`pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 ${isLight ? 'text-[#2C2825]' : 'text-[#F5F2EA]'}`}>
-    <header className="border-b border-[#DCD5C9] pb-6">
-      <span className="text-xs font-mono uppercase tracking-widest text-[#8C5E3C]">Your workspace</span>
-      <h1 className="text-3xl font-serif font-extrabold text-[#8C5E3C] mt-2">Capsules, in progress.</h1>
-      <p className="text-sm text-[#786E65] mt-2">{currentUser.email} · Keep a durable record of what you are building.</p>
-    </header>
-    {message && <div className="border border-[#6B7A3D]/40 bg-[#6B7A3D]/10 p-3 text-sm">{message}</div>}
-    <section className="grid lg:grid-cols-[1fr_2fr] gap-6">
-      <div className={`border p-6 space-y-5 ${isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A] border-[#2C3325]'}`}>
-        <div className="flex items-center gap-3"><ShieldCheck className="text-[#6B7A3D]" /><h2 className="font-serif font-bold text-lg">Access</h2></div>
-        <p className="text-2xl font-serif font-bold">{subscription?.status === 'trialing' ? 'Free trial' : subscription?.status || 'Loading'}</p>
-        <p className="text-sm text-[#786E65]">{trialEnd ? `Your trial ends ${trialEnd}.` : 'NGN 1,000 monthly after the trial.'}</p>
-        {subscription?.status !== 'active' ? <button onClick={startPayment} className="w-full py-3 bg-[#6B7A3D] text-white text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2"><CreditCard className="w-4 h-4" /> Continue for NGN 1,000/month</button> : <button onClick={async () => { await cancelSubscription(); setMessage('Cancellation scheduled for the end of the current period.'); refresh(); }} className="w-full py-3 border border-[#8C5E3C] text-[#8C5E3C] text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2"><X className="w-4 h-4" /> Cancel renewal</button>}
-      </div>
-      <div className={`border p-6 ${isLight ? 'bg-white border-[#DCD5C9]' : 'bg-[#131513] border-[#2C3325]'}`}>
-        <div className="flex items-center gap-3 mb-5"><FolderGit2 className="text-[#8C5E3C]" /><h2 className="font-serif font-bold text-lg">Your capsules</h2><span className="ml-auto text-xs font-mono text-[#786E65]">{capsules.length} repositories</span></div>
-        {loading ? <p className="text-sm text-[#786E65]">Loading workspace...</p> : capsules.length === 0 ? <p className="text-sm text-[#786E65]">No capsules yet. Start one below.</p> : <div className="space-y-2">{capsules.map(capsule => <div key={capsule.id} className="border border-[#DCD5C9] p-4 flex items-center justify-between"><div><p className="font-serif font-bold">{capsule.title}</p><p className="text-xs text-[#786E65]">Updated {new Date(capsule.updated_at).toLocaleDateString()}</p></div><Archive className="w-4 h-4 text-[#6B7A3D]" /></div>)}</div>}
-      </div>
-    </section>
-    <section className={`border p-6 max-w-2xl ${isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A] border-[#2C3325]'}`}>
-      <div className="flex items-center gap-3 mb-5"><Plus className="text-[#6B7A3D]" /><h2 className="font-serif font-bold text-lg">Create a capsule</h2></div>
-      <form onSubmit={submitCapsule} className="space-y-4"><input required value={title} onChange={e => setTitle(e.target.value)} placeholder="Capsule name" className="w-full border border-[#DCD5C9] p-3 bg-transparent" /><textarea required value={description} onChange={e => setDescription(e.target.value)} placeholder="What are you building?" className="w-full border border-[#DCD5C9] p-3 bg-transparent min-h-24" /><label className="block text-xs font-bold text-[#786E65]">Maturity date<input required type="datetime-local" value={maturityDate} onChange={e => setMaturityDate(e.target.value)} className="block w-full border border-[#DCD5C9] p-3 mt-1 bg-transparent" /></label><button className="py-3 px-5 bg-[#8C5E3C] text-white text-xs uppercase tracking-widest font-bold flex items-center gap-2"><CalendarClock className="w-4 h-4" /> Create capsule</button></form>
-    </section>
-  </div>;
+  const navigate = (page: PageView) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const trialEnd = subscription?.trial_ends_at ? formatDate(subscription.trial_ends_at) : null;
+
+  return (
+    <div className={`pt-28 pb-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 transition-colors ${s.ink}`}>
+      <CollectionHeader
+        page="dashboard"
+        theme={theme}
+        onNavigate={navigate}
+        icon={<Layers3 className="h-3.5 w-3.5" />}
+        eyebrow="Your Workspace"
+        title="Capsules, in progress."
+        subtitle={`${currentUser.email} · Keep a durable record of what you are building.`}
+        counts={loading ? undefined : { capsules: capsules.length }}
+      />
+
+      {message && (
+        <div role="status" className="shadow-soft flex items-center justify-between gap-4 rounded-xl border border-[#6B7A3D]/30 bg-[#6B7A3D]/15 p-3.5 text-xs font-serif font-bold text-[#6B7A3D]">
+          <span>{message}</span>
+          <button aria-label="Dismiss message" onClick={() => setMessage('')}><X className="h-4 w-4" /></button>
+        </div>
+      )}
+
+      <section className="grid gap-6 lg:grid-cols-[1fr_2fr]">
+        <div className={`${s.card} space-y-5 p-6`}>
+          <div className={`flex items-center justify-between ${s.muted}`}>
+            <span className="text-xs font-serif font-bold uppercase tracking-wider">Access</span>
+            <ShieldCheck className="h-4 w-4 text-[#6B7A3D]" />
+          </div>
+          <p className="text-2xl font-serif font-bold text-[#8C5E3C]">
+            {subscription?.status === 'trialing' ? 'Free trial' : subscription?.status || 'Loading'}
+          </p>
+          <p className={`text-sm ${s.body}`}>{trialEnd ? `Your trial ends ${trialEnd}.` : 'NGN 1,000 monthly after the trial.'}</p>
+          {subscription?.status !== 'active' ? (
+            <button onClick={startPayment} className={`${s.primaryButton} w-full`}>
+              <CreditCard className="h-4 w-4" /> Continue for NGN 1,000/month
+            </button>
+          ) : (
+            <button
+              onClick={async () => {
+                try {
+                  await cancelSubscription();
+                  setMessage('Cancellation scheduled for the end of the current period.');
+                  refresh();
+                } catch (error: any) { setMessage(error.message || 'Unable to update subscription.'); }
+              }}
+              className={`${s.secondaryButton} w-full`}
+            >
+              <X className="h-4 w-4" /> Cancel renewal
+            </button>
+          )}
+        </div>
+
+        <div className={`${s.panel} p-6`}>
+          <div className="mb-5 flex items-center gap-3">
+            <FolderGit2 className="h-5 w-5 text-[#8C5E3C]" />
+            <h2 className="text-lg font-serif font-bold text-[#8C5E3C]">Your capsules</h2>
+            <span className={`ml-auto ${s.meta}`}>{capsules.length} capsules</span>
+          </div>
+          {loading ? (
+            <p className={`text-sm font-serif ${s.muted}`}>Loading workspace...</p>
+          ) : capsules.length === 0 ? (
+            <p className={`text-sm ${s.muted}`}>No capsules yet. Start one below.</p>
+          ) : (
+            <div className="space-y-3">
+              {capsules.map((capsule) => (
+                <button
+                  key={capsule.id}
+                  onClick={() => navigate('capsules')}
+                  className={`${s.panel} ${s.interactive} flex w-full items-center justify-between p-4`}
+                >
+                  <div className="min-w-0">
+                    <p className={`truncate ${s.cardTitle}`}>{capsule.title}</p>
+                    <p className={s.meta}>Updated {formatDate(capsule.updated_at)}</p>
+                  </div>
+                  <Archive className="h-4 w-4 shrink-0 text-[#6B7A3D]" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className={`${s.card} max-w-2xl p-6 sm:p-8`}>
+        <div className="mb-5 flex items-center gap-3">
+          <Plus className="h-5 w-5 text-[#6B7A3D]" />
+          <h2 className="text-lg font-serif font-bold text-[#8C5E3C]">Create a capsule</h2>
+        </div>
+        <form onSubmit={submitCapsule} className="space-y-5">
+          <label className={s.label}>
+            Capsule name
+            <input required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Capsule name" className={`${s.input}`} />
+          </label>
+          <label className={s.label}>
+            What are you building?
+            <textarea required value={description} onChange={(e) => setDescription(e.target.value)} placeholder="What are you building?" className={`${s.input} min-h-24`} />
+          </label>
+          <label className={s.label}>
+            Maturity date
+            <input required type="datetime-local" value={maturityDate} onChange={(e) => setMaturityDate(e.target.value)} className={`${s.input}`} />
+          </label>
+          <button className={s.primaryButton}>
+            <CalendarClock className="h-4 w-4" /> Create capsule
+          </button>
+        </form>
+      </section>
+
+      {!loading && capsules.length > 0 && (
+        <EmptyState
+          styles={s}
+          action={
+            <button onClick={() => navigate('articles')} className={s.secondaryButton}>
+              Generate an article
+            </button>
+          }
+        >
+          Turn a capsule's recorded logs into an article from the Articles tab.
+        </EmptyState>
+      )}
+    </div>
+  );
 };

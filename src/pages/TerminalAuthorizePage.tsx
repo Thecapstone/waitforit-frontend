@@ -48,11 +48,11 @@ export const TerminalAuthorizePage: React.FC<TerminalAuthorizePageProps> = ({
     <div className={`pt-28 pb-20 max-w-xl mx-auto px-4 transition-colors ${
       isLight ? 'text-[#2C2825]' : 'text-[#F5F2EA]'
     }`}>
-      <div className={`border rounded-none p-8 space-y-6 shadow-sm ${
+      <div className={`border rounded-3xl p-8 space-y-6 shadow-soft ${
         isLight ? 'bg-[#F2ECE1]/80 border-[#DCD5C9]' : 'bg-[#1A1D1A]/80 border-[#2C3325]'
       }`}>
         <div className="space-y-2 text-center">
-          <div className="w-16 h-16 rounded-none bg-[#8C5E3C]/10 text-[#8C5E3C] border border-[#8C5E3C]/30 mx-auto flex items-center justify-center">
+          <div className="w-16 h-16 rounded-2xl bg-[#8C5E3C]/10 text-[#8C5E3C] border border-[#8C5E3C]/30 mx-auto flex items-center justify-center">
             <Terminal className="w-8 h-8" />
           </div>
           <span className="text-xs font-serif font-bold uppercase tracking-widest text-[#8C5E3C]">
@@ -74,7 +74,7 @@ export const TerminalAuthorizePage: React.FC<TerminalAuthorizePageProps> = ({
               window.sessionStorage.setItem('wfi_pending_terminal_code', userCode);
               setCurrentPage('login');
             }}
-            className="w-full py-3 rounded-none bg-[#6B7A3D] text-[#FAF8F3] text-xs font-serif uppercase tracking-widest font-bold border border-[#576431]"
+            className="w-full py-3 rounded-full bg-[#6B7A3D] text-[#FAF8F3] text-xs font-serif uppercase tracking-widest font-bold border border-[#576431]"
           >
             Sign In First
           </button>
@@ -102,7 +102,7 @@ export const TerminalAuthorizePage: React.FC<TerminalAuthorizePageProps> = ({
                   }}
                   maxLength={7}
                   placeholder="ABC-DEF"
-                  className={`w-full border rounded-none pl-9 pr-3 py-2.5 text-sm tracking-widest uppercase focus:outline-none focus:border-[#6B7A3D] ${
+                  className={`w-full border rounded-xl pl-9 pr-3 py-2.5 text-sm tracking-widest uppercase focus:outline-none focus:border-[#6B7A3D] ${
                     isLight ? 'bg-white border-[#DCD5C9] text-[#1C1917]' : 'bg-[#131513] border-[#2C3325] text-white'
                   }`}
                 />
@@ -112,7 +112,7 @@ export const TerminalAuthorizePage: React.FC<TerminalAuthorizePageProps> = ({
             <button
               onClick={approve}
               disabled={loading}
-              className="w-full py-3 rounded-none bg-[#6B7A3D] text-[#FAF8F3] text-xs font-serif uppercase tracking-widest font-bold border border-[#576431] flex items-center justify-center space-x-2 disabled:opacity-60"
+              className="w-full py-3 rounded-full bg-[#6B7A3D] text-[#FAF8F3] text-xs font-serif uppercase tracking-widest font-bold border border-[#576431] flex items-center justify-center space-x-2 disabled:opacity-60"
             >
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Terminal className="w-4 h-4" />}
               <span>Approve Terminal</span>
@@ -121,14 +121,14 @@ export const TerminalAuthorizePage: React.FC<TerminalAuthorizePageProps> = ({
         )}
 
         {message && (
-          <div className="p-3.5 rounded-none bg-[#6B7A3D]/15 border border-[#6B7A3D]/30 text-[#6B7A3D] text-xs flex items-center space-x-2">
+          <div className="shadow-soft p-3.5 rounded-xl bg-[#6B7A3D]/15 border border-[#6B7A3D]/30 text-[#6B7A3D] text-xs flex items-center space-x-2">
             <Check className="w-4 h-4" />
             <span>{message}</span>
           </div>
         )}
 
         {error && (
-          <div className="p-3.5 rounded-none bg-red-950/20 border border-red-500/40 text-red-700 dark:text-red-300 text-xs flex items-center space-x-2">
+          <div className="shadow-soft p-3.5 rounded-xl bg-red-950/20 border border-red-500/40 text-red-700 dark:text-red-300 text-xs flex items-center space-x-2">
             <AlertCircle className="w-4 h-4" />
             <span>{error}</span>
           </div>

@@ -192,7 +192,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
       <div className={`pt-28 pb-20 max-w-3xl mx-auto px-4 transition-colors ${
         isLight ? 'text-[#2C2825]' : 'text-[#F5F2EA]'
       }`}>
-        <div className={`border rounded-none p-8 space-y-3 shadow-sm ${
+        <div className={`border rounded-3xl p-8 space-y-3 shadow-soft ${
           isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
         }`}>
           <span className="text-xs font-serif font-bold uppercase tracking-widest text-[#8C5E3C]">
@@ -219,7 +219,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
       }`}>
         <div>
           <div className="flex items-center space-x-2">
-            <span className="px-2.5 py-0.5 rounded-none bg-[#8C5E3C]/15 border border-[#8C5E3C]/30 text-[#8C5E3C] text-xs font-serif uppercase tracking-widest font-bold">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#8C5E3C]/15 border border-[#8C5E3C]/30 text-[#8C5E3C] text-xs font-serif uppercase tracking-widest font-bold">
               ADMIN CONTROL PANEL
             </span>
             <span className="text-xs text-[#786E65] font-serif">• Live Pipeline & Metrics</span>
@@ -235,7 +235,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
         <div className="flex items-center space-x-3">
           <button
             onClick={fetchData}
-            className={`px-3.5 py-2 rounded-none border text-xs font-serif uppercase tracking-wider font-bold flex items-center space-x-1.5 transition-colors ${
+            className={`px-3.5 py-2 rounded-full border text-xs font-serif uppercase tracking-wider font-bold flex items-center space-x-1.5 transition-colors ${
               isLight ? 'bg-white border-[#DCD5C9] text-[#2C2825] hover:bg-[#FAF8F3]' : 'bg-[#1A1D1A] border-[#2C3325] text-[#F5F2EA] hover:bg-[#252A25]'
             }`}
           >
@@ -245,7 +245,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
           <button
             onClick={handleExportCSV}
-            className="px-4 py-2 rounded-none bg-[#8C5E3C] hover:bg-[#724A2D] text-[#FAF8F3] text-xs font-serif uppercase tracking-wider font-bold flex items-center space-x-1.5 shadow-sm transition-colors"
+            className="px-4 py-2 rounded-full bg-[#8C5E3C] hover:bg-[#724A2D] text-[#FAF8F3] text-xs font-serif uppercase tracking-wider font-bold flex items-center space-x-1.5 shadow-sm transition-colors"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export CSV</span>
@@ -253,7 +253,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 rounded-none bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] text-xs font-serif uppercase tracking-wider font-bold flex items-center space-x-1.5 shadow-sm transition-colors"
+            className="shadow-glow px-4 py-2 rounded-full bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] text-xs font-serif uppercase tracking-wider font-bold flex items-center space-x-1.5 transition-colors"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Add Subscriber</span>
@@ -263,7 +263,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
       {/* Action Notification Message */}
       {actionMessage && (
-        <div className="p-3.5 rounded-none bg-[#6B7A3D]/15 border border-[#6B7A3D]/30 text-[#6B7A3D] text-xs font-serif font-bold flex items-center justify-between animate-fadeIn">
+        <div className="shadow-soft p-3.5 rounded-xl bg-[#6B7A3D]/15 border border-[#6B7A3D]/30 text-[#6B7A3D] text-xs font-serif font-bold flex items-center justify-between animate-fadeIn">
           <div className="flex items-center space-x-2">
             <Check className="w-4 h-4" />
             <span>{actionMessage}</span>
@@ -278,7 +278,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
       }`}>
         <button
           onClick={() => setActiveTab('overview')}
-          className={`px-4 py-2 rounded-none uppercase tracking-wider font-bold transition-all flex items-center space-x-2 border ${
+          className={`px-4 py-2 rounded-full uppercase tracking-wider font-bold transition-all flex items-center space-x-2 border ${
             activeTab === 'overview'
               ? 'bg-[#6B7A3D] text-[#FAF8F3] border-[#576431]'
               : isLight ? 'bg-white text-[#2C2825] border-[#DCD5C9]' : 'bg-[#1A1D1A] text-[#A0A8B0] border-[#2C3325]'
@@ -290,7 +290,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
         <button
           onClick={() => setActiveTab('subscribers')}
-          className={`px-4 py-2 rounded-none uppercase tracking-wider font-bold transition-all flex items-center space-x-2 border ${
+          className={`px-4 py-2 rounded-full uppercase tracking-wider font-bold transition-all flex items-center space-x-2 border ${
             activeTab === 'subscribers'
               ? 'bg-[#6B7A3D] text-[#FAF8F3] border-[#576431]'
               : isLight ? 'bg-white text-[#2C2825] border-[#DCD5C9]' : 'bg-[#1A1D1A] text-[#A0A8B0] border-[#2C3325]'
@@ -302,7 +302,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
         <button
           onClick={() => setActiveTab('pipeline')}
-          className={`px-4 py-2 rounded-none uppercase tracking-wider font-bold transition-all flex items-center space-x-2 border ${
+          className={`px-4 py-2 rounded-full uppercase tracking-wider font-bold transition-all flex items-center space-x-2 border ${
             activeTab === 'pipeline'
               ? 'bg-[#6B7A3D] text-[#FAF8F3] border-[#576431]'
               : isLight ? 'bg-white text-[#2C2825] border-[#DCD5C9]' : 'bg-[#1A1D1A] text-[#A0A8B0] border-[#2C3325]'
@@ -314,7 +314,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
         <button
           onClick={() => setActiveTab('analytics')}
-          className={`px-4 py-2 rounded-none uppercase tracking-wider font-bold transition-all flex items-center space-x-2 border ${
+          className={`px-4 py-2 rounded-full uppercase tracking-wider font-bold transition-all flex items-center space-x-2 border ${
             activeTab === 'analytics'
               ? 'bg-[#6B7A3D] text-[#FAF8F3] border-[#576431]'
               : isLight ? 'bg-white text-[#2C2825] border-[#DCD5C9]' : 'bg-[#1A1D1A] text-[#A0A8B0] border-[#2C3325]'
@@ -330,7 +330,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
         <div className="space-y-8">
           {/* Key Metric Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className={`p-6 rounded-none border space-y-2 shadow-sm ${
+            <div className={`p-6 rounded-2xl border space-y-2 shadow-soft ${
               isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
             }`}>
               <div className="flex items-center justify-between text-[#786E65]">
@@ -341,7 +341,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
               <p className="text-[11px] text-[#6B7A3D] font-serif">Unique Session Landings</p>
             </div>
 
-            <div className={`p-6 rounded-none border space-y-2 shadow-sm ${
+            <div className={`p-6 rounded-2xl border space-y-2 shadow-soft ${
               isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
             }`}>
               <div className="flex items-center justify-between text-[#786E65]">
@@ -352,7 +352,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
               <p className="text-[11px] text-[#6B7A3D] font-serif">100% Organic Submissions</p>
             </div>
 
-            <div className={`p-6 rounded-none border space-y-2 shadow-sm ${
+            <div className={`p-6 rounded-2xl border space-y-2 shadow-soft ${
               isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
             }`}>
               <div className="flex items-center justify-between text-[#786E65]">
@@ -363,7 +363,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
               <p className="text-[11px] text-[#8C5E3C] font-serif">Visitor → Waitlist Completed</p>
             </div>
 
-            <div className={`p-6 rounded-none border space-y-2 shadow-sm ${
+            <div className={`p-6 rounded-2xl border space-y-2 shadow-soft ${
               isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
             }`}>
               <div className="flex items-center justify-between text-[#786E65]">
@@ -376,7 +376,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
           </div>
 
           {/* Conversion Funnel Bar */}
-          <div className={`border rounded-none p-6 sm:p-8 space-y-4 shadow-sm ${
+          <div className={`border rounded-3xl p-6 sm:p-8 space-y-4 shadow-soft ${
             isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
           }`}>
             <h3 className="text-base font-serif font-bold text-[#8C5E3C] flex items-center space-x-2">
@@ -390,7 +390,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                   <span>1. Site Visitors</span>
                   <span className="text-[#8C5E3C] font-bold">{summary.total_visitors} (100%)</span>
                 </div>
-                <div className={`w-full h-3 rounded-none overflow-hidden ${isLight ? 'bg-[#DCD5C9]' : 'bg-[#111315]'}`}>
+                <div className={`w-full h-3 rounded-xl overflow-hidden ${isLight ? 'bg-[#DCD5C9]' : 'bg-[#111315]'}`}>
                   <div className="h-full bg-[#8C5E3C] w-full"></div>
                 </div>
               </div>
@@ -400,7 +400,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                   <span>2. Primary CTA Clicked</span>
                   <span className="text-[#8C5E3C] font-bold">{summary.cta_clicks} ({Math.round((summary.cta_clicks / summary.total_visitors) * 100)}%)</span>
                 </div>
-                <div className={`w-full h-3 rounded-none overflow-hidden ${isLight ? 'bg-[#DCD5C9]' : 'bg-[#111315]'}`}>
+                <div className={`w-full h-3 rounded-xl overflow-hidden ${isLight ? 'bg-[#DCD5C9]' : 'bg-[#111315]'}`}>
                   <div className="h-full bg-[#A88860]" style={{ width: `${Math.round((summary.cta_clicks / summary.total_visitors) * 100)}%` }}></div>
                 </div>
               </div>
@@ -410,7 +410,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                   <span>3. Waitlist Form Submitted</span>
                   <span className="text-[#8C5E3C] font-bold">{summary.total_signups} ({summary.conversion_rate}%)</span>
                 </div>
-                <div className={`w-full h-3 rounded-none overflow-hidden ${isLight ? 'bg-[#DCD5C9]' : 'bg-[#111315]'}`}>
+                <div className={`w-full h-3 rounded-xl overflow-hidden ${isLight ? 'bg-[#DCD5C9]' : 'bg-[#111315]'}`}>
                   <div className="h-full bg-[#6B7A3D]" style={{ width: `${summary.conversion_rate}%` }}></div>
                 </div>
               </div>
@@ -420,7 +420,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                   <span>4. Welcome Email Delivered</span>
                   <span className="text-[#8C5E3C] font-bold">{summary.emails_sent} (100% of signups)</span>
                 </div>
-                <div className={`w-full h-3 rounded-none overflow-hidden ${isLight ? 'bg-[#DCD5C9]' : 'bg-[#111315]'}`}>
+                <div className={`w-full h-3 rounded-xl overflow-hidden ${isLight ? 'bg-[#DCD5C9]' : 'bg-[#111315]'}`}>
                   <div className="h-full bg-[#576431]" style={{ width: `${summary.conversion_rate}%` }}></div>
                 </div>
               </div>
@@ -429,7 +429,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
           {/* Role Breakdown Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className={`border rounded-none p-6 space-y-4 shadow-sm ${
+            <div className={`border rounded-2xl p-6 space-y-4 shadow-soft ${
               isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
             }`}>
               <h3 className="text-base font-serif font-bold text-[#8C5E3C] flex items-center space-x-2">
@@ -442,7 +442,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                   const numCount = Number(count);
                   const pct = summary.total_signups > 0 ? Math.round((numCount / summary.total_signups) * 100) : 0;
                   return (
-                    <div key={role} className={`flex items-center justify-between p-3 rounded-none border ${
+                    <div key={role} className={`shadow-soft flex items-center justify-between p-3 rounded-xl border ${
                       isLight ? 'bg-white border-[#DCD5C9] text-[#2C2825]' : 'bg-[#131513] border-[#2C3325] text-[#F5F2EA]'
                     }`}>
                       <span className="font-medium">{role}</span>
@@ -456,7 +456,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
               </div>
             </div>
 
-            <div className={`border rounded-none p-6 space-y-4 shadow-sm ${
+            <div className={`border rounded-2xl p-6 space-y-4 shadow-soft ${
               isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
             }`}>
               <h3 className="text-base font-serif font-bold text-[#8C5E3C] flex items-center space-x-2">
@@ -466,7 +466,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
               <div className="space-y-2 font-mono text-xs">
                 {summary.daily_metrics.map((m) => (
-                  <div key={m.date} className={`flex items-center justify-between p-3 rounded-none border ${
+                  <div key={m.date} className={`shadow-soft flex items-center justify-between p-3 rounded-xl border ${
                     isLight ? 'bg-white border-[#DCD5C9] text-[#2C2825]' : 'bg-[#131513] border-[#2C3325] text-[#F5F2EA]'
                   }`}>
                     <span className="text-[#786E65]">{m.date}</span>
@@ -487,7 +487,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
       {activeTab === 'subscribers' && (
         <div className="space-y-6">
           {/* Controls Bar */}
-          <div className={`flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 border rounded-none shadow-sm ${
+          <div className={`flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 border rounded-xl shadow-soft ${
             isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
           }`}>
             <div className="relative flex-grow max-w-md">
@@ -497,7 +497,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                 placeholder="Search by name or email..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className={`w-full border rounded-none pl-9 pr-3 py-2 text-xs font-mono focus:outline-none focus:border-[#6B7A3D] ${
+                className={`w-full border rounded-xl pl-9 pr-3 py-2 text-xs font-mono focus:outline-none focus:border-[#6B7A3D] ${
                   isLight ? 'bg-white border-[#DCD5C9] text-[#2C2825]' : 'bg-[#131513] border-[#2C3325] text-[#F5F2EA]'
                 }`}
               />
@@ -510,7 +510,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                 <select
                   value={roleFilter}
                   onChange={(e) => setRoleFilter(e.target.value)}
-                  className={`border rounded-none px-2.5 py-1.5 font-mono text-xs ${
+                  className={`border rounded-xl px-2.5 py-1.5 font-mono text-xs ${
                     isLight ? 'bg-white border-[#DCD5C9] text-[#2C2825]' : 'bg-[#131513] border-[#2C3325] text-[#F5F2EA]'
                   }`}
                 >
@@ -528,7 +528,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className={`border rounded-none px-2.5 py-1.5 font-mono text-xs ${
+                  className={`border rounded-xl px-2.5 py-1.5 font-mono text-xs ${
                     isLight ? 'bg-white border-[#DCD5C9] text-[#2C2825]' : 'bg-[#131513] border-[#2C3325] text-[#F5F2EA]'
                   }`}
                 >
@@ -543,7 +543,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
           </div>
 
           {/* Table */}
-          <div className={`border rounded-none overflow-hidden shadow-sm ${
+          <div className={`border rounded-xl overflow-hidden shadow-sm ${
             isLight ? 'bg-[#F2ECE1]/50 border-[#DCD5C9]' : 'bg-[#1A1D1A]/50 border-[#2C3325]'
           }`}>
             <div className="overflow-x-auto">
@@ -583,7 +583,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                           )}
                         </td>
                         <td className="p-4 font-mono">
-                          <span className="px-2.5 py-1 rounded-none bg-[#8C5E3C]/10 border border-[#8C5E3C]/20 text-[#8C5E3C] font-serif font-bold">
+                          <span className="px-2.5 py-1 rounded-full bg-[#8C5E3C]/10 border border-[#8C5E3C]/20 text-[#8C5E3C] font-serif font-bold">
                             {sub.role || 'Backend Engineer'}
                           </span>
                         </td>
@@ -594,7 +594,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                           <select
                             value={sub.status}
                             onChange={(e) => handleUpdateStatus(sub.id, e.target.value)}
-                            className={`border rounded-none px-2 py-1 text-[11px] font-mono ${
+                            className={`border rounded-xl px-2 py-1 text-[11px] font-mono ${
                               isLight ? 'bg-white border-[#DCD5C9] text-[#6B7A3D]' : 'bg-[#131513] border-[#2C3325] text-[#6B7A3D]'
                             }`}
                           >
@@ -623,14 +623,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                           <button
                             onClick={() => handleResendWelcome(sub.id)}
                             title="Re-send Welcome Email"
-                            className="p-1.5 rounded-none bg-[#6B7A3D] text-[#FAF8F3] hover:bg-[#576431]"
+                            className="shadow-glow p-1.5 rounded-full bg-[#6B7A3D] text-[#FAF8F3] hover:bg-[#576431]"
                           >
                             <Send className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => handleDeleteSubscriber(sub.id)}
                             title="Delete Subscriber"
-                            className="p-1.5 rounded-none bg-red-700 text-white hover:bg-red-800"
+                            className="p-1.5 rounded-full bg-red-700 text-white hover:bg-red-800"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -651,7 +651,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
           {/* Template Editor & Live Preview */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Template Editor */}
-            <div className={`lg:col-span-7 border rounded-none p-6 sm:p-8 space-y-4 shadow-sm ${
+            <div className={`lg:col-span-7 border rounded-3xl p-6 sm:p-8 space-y-4 shadow-soft ${
               isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
             }`}>
               <div className={`flex items-center justify-between border-b pb-3 ${
@@ -677,7 +677,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                     type="text"
                     value={editSubject}
                     onChange={(e) => setEditSubject(e.target.value)}
-                    className={`w-full border rounded-none px-3.5 py-2.5 font-mono ${
+                    className={`w-full border rounded-xl px-3.5 py-2.5 font-mono ${
                       isLight ? 'bg-white border-[#DCD5C9] text-[#2C2825]' : 'bg-[#131513] border-[#2C3325] text-[#F5F2EA]'
                     }`}
                   />
@@ -691,7 +691,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                     rows={10}
                     value={editBody}
                     onChange={(e) => setEditBody(e.target.value)}
-                    className={`w-full border rounded-none p-3.5 font-mono text-xs leading-relaxed ${
+                    className={`w-full border rounded-xl p-3.5 font-mono text-xs leading-relaxed ${
                       isLight ? 'bg-white border-[#DCD5C9] text-[#2C2825]' : 'bg-[#131513] border-[#2C3325] text-[#F5F2EA]'
                     }`}
                   />
@@ -699,7 +699,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
                 <button
                   onClick={handleSaveTemplate}
-                  className="px-5 py-2.5 rounded-none bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] font-serif font-bold uppercase tracking-wider text-xs transition-colors shadow-sm"
+                  className="shadow-glow px-5 py-2.5 rounded-full bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] font-serif font-bold uppercase tracking-wider text-xs transition-colors"
                 >
                   Save Pipeline Template
                 </button>
@@ -707,7 +707,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
             </div>
 
             {/* Live Email Rendered Preview */}
-            <div className="lg:col-span-5 bg-[#FAF8F3] text-[#2C2825] rounded-none p-6 border border-[#DCD5C9] shadow-md space-y-4">
+            <div className="lg:col-span-5 bg-[#FAF8F3] text-[#2C2825] rounded-2xl p-6 border border-[#DCD5C9] shadow-lift space-y-4">
               <div className="flex items-center space-x-2 text-xs font-serif font-bold text-[#8C5E3C] border-b border-[#DCD5C9] pb-3">
                 <Mail className="w-4 h-4 text-[#8C5E3C]" />
                 <span>LIVE INBOX PREVIEW (Recipient: Jane Doe)</span>
@@ -718,14 +718,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                 <p><strong className="text-[#8C5E3C] font-serif">Subject:</strong> {editSubject}</p>
               </div>
 
-              <div className="p-4 bg-white rounded-none border border-[#DCD5C9] text-xs text-[#2C2825] font-serif whitespace-pre-wrap leading-relaxed shadow-sm">
+              <div className="p-4 bg-white rounded-xl border border-[#DCD5C9] text-xs text-[#2C2825] font-serif whitespace-pre-wrap leading-relaxed shadow-soft">
                 {editBody.replace(/\{\{\s*name\s*\}\}/g, 'Jane Doe')}
               </div>
             </div>
           </div>
 
           {/* Delivery Logs Stream */}
-          <div className={`border rounded-none p-6 sm:p-8 space-y-4 shadow-sm ${
+          <div className={`border rounded-3xl p-6 sm:p-8 space-y-4 shadow-soft ${
             isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
           }`}>
             <h3 className="text-base font-serif font-bold text-[#8C5E3C] flex items-center space-x-2">
@@ -742,7 +742,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                   </div>
 
                   <div className="flex items-center space-x-3 text-[11px]">
-                    <span className="px-2 py-0.5 rounded-none bg-[#6B7A3D]/20 text-[#6B7A3D] font-bold">
+                    <span className="px-2 py-0.5 rounded-full bg-[#6B7A3D]/20 text-[#6B7A3D] font-bold">
                       {log.status.toUpperCase()}
                     </span>
                     <span className="text-[#786E65]">
@@ -758,7 +758,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
 
       {/* TAB 4: REAL-TIME EVENTS */}
       {activeTab === 'analytics' && (
-        <div className={`border rounded-none p-6 sm:p-8 space-y-4 shadow-sm ${
+        <div className={`border rounded-3xl p-6 sm:p-8 space-y-4 shadow-soft ${
           isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
         }`}>
           <h3 className="text-base font-serif font-bold text-[#8C5E3C] flex items-center space-x-2">
@@ -770,7 +770,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
             {events.map((evt) => (
               <div key={evt.id} className="py-3 flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <span className="px-2.5 py-1 rounded-none bg-[#8C5E3C]/15 border border-[#8C5E3C]/30 text-[#8C5E3C] font-bold">
+                  <span className="px-2.5 py-1 rounded-full bg-[#8C5E3C]/15 border border-[#8C5E3C]/30 text-[#8C5E3C] font-bold">
                     {evt.event_name}
                   </span>
                   <span className="text-[#786E65]">Page: /{evt.page}</span>
@@ -788,7 +788,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
       {/* Add Subscriber Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className={`border rounded-none p-6 max-w-md w-full space-y-4 text-xs shadow-xl ${
+          <div className={`border rounded-2xl p-6 max-w-md w-full space-y-4 text-xs shadow-lift ${
             isLight ? 'bg-[#FAF8F3] border-[#DCD5C9] text-[#2C2825]' : 'bg-[#131513] border-[#2C3325] text-[#F5F2EA]'
           }`}>
             <h3 className="text-base font-serif font-bold text-[#8C5E3C]">Add Subscriber to Waitlist</h3>
@@ -802,7 +802,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                   placeholder="Jane Doe"
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
-                  className={`w-full border rounded-none p-2.5 text-xs font-mono ${
+                  className={`w-full border rounded-xl p-2.5 text-xs font-mono ${
                     isLight ? 'bg-white border-[#DCD5C9] text-[#2C2825]' : 'bg-[#1A1D1A] border-[#2C3325] text-[#F5F2EA]'
                   }`}
                 />
@@ -816,7 +816,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                   placeholder="jane@example.com"
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
-                  className={`w-full border rounded-none p-2.5 text-xs font-mono ${
+                  className={`w-full border rounded-xl p-2.5 text-xs font-mono ${
                     isLight ? 'bg-white border-[#DCD5C9] text-[#2C2825]' : 'bg-[#1A1D1A] border-[#2C3325] text-[#F5F2EA]'
                   }`}
                 />
@@ -827,7 +827,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                 <select
                   value={newRole}
                   onChange={(e) => setNewRole(e.target.value)}
-                  className={`w-full border rounded-none p-2.5 text-xs font-mono ${
+                  className={`w-full border rounded-xl p-2.5 text-xs font-mono ${
                     isLight ? 'bg-white border-[#DCD5C9] text-[#2C2825]' : 'bg-[#1A1D1A] border-[#2C3325] text-[#F5F2EA]'
                   }`}
                 >
@@ -843,7 +843,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className={`px-4 py-2 rounded-none border text-xs font-serif uppercase tracking-wider font-bold ${
+                  className={`px-4 py-2 rounded-full border text-xs font-serif uppercase tracking-wider font-bold ${
                     isLight ? 'bg-[#EAE2D3] border-[#DCD5C9] text-[#2C2825]' : 'bg-[#1A1D1A] border-[#2C3325] text-[#A0A8B0]'
                   }`}
                 >
@@ -851,7 +851,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' })
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-none bg-[#6B7A3D] text-[#FAF8F3] font-serif uppercase tracking-wider font-bold text-xs shadow-sm"
+                  className="px-4 py-2 rounded-full bg-[#6B7A3D] text-[#FAF8F3] font-serif uppercase tracking-wider font-bold text-xs shadow-sm"
                 >
                   Add & Trigger Pipeline
                 </button>

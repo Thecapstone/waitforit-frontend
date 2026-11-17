@@ -74,7 +74,7 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({
     >
       {/* Hero */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-none bg-[#6B7A3D]/10 border border-[#6B7A3D]/30 text-[#6B7A3D] text-xs font-serif uppercase tracking-widest font-bold">
+        <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-[#6B7A3D]/10 border border-[#6B7A3D]/30 text-[#6B7A3D] text-xs font-serif uppercase tracking-widest font-bold">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Workflow Architecture</span>
         </div>
@@ -95,7 +95,7 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({
           return (
             <div
               key={item.step}
-              className={`border rounded-none p-6 sm:p-8 space-y-4 shadow-sm transition-all ${
+              className={`border rounded-3xl p-6 sm:p-8 space-y-4 shadow-soft transition-all ${
                 isLight
                   ? "bg-[#F2ECE1]/70 border-[#DCD5C9]"
                   : "bg-[#1A1D1A]/70 border-[#2C3325]"
@@ -108,7 +108,7 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({
               >
                 <div className="flex items-center space-x-4">
                   <div
-                    className="w-12 h-12 rounded-none flex items-center justify-center border flex-shrink-0"
+                    className="w-12 h-12 rounded-xl flex items-center justify-center border flex-shrink-0"
                     style={{
                       backgroundColor: `${item.color}15`,
                       borderColor: `${item.color}40`,
@@ -127,7 +127,7 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({
                   </div>
                 </div>
 
-                <span className="text-xs text-[#6B7A3D] font-serif font-semibold bg-[#6B7A3D]/10 px-3 py-1 rounded-none border border-[#6B7A3D]/30">
+                <span className="text-xs text-[#6B7A3D] font-serif font-semibold bg-[#6B7A3D]/10 px-3 py-1 rounded-full border border-[#6B7A3D]/30">
                   {item.subtitle}
                 </span>
               </div>
@@ -140,7 +140,7 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({
 
               {idx === 1 && (
                 <div
-                  className={`p-4 rounded-none border font-mono text-xs space-y-1 ${
+                  className={`shadow-soft p-4 rounded-xl border font-mono text-xs space-y-1 ${
                     isLight
                       ? "bg-[#212521] text-[#A8C898] border-[#323832]"
                       : "bg-[#0B0C0B] text-[#A8C898] border-[#2C3325]"
@@ -161,7 +161,7 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({
 
       {/* Closing CTA */}
       <div
-        className={`border rounded-none p-8 text-center space-y-6 ${
+        className={`shadow-soft border rounded-3xl p-8 text-center space-y-6 ${
           isLight
             ? "bg-[#F2ECE1] border-[#DCD5C9]"
             : "bg-[#111315] border-[#2C3325]"

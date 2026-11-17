@@ -102,13 +102,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         }`}
       >
         <div
-          className={`border rounded-none p-8 text-center space-y-5 shadow-sm ${
+          className={`border rounded-3xl p-8 text-center space-y-5 shadow-soft ${
             isLight
               ? "bg-[#F2ECE1]/80 border-[#DCD5C9]"
               : "bg-[#1A1D1A]/80 border-[#2C3325]"
           }`}
         >
-          <div className="w-14 h-14 rounded-none bg-[#6B7A3D]/15 text-[#6B7A3D] border border-[#6B7A3D]/30 mx-auto flex items-center justify-center">
+          <div className="w-14 h-14 rounded-xl bg-[#6B7A3D]/15 text-[#6B7A3D] border border-[#6B7A3D]/30 mx-auto flex items-center justify-center">
             <Check className="w-7 h-7" />
           </div>
           <div className="space-y-1">
@@ -123,7 +123,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 currentUser.role === "admin" ? "dashboard" : "profile",
               )
             }
-            className="px-5 py-2.5 rounded-none bg-[#6B7A3D] text-[#FAF8F3] text-xs font-serif uppercase tracking-wider font-bold border border-[#576431]"
+            className="px-5 py-2.5 rounded-full bg-[#6B7A3D] text-[#FAF8F3] text-xs font-serif uppercase tracking-wider font-bold border border-[#576431]"
           >
             Continue
           </button>
@@ -139,14 +139,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({
       }`}
     >
       <div
-        className={`border rounded-none p-8 space-y-6 shadow-sm ${
+        className={`border rounded-3xl p-8 space-y-6 shadow-soft ${
           isLight
             ? "bg-[#F2ECE1]/80 border-[#DCD5C9]"
             : "bg-[#1A1D1A]/80 border-[#2C3325]"
         }`}
       >
         <div className="space-y-2 text-center">
-          <div className="w-16 h-16 rounded-none bg-[#8C5E3C]/10 text-[#8C5E3C] border border-[#8C5E3C]/30 mx-auto flex items-center justify-center">
+          <div className="w-16 h-16 rounded-2xl bg-[#8C5E3C]/10 text-[#8C5E3C] border border-[#8C5E3C]/30 mx-auto flex items-center justify-center">
             {mode === "register" ? (
               <UserPlus className="w-8 h-8" />
             ) : (
@@ -177,7 +177,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               setMode("login");
               resetFeedback();
             }}
-            className={`py-2 border rounded-none ${mode === "login" ? "bg-[#6B7A3D] text-white border-[#576431]" : isLight ? "bg-white border-[#DCD5C9]" : "bg-[#131513] border-[#2C3325]"}`}
+            className={`py-2 border rounded-full ${mode === "login" ? "bg-[#6B7A3D] text-white border-[#576431]" : isLight ? "bg-white border-[#DCD5C9]" : "bg-[#131513] border-[#2C3325]"}`}
           >
             Login
           </button>
@@ -187,7 +187,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               setMode("register");
               resetFeedback();
             }}
-            className={`py-2 border rounded-none ${mode === "register" ? "bg-[#6B7A3D] text-white border-[#576431]" : isLight ? "bg-white border-[#DCD5C9]" : "bg-[#131513] border-[#2C3325]"}`}
+            className={`py-2 border rounded-full ${mode === "register" ? "bg-[#6B7A3D] text-white border-[#576431]" : isLight ? "bg-white border-[#DCD5C9]" : "bg-[#131513] border-[#2C3325]"}`}
           >
             Register
           </button>
@@ -198,7 +198,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 setMode("reset");
                 resetFeedback();
               }}
-              className="py-2 border rounded-none bg-transparent border-[#DCD5C9] text-[#8C5E3C]"
+              className="py-2 border rounded-full bg-transparent border-[#DCD5C9] text-[#8C5E3C]"
             >
               Reset
             </button>
@@ -206,14 +206,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         </div>
 
         {message && (
-          <div className="p-3.5 rounded-none bg-[#6B7A3D]/15 border border-[#6B7A3D]/30 text-[#6B7A3D] text-xs flex items-center space-x-2">
+          <div className="shadow-soft p-3.5 rounded-xl bg-[#6B7A3D]/15 border border-[#6B7A3D]/30 text-[#6B7A3D] text-xs flex items-center space-x-2">
             <Check className="w-4 h-4" />
             <span>{message}</span>
           </div>
         )}
 
         {error && (
-          <div className="p-3.5 rounded-none bg-red-950/20 border border-red-500/40 text-red-700 dark:text-red-300 text-xs flex items-center space-x-2">
+          <div className="shadow-soft p-3.5 rounded-xl bg-red-950/20 border border-red-500/40 text-red-700 dark:text-red-300 text-xs flex items-center space-x-2">
             <AlertCircle className="w-4 h-4" />
             <span>{error}</span>
           </div>
@@ -231,7 +231,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 required
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className={`w-full border rounded-none pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:border-[#6B7A3D] ${
+                className={`w-full border rounded-xl pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:border-[#6B7A3D] ${
                   isLight
                     ? "bg-white border-[#DCD5C9] text-[#1C1917]"
                     : "bg-[#131513] border-[#2C3325] text-white"
@@ -253,7 +253,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   minLength={8}
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
-                  className={`w-full border rounded-none pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:border-[#6B7A3D] ${
+                  className={`w-full border rounded-xl pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:border-[#6B7A3D] ${
                     isLight
                       ? "bg-white border-[#DCD5C9] text-[#1C1917]"
                       : "bg-[#131513] border-[#2C3325] text-white"
@@ -276,7 +276,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                   minLength={8}
                   value={confirmPassword}
                   onChange={(event) => setConfirmPassword(event.target.value)}
-                  className={`w-full border rounded-none pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:border-[#6B7A3D] ${
+                  className={`w-full border rounded-xl pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:border-[#6B7A3D] ${
                     isLight
                       ? "bg-white border-[#DCD5C9] text-[#1C1917]"
                       : "bg-[#131513] border-[#2C3325] text-white"
@@ -289,7 +289,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-none bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] text-xs font-serif uppercase tracking-widest font-bold border border-[#576431] shadow-md flex items-center justify-center space-x-2 disabled:opacity-60"
+            className="shadow-glow w-full py-3 rounded-full bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] text-xs font-serif uppercase tracking-widest font-bold border border-[#576431] flex items-center justify-center space-x-2 disabled:opacity-60"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
             {!loading && mode === "register" && (

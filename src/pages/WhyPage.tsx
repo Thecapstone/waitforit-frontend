@@ -18,7 +18,7 @@ export const WhyPage: React.FC<WhyPageProps> = ({ setCurrentPage, onOpenWaitlist
     }`}>
       {/* Hero */}
       <div className="space-y-4 text-center">
-        <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-none bg-[#8C5E3C]/10 border border-[#8C5E3C]/30 text-[#8C5E3C] text-xs font-serif uppercase tracking-widest font-bold">
+        <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-[#8C5E3C]/10 border border-[#8C5E3C]/30 text-[#8C5E3C] text-xs font-serif uppercase tracking-widest font-bold">
           <HeartHandshake className="w-3.5 h-3.5" />
           <span>The Founder's Story</span>
         </div>
@@ -33,7 +33,7 @@ export const WhyPage: React.FC<WhyPageProps> = ({ setCurrentPage, onOpenWaitlist
       </div>
 
       {/* Section One: Building */}
-      <div className={`border rounded-none p-8 sm:p-10 space-y-4 shadow-sm ${
+      <div className={`border rounded-3xl p-8 sm:p-10 space-y-4 shadow-soft ${
         isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
       }`}>
         <span className="text-xs font-serif font-bold uppercase tracking-widest text-[#6B7A3D]">
@@ -53,7 +53,7 @@ export const WhyPage: React.FC<WhyPageProps> = ({ setCurrentPage, onOpenWaitlist
       </div>
 
       {/* Section Two: The Realization */}
-      <div className={`border rounded-none p-8 sm:p-10 space-y-4 shadow-sm ${
+      <div className={`border rounded-3xl p-8 sm:p-10 space-y-4 shadow-soft ${
         isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
       }`}>
         <span className="text-xs font-serif font-bold uppercase tracking-widest text-[#8C5E3C]">
@@ -73,7 +73,7 @@ export const WhyPage: React.FC<WhyPageProps> = ({ setCurrentPage, onOpenWaitlist
       </div>
 
       {/* Section Three: Searching & The Big Quote */}
-      <div className={`border rounded-none p-8 sm:p-12 space-y-6 shadow-md relative overflow-hidden ${
+      <div className={`border rounded-3xl p-8 sm:p-12 space-y-6 shadow-lift relative overflow-hidden ${
         isLight ? 'bg-white border-[#8C5E3C]' : 'bg-[#111315] border-[#8C5E3C]'
       }`}>
         <Quote className="w-10 h-10 text-[#8C5E3C] opacity-40" />
@@ -93,7 +93,7 @@ export const WhyPage: React.FC<WhyPageProps> = ({ setCurrentPage, onOpenWaitlist
       </div>
 
       {/* Section Four: The Idea */}
-      <div className={`border rounded-none p-8 sm:p-10 space-y-4 shadow-sm ${
+      <div className={`border rounded-3xl p-8 sm:p-10 space-y-4 shadow-soft ${
         isLight ? 'bg-[#F2ECE1]/70 border-[#DCD5C9]' : 'bg-[#1A1D1A]/70 border-[#2C3325]'
       }`}>
         <span className="text-xs font-serif font-bold uppercase tracking-widest text-[#6B7A3D]">
@@ -113,7 +113,7 @@ export const WhyPage: React.FC<WhyPageProps> = ({ setCurrentPage, onOpenWaitlist
       </div>
 
       {/* Final CTA */}
-      <div className={`border rounded-none p-8 text-center space-y-6 ${
+      <div className={`shadow-soft border rounded-3xl p-8 text-center space-y-6 ${
         isLight ? 'bg-[#F2ECE1] border-[#DCD5C9]' : 'bg-[#111315] border-[#2C3325]'
       }`}>
         <h3 className="text-2xl font-serif font-bold text-[#8C5E3C]">Ready to preserve your engineering journey?</h3>

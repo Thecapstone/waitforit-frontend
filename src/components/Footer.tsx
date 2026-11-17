@@ -60,7 +60,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenWaitlist, 
               onClick={() => { setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className="flex items-center space-x-3 cursor-pointer group"
             >
-              <div className={`w-9 h-9 rounded-none border flex items-center justify-center transition-all ${
+              <div className={`w-9 h-9 rounded-xl border flex items-center justify-center transition-all ${
                 isLight ? 'bg-[#8C5E3C]/10 border-[#8C5E3C]/30 text-[#8C5E3C]' : 'bg-[#8C5E3C]/20 border-[#8C5E3C]/40 text-[#C49A6C]'
               }`}>
                 <Terminal className="w-4 h-4" />
@@ -84,7 +84,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenWaitlist, 
                 Stay updated as we build WaitForIt in public.
               </span>
               {subscribed ? (
-                <div className="flex items-center space-x-2 text-xs text-[#6B7A3D] bg-[#6B7A3D]/10 px-3.5 py-2.5 rounded-none border border-[#6B7A3D]/30 font-serif">
+                <div className="flex items-center space-x-2 text-xs text-[#6B7A3D] bg-[#6B7A3D]/10 px-3.5 py-2.5 rounded-xl border border-[#6B7A3D]/30 font-serif">
                   <Check className="w-4 h-4" />
                   <span>You're subscribed! Welcome to the loop.</span>
                 </div>
@@ -96,7 +96,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenWaitlist, 
                     placeholder="name@company.com"
                     value={newsletterEmail}
                     onChange={(e) => setNewsletterEmail(e.target.value)}
-                    className={`text-xs rounded-none px-3.5 py-2.5 focus:outline-none flex-grow border ${
+                    className={`text-xs rounded-xl px-3.5 py-2.5 focus:outline-none flex-grow border ${
                       isLight
                         ? 'bg-white border-[#DCD5C9] text-[#1C1917] placeholder-[#786E65] focus:border-[#6B7A3D]'
                         : 'bg-[#1A1D1A] border-[#2C3325] text-white placeholder-[#A0A8B0]/60 focus:border-[#6B7A3D]'
@@ -105,7 +105,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenWaitlist, 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] text-xs px-4 py-2.5 rounded-none font-serif uppercase tracking-wider font-semibold border border-[#576431] transition-colors flex items-center space-x-1"
+                    className="shadow-glow bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] text-xs px-4 py-2.5 rounded-full font-serif uppercase tracking-wider font-semibold border border-[#576431] transition-colors flex items-center space-x-1"
                   >
                     <span>Subscribe</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -172,7 +172,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenWaitlist, 
               </li>
               <li>
                 <span className="text-xs text-[#6B7A3D] flex items-center space-x-1.5">
-                  <span className="w-2 h-2 rounded-none bg-[#6B7A3D] animate-ping"></span>
+                  <span className="w-2 h-2 rounded-full bg-[#6B7A3D] animate-ping"></span>
                   <span>Status: Operational</span>
                 </span>
               </li>

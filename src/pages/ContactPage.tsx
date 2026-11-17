@@ -58,7 +58,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Contact Form */}
         <div
-          className={`lg:col-span-7 border rounded-none p-6 sm:p-8 space-y-4 shadow-sm ${
+          className={`lg:col-span-7 border rounded-3xl p-6 sm:p-8 space-y-4 shadow-soft ${
             isLight
               ? "bg-[#F2ECE1]/70 border-[#DCD5C9]"
               : "bg-[#1A1D1A]/70 border-[#2C3325]"
@@ -70,8 +70,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({
           </h2>
 
           {sent ? (
-            <div className="p-6 bg-[#6B7A3D]/10 border border-[#6B7A3D]/30 rounded-none text-center space-y-3">
-              <div className="w-12 h-12 rounded-none bg-[#6B7A3D]/20 text-[#6B7A3D] mx-auto flex items-center justify-center">
+            <div className="shadow-soft p-6 bg-[#6B7A3D]/10 border border-[#6B7A3D]/30 rounded-2xl text-center space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-[#6B7A3D]/20 text-[#6B7A3D] mx-auto flex items-center justify-center">
                 <Check className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-serif font-bold text-[#8C5E3C]">
@@ -93,7 +93,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   placeholder="Jane Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className={`w-full border rounded-none px-3.5 py-2.5 focus:outline-none focus:border-[#6B7A3D] ${
+                  className={`w-full border rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[#6B7A3D] ${
                     isLight
                       ? "bg-white border-[#DCD5C9] text-[#2C2825]"
                       : "bg-[#131513] border-[#2C3325] text-[#F5F2EA]"
@@ -111,7 +111,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   placeholder="jane@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`w-full border rounded-none px-3.5 py-2.5 focus:outline-none focus:border-[#6B7A3D] ${
+                  className={`w-full border rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[#6B7A3D] ${
                     isLight
                       ? "bg-white border-[#DCD5C9] text-[#2C2825]"
                       : "bg-[#131513] border-[#2C3325] text-[#F5F2EA]"
@@ -128,7 +128,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   placeholder="Private beta query / Partnership"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className={`w-full border rounded-none px-3.5 py-2.5 focus:outline-none focus:border-[#6B7A3D] ${
+                  className={`w-full border rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[#6B7A3D] ${
                     isLight
                       ? "bg-white border-[#DCD5C9] text-[#2C2825]"
                       : "bg-[#131513] border-[#2C3325] text-[#F5F2EA]"
@@ -146,7 +146,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   placeholder="Tell us about your team or project..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className={`w-full border rounded-none px-3.5 py-2.5 focus:outline-none focus:border-[#6B7A3D] ${
+                  className={`w-full border rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[#6B7A3D] ${
                     isLight
                       ? "bg-white border-[#DCD5C9] text-[#2C2825]"
                       : "bg-[#131513] border-[#2C3325] text-[#F5F2EA]"
@@ -156,7 +156,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-none bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] font-serif font-bold uppercase tracking-wider transition-colors flex items-center justify-center space-x-2 text-xs shadow-sm"
+                className="shadow-glow w-full py-3 rounded-full bg-[#6B7A3D] hover:bg-[#576431] text-[#FAF8F3] font-serif font-bold uppercase tracking-wider transition-colors flex items-center justify-center space-x-2 text-xs"
               >
                 <span>Send Message</span>
                 <Send className="w-4 h-4" />
@@ -168,7 +168,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
         {/* Community & Social Links */}
         <div className="lg:col-span-5 space-y-6">
           <div
-            className={`border rounded-none p-6 space-y-4 shadow-sm ${
+            className={`border rounded-2xl p-6 space-y-4 shadow-soft ${
               isLight
                 ? "bg-[#F2ECE1]/70 border-[#DCD5C9]"
                 : "bg-[#1A1D1A]/70 border-[#2C3325]"
@@ -186,7 +186,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 href="https://www.linkedin.com/in/thecapstone-mogbolu-81a5bb201/"
                 target="_blank"
                 rel="noreferrer"
-                className={`flex items-center space-x-3 p-3 rounded-none border transition-colors ${
+                className={`shadow-soft hover:shadow-lift hover:-translate-y-0.5 flex items-center space-x-3 p-3 rounded-xl border transition-colors ${
                   isLight
                     ? "bg-white border-[#DCD5C9] text-[#2C2825] hover:bg-[#FAF8F3]"
                     : "bg-[#131513] border-[#2C3325] text-[#F5F2EA] hover:bg-[#1C201C]"
@@ -205,7 +205,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 href="https://github.com/Thecapstone"
                 target="_blank"
                 rel="noreferrer"
-                className={`flex items-center space-x-3 p-3 rounded-none border transition-colors ${
+                className={`shadow-soft hover:shadow-lift hover:-translate-y-0.5 flex items-center space-x-3 p-3 rounded-xl border transition-colors ${
                   isLight
                     ? "bg-white border-[#DCD5C9] text-[#2C2825] hover:bg-[#FAF8F3]"
                     : "bg-[#131513] border-[#2C3325] text-[#F5F2EA] hover:bg-[#1C201C]"
@@ -226,7 +226,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 href="https://twitter.com/octahaven22"
                 target="_blank"
                 rel="noreferrer"
-                className={`flex items-center space-x-3 p-3 rounded-none border transition-colors ${
+                className={`shadow-soft hover:shadow-lift hover:-translate-y-0.5 flex items-center space-x-3 p-3 rounded-xl border transition-colors ${
                   isLight
                     ? "bg-white border-[#DCD5C9] text-[#2C2825] hover:bg-[#FAF8F3]"
                     : "bg-[#131513] border-[#2C3325] text-[#F5F2EA] hover:bg-[#1C201C]"
@@ -264,7 +264,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             return (
               <div
                 key={idx}
-                className={`border rounded-none overflow-hidden transition-all ${
+                className={`border rounded-xl overflow-hidden transition-all ${
                   isLight
                     ? "bg-white border-[#DCD5C9]"
                     : "bg-[#1A1D1A] border-[#2C3325]"
