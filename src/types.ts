@@ -53,6 +53,10 @@ export interface ArticleRecord {
   id: string;
   capsule: string;
   author_id?: string;
+  /** Present on public-feed articles (GET /api/articles/public/). */
+  capsule_title?: string;
+  author_name?: string;
+  tag?: string;
   title: string;
   body?: string;
   content?: string;
@@ -184,4 +188,6 @@ export interface BlogPost {
   readTime: string;
   tags: string[];
   content: string;
+  /** True for real articles generated from a public capsule. */
+  community?: boolean;
 }

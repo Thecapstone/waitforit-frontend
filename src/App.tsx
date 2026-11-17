@@ -24,7 +24,9 @@ import { AccountPages } from "./pages/AccountPages";
 import { getCurrentUser, logoutUser, trackAnalyticsEvent } from "./lib/api";
 
 export default function App() {
-  const paymentReturn = new URLSearchParams(window.location.search).has("payment");
+  const paymentReturn = new URLSearchParams(window.location.search).has(
+    "payment",
+  );
   const initialPage =
     window.location.pathname === "/terminal/authorize"
       ? "terminal-authorize"
@@ -49,7 +51,12 @@ export default function App() {
   const isLight = theme === "light";
 
   useEffect(() => {
-    window.localStorage.setItem("wfi_theme", theme);
+    try {
+      window.localStorage.setItem("wfi_theme", theme);
+    } catch {
+      /* storage unavailable (private mode); theme still applies this session */
+    }
+    document.documentElement.dataset.theme = theme;
   }, [theme]);
 
   const handleToggleTheme = () => {
@@ -99,8 +106,8 @@ export default function App() {
     <div
       className={`min-h-screen font-sans flex flex-col justify-between transition-colors duration-300 ${
         isLight
-          ? "bg-[#FAF8F3]/95 text-[#2C2825] selection:bg-[#8C5E3C] selection:text-white"
-          : "bg-[#131513] text-[#F5F2EA] selection:bg-[#6B7A3D] selection:text-white"
+          ? "text-[#2C2825] selection:bg-[#8C5E3C] selection:text-white"
+          : "text-[#F5F2EA] selection:bg-[#6B7A3D] selection:text-white"
       }`}
     >
       {/* Sticky Top Header */}
@@ -121,8 +128,9 @@ export default function App() {
           <HomePage
             setCurrentPage={setCurrentPage}
             onOpenWaitlist={() => handleOpenWaitlist("home_hero")}
-            onOpenArticle={() => handleOpenArticle()}
+            onOpenArticle={handleOpenArticle}
             theme={theme}
+            currentUser={currentUser}
           />
         )}
 
@@ -171,6 +179,7 @@ export default function App() {
             setCurrentPage={setCurrentPage}
             onOpenArticle={handleOpenArticle}
             theme={theme}
+            currentUser={currentUser}
           />
         )}
 
@@ -219,7 +228,11 @@ export default function App() {
         {currentPage === "dashboard" &&
           currentUser &&
           currentUser.role !== "admin" && (
-            <UserDashboardPage currentUser={currentUser} theme={theme} />
+            <UserDashboardPage
+              currentUser={currentUser}
+              theme={theme}
+              setCurrentPage={setCurrentPage}
+            />
           )}
 
         {currentPage === "dashboard" && !currentUser && (
@@ -242,8 +255,7 @@ export default function App() {
           "article-detail",
           "settings",
         ].includes(currentPage) &&
-          currentUser &&
-          (
+          currentUser && (
             <AccountPages
               page={currentPage}
               currentUser={currentUser}

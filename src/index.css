@@ -1,8 +1,63 @@
 @import "tailwindcss";
 
+/* `dark:` follows the in-app theme toggle (App sets data-theme on <html>),
+   not the OS preference. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Depth tokens: shadow-soft (resting surfaces), shadow-lift (hover / emphasis),
+   shadow-glow (primary olive buttons). Values switch per theme below. */
+@theme {
+  --shadow-soft: var(--wfi-shadow-soft);
+  --shadow-lift: var(--wfi-shadow-lift);
+  --shadow-glow: var(--wfi-shadow-glow);
+}
+
+:root {
+  --wfi-shadow-soft:
+    0 1px 2px rgb(74 52 30 / 0.05),
+    0 6px 16px -6px rgb(74 52 30 / 0.1),
+    0 18px 40px -20px rgb(74 52 30 / 0.16);
+  --wfi-shadow-lift:
+    0 2px 4px rgb(74 52 30 / 0.06),
+    0 14px 30px -10px rgb(74 52 30 / 0.18),
+    0 34px 64px -28px rgb(74 52 30 / 0.24);
+  --wfi-shadow-glow:
+    0 1px 0 rgb(255 255 255 / 0.18) inset,
+    0 8px 20px -8px rgb(107 122 61 / 0.6);
+  --wfi-bg: #faf8f3;
+  --wfi-wash-1: rgb(140 94 60 / 0.09);
+  --wfi-wash-2: rgb(107 122 61 / 0.08);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --wfi-shadow-soft:
+    0 1px 0 rgb(255 255 255 / 0.04) inset,
+    0 1px 2px rgb(0 0 0 / 0.35),
+    0 10px 28px -10px rgb(0 0 0 / 0.55);
+  --wfi-shadow-lift:
+    0 1px 0 rgb(255 255 255 / 0.06) inset,
+    0 2px 4px rgb(0 0 0 / 0.4),
+    0 22px 48px -16px rgb(0 0 0 / 0.7);
+  --wfi-shadow-glow:
+    0 1px 0 rgb(255 255 255 / 0.12) inset,
+    0 8px 22px -8px rgb(143 175 154 / 0.35);
+  --wfi-bg: #131513;
+  --wfi-wash-1: rgb(140 94 60 / 0.1);
+  --wfi-wash-2: rgb(107 122 61 / 0.09);
+  color-scheme: dark;
+}
+
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--wfi-bg);
+    /* Faint warm light pooling at the top corners, like paper under a lamp. */
+    background-image:
+      radial-gradient(1100px 620px at 8% -8%, var(--wfi-wash-1), transparent 62%),
+      radial-gradient(900px 560px at 100% 4%, var(--wfi-wash-2), transparent 60%);
+    background-attachment: fixed;
+    transition: background-color 300ms ease;
   }
   h1, h2, h3, h4, h5, h6, .font-serif, .serif-heading {
     font-family: 'Lora', Georgia, serif;
@@ -10,20 +65,26 @@
   code, pre, .font-mono {
     font-family: 'JetBrains Mono', monospace;
   }
+  :focus-visible {
+    outline: 2px solid #6b7a3d;
+    outline-offset: 2px;
+    border-radius: 0.75rem;
+  }
 }
 
-/* Custom scrollbar & Gucci Osteria aesthetic details */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background: rgba(107, 122, 61, 0.3);
-  border-radius: 0px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(107, 122, 61, 0.6);
+  background-clip: padding-box;
 }
-
