@@ -326,6 +326,15 @@ export async function listArticles(): Promise<ArticleRecord[]> {
   return payload.results || payload.data || [];
 }
 
+/** Articles from every public capsule. Requires a signed-in user. */
+export async function listPublicArticles(): Promise<ArticleRecord[]> {
+  const payload = await apiRequest<
+    ArticleRecord[] | { results?: ArticleRecord[]; data?: ArticleRecord[] }
+  >("/api/articles/public/");
+  if (Array.isArray(payload)) return payload;
+  return payload.results || payload.data || [];
+}
+
 export async function createArticle(
   capsuleId: string,
   prompt = "",
