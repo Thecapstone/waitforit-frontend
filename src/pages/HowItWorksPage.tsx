@@ -8,6 +8,12 @@ import {
   Cpu,
   BookOpen,
   Sparkles,
+  Download,
+  Search,
+  Image as ImageIcon,
+  Globe,
+  PenLine,
+  Lock,
 } from "lucide-react";
 
 interface HowItWorksProps {
@@ -16,53 +22,232 @@ interface HowItWorksProps {
   theme?: Theme;
 }
 
-export const HowItWorksPage: React.FC<HowItWorksProps> = ({
-  setCurrentPage,
-  onOpenWaitlist,
-  theme = "light",
-}) => {
-  const isLight = theme === "light";
+/** One line in a terminal block: a command, its output, or a comment. */
+type Line = { cmd?: string; out?: string; note?: string };
 
-  const steps = [
+const TerminalBlock: React.FC<{ lines: Line[]; isLight: boolean }> = ({
+  lines,
+  isLight,
+}) => (
+  <div
+    className={`shadow-soft p-4 rounded-xl border font-mono text-xs space-y-1 overflow-x-auto ${
+      isLight
+        ? "bg-[#212521] text-[#A8C898] border-[#323832]"
+        : "bg-[#0B0C0B] text-[#A8C898] border-[#2C3325]"
+    }`}
+  >
+    {lines.map((line, i) => (
+      <p key={i} className="whitespace-pre">
+        {line.note && <span className="text-[#786E65]"># {line.note}</span>}
+        {line.cmd && <span className="text-[#C49A6C]">$ {line.cmd}</span>}
+        {line.out && <span className="text-[#E0E5DF]">{line.out}</span>}
+      </p>
+    ))}
+  </div>
+);
+
+export const HowItWorksPage: React.FC<HowItWorksProps> = ({ theme = "light" }) => {
+  const isLight = theme === "light";
+  const body = isLight ? "text-[#4A423A]" : "text-[#A0A8B0]";
+  const card = `border rounded-3xl p-6 sm:p-8 space-y-4 shadow-soft transition-all ${
+    isLight ? "bg-[#F2ECE1]/70 border-[#DCD5C9]" : "bg-[#1A1D1A]/70 border-[#2C3325]"
+  }`;
+  const divider = isLight ? "border-[#DCD5C9]" : "border-[#2C3325]";
+  const code = "font-mono text-[#6B7A3D]";
+
+  const steps: {
+    step: string;
+    title: string;
+    subtitle: string;
+    icon: React.ElementType;
+    color: string;
+    desc: React.ReactNode;
+    terminal?: Line[];
+  }[] = [
     {
       step: "01",
-      title: "Create a Capsule",
-      subtitle: "Every project begins with a capsule.",
-      icon: FolderPlus,
+      title: "Install and Sign In",
+      subtitle: "One package, one command: wfi.",
+      icon: Download,
       color: "#8C5E3C",
-      desc: "A capsule is a dedicated space for everything related to a single software project—its logs, generated articles, supporting media, and engineering history. Whether building an API, library, or microservice, each project has its own timeline.",
+      desc: (
+        <>
+          WaitForIt ships as a Python package (Python 3.12+). Install it with{" "}
+          <code className={code}>pip</code> (or <code className={code}>pipx</code>{" "}
+          to keep it isolated). <code className={code}>wfi login</code> prints a
+          short code: approve it on this site while signed in, and the terminal
+          is connected. Signing in from the terminal never signs you out of the
+          website.
+        </>
+      ),
+      terminal: [
+        { cmd: "pip install waitforit-tech" },
+        { cmd: "wfi version" },
+        { out: "WaitForIt CLI v0.1.3" },
+        { cmd: "wfi --help" },
+        { note: "lists every command; wfi <command> --help shows its options" },
+        { cmd: "wfi init" },
+        { cmd: "wfi login" },
+        { out: "Open this URL in your browser and approve the terminal login:" },
+        { out: "Code: ABC-123" },
+        { out: "Signed in as you@example.com" },
+        { cmd: "wfi whoami" },
+      ],
     },
     {
       step: "02",
-      title: "Log While You Build",
-      subtitle: "Write logs directly from your terminal.",
-      icon: Terminal,
+      title: "Create a Capsule",
+      subtitle: "Every project begins with a capsule.",
+      icon: FolderPlus,
       color: "#6B7A3D",
-      desc: "Instead of opening a documentation tool, simply run `$ wfi log` whenever you solve a problem or make an architectural decision. Logs are lightweight by design and capture thoughts while fresh.",
+      desc: (
+        <>
+          A capsule is the home for one project: its logs, generated articles,
+          media, and engineering history. Capsules are private by default; add{" "}
+          <code className={code}>--public</code> to share its articles on the
+          Blog. The capsule's timezone decides when "your day" ends, which is
+          when its logs are turned into articles. It defaults to your system
+          timezone. Set the active capsule once and every log goes there.
+        </>
+      ),
+      terminal: [
+        {
+          cmd: 'wfi create-capsule -t "Payments API" -d "Billing service rebuild"',
+        },
+        { out: "Created capsule: Payments API (b10d253a2f)" },
+        { note: "optional: --public  --timezone Africa/Lagos  --maturity-date 2027-01-01T00:00:00Z" },
+        { cmd: "wfi capsules" },
+        { cmd: 'wfi set-capsule "Payments API"' },
+        { cmd: "wfi check-capsule" },
+        { out: "Payments API: b10d253a2f" },
+      ],
     },
     {
       step: "03",
+      title: "Log While You Build",
+      subtitle: "Write logs directly from your terminal.",
+      icon: Terminal,
+      color: "#8C5E3C",
+      desc: (
+        <>
+          Whenever you solve a problem or make a decision, run{" "}
+          <code className={code}>wfi log</code>. WaitForIt detects your
+          project's language and framework automatically. Write a few real
+          sentences: articles are only generated from logs with enough recorded
+          detail, and they never invent facts that are not in your logs.
+        </>
+      ),
+      terminal: [
+        {
+          cmd: 'wfi log -t "Redis Streams" -m "Replaced polling with Redis Streams; consumer groups fixed ordering under load."',
+        },
+        { out: "Successfully created log 9de3b432b8 🪵📝" },
+        { note: "log into a different capsule without switching" },
+        { cmd: 'wfi log -t "Hotfix" -m "..." -c 777ee740fa' },
+      ],
+    },
+    {
+      step: "04",
+      title: "Attach Screenshots or Recordings",
+      subtitle: "Optional media, from a path or a file picker.",
+      icon: ImageIcon,
+      color: "#6B7A3D",
+      desc: (
+        <>
+          Attach one image or one video to a log. Pass a path with{" "}
+          <code className={code}>--image</code> /{" "}
+          <code className={code}>--video</code>, or add{" "}
+          <code className={code}>--gui</code> (<code className={code}>-g</code>)
+          to choose a file in your system's file picker. Images: png, jpg, gif,
+          webp, bmp. Videos: mp4, mov, avi, mkv, webm. Up to 100 MB. The picker
+          is never required, and on a headless server you can turn it off with{" "}
+          <code className={code}>WAITFORIT_NO_GUI=1</code>.
+        </>
+      ),
+      terminal: [
+        { cmd: 'wfi log -t "Latency graph" -m "p99 after the fix" --image ./p99.png' },
+        { cmd: 'wfi log -t "Demo" -m "New checkout flow" --video ./demo.mp4' },
+        { cmd: 'wfi log -t "Dashboard" -m "Before/after" --gui' },
+      ],
+    },
+    {
+      step: "05",
       title: "Keep Coding",
       subtitle: "Zero workflow friction.",
       icon: Code2,
       color: "#8C5E3C",
-      desc: "After saving your log, continue building. No additional forms, no context switching, and no interruptions. WaitForIt quietly collects related logs over time.",
+      desc: "After saving a log, keep building. No forms, no context switching. WaitForIt collects related logs in the background.",
     },
     {
-      step: "04",
+      step: "06",
       title: "AI Builds the Bigger Picture",
-      subtitle: "Smart context grouping into complete technical articles.",
+      subtitle: "Logs grouped into complete technical articles.",
       icon: Cpu,
       color: "#6B7A3D",
-      desc: "Rather than generating an article for every individual log, WaitForIt intelligently groups related engineering entries over time into a single, cohesive narrative written in your voice.",
+      desc: "Once a day has fully ended in your capsule's timezone, WaitForIt groups that day's unused logs into a single article instead of one article per log. Thin days are merged with the following days until there is enough material. Each log is used in one article only. By default, in shared capsules each contributor's logs become their own articles.",
     },
     {
-      step: "05",
-      title: "Build a Searchable Engineering Journal",
-      subtitle: "Knowledge grows alongside your software.",
-      icon: BookOpen,
+      step: "07",
+      title: "Search Your Engineering Journal",
+      subtitle: "Find the reasoning, not just the code.",
+      icon: Search,
       color: "#8C5E3C",
-      desc: "Every generated article becomes part of your personal engineering knowledge base. Months later, revisit not just the code, but the reasoning and lessons behind it.",
+      desc: (
+        <>
+          Every log stays searchable from the terminal across all capsules you
+          can access. Narrow the search to one capsule (by title or id) or to
+          logs whose title matches.
+        </>
+      ),
+      terminal: [
+        { cmd: 'wfi search "redis"' },
+        { out: "Payments API / Redis Streams  (9de3b432b8)" },
+        { cmd: 'wfi search "timeout" -c "Payments API" -t "hotfix"' },
+      ],
+    },
+  ];
+
+  const display = [
+    {
+      icon: BookOpen,
+      title: "Your Articles page",
+      desc: "Every article from capsules you own or belong to, newest first, as cards you can open to read in full: a title, the article body, and a closing conclusion. Each capsule's page shows its full log timeline alongside.",
+    },
+    {
+      icon: PenLine,
+      title: "Editable by the capsule owner",
+      desc: "The capsule creator can edit an article's title, body, and conclusion directly. Edits are saved as the final version.",
+    },
+    {
+      icon: Globe,
+      title: "Public capsules on the Blog",
+      desc: "Articles from public capsules also appear on the Blog for signed-in readers, credited to the author.",
+    },
+    {
+      icon: Lock,
+      title: "Private stays private",
+      desc: "Articles from private capsules are only visible to that capsule's creator, members, and contributors. Capsules can also be sealed until a maturity date.",
+    },
+  ];
+
+  const compare = [
+    {
+      label: "Terminal (wfi)",
+      items: [
+        "Create, list, and switch capsules",
+        "Record logs with optional image or video",
+        "Search logs across capsules",
+        "Articles are generated automatically each day",
+      ],
+    },
+    {
+      label: "Website",
+      items: [
+        "Generate an article on demand from a capsule's unused logs",
+        "Style or focus instructions (up to 5,000 characters), for example \"postmortem structure, explain trade-offs\"",
+        "A sample article (up to 12,000 characters) whose tone and structure guide the writing; its facts are never used",
+        "Read, edit, and share articles; manage capsule members",
+      ],
     },
   ];
 
@@ -78,33 +263,28 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({
           <Sparkles className="w-3.5 h-3.5" />
           <span>Workflow Architecture</span>
         </div>
-
         <h1 className="text-4xl sm:text-5xl font-serif font-extrabold text-[#8C5E3C] tracking-tight">
           Built around the way developers already work.
         </h1>
-
         <p className="text-base text-[#786E65] max-w-xl mx-auto">
           WaitForIt doesn't replace your workflow. It quietly fits inside it.
         </p>
+        <div className="max-w-sm mx-auto text-left">
+          <TerminalBlock
+            isLight={isLight}
+            lines={[{ cmd: "pip install waitforit-tech" }, { cmd: "wfi --help" }]}
+          />
+        </div>
       </div>
 
-      {/* Steps Timeline */}
-      <div className="space-y-10 relative">
-        {steps.map((item, idx) => {
+      {/* Steps */}
+      <div className="space-y-10">
+        {steps.map((item) => {
           const Icon = item.icon;
           return (
-            <div
-              key={item.step}
-              className={`border rounded-3xl p-6 sm:p-8 space-y-4 shadow-soft transition-all ${
-                isLight
-                  ? "bg-[#F2ECE1]/70 border-[#DCD5C9]"
-                  : "bg-[#1A1D1A]/70 border-[#2C3325]"
-              }`}
-            >
+            <div key={item.step} className={card}>
               <div
-                className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b pb-4 ${
-                  isLight ? "border-[#DCD5C9]" : "border-[#2C3325]"
-                }`}
+                className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b pb-4 ${divider}`}
               >
                 <div className="flex items-center space-x-4">
                   <div
@@ -126,45 +306,74 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({
                     </h2>
                   </div>
                 </div>
-
                 <span className="text-xs text-[#6B7A3D] font-serif font-semibold bg-[#6B7A3D]/10 px-3 py-1 rounded-full border border-[#6B7A3D]/30">
                   {item.subtitle}
                 </span>
               </div>
-
-              <p
-                className={`text-sm leading-relaxed ${isLight ? "text-[#4A423A]" : "text-[#A0A8B0]"}`}
-              >
-                {item.desc}
-              </p>
-
-              {idx === 1 && (
-                <div
-                  className={`shadow-soft p-4 rounded-xl border font-mono text-xs space-y-1 ${
-                    isLight
-                      ? "bg-[#212521] text-[#A8C898] border-[#323832]"
-                      : "bg-[#0B0C0B] text-[#A8C898] border-[#2C3325]"
-                  }`}
-                >
-                  <p className="text-[#C49A6C]">$ wfi log</p>
-                  <p className="text-[#E0E5DF]">
-                    Replaced polling with Redis Streams. Improved ordering
-                    guarantees under load.
-                  </p>
-                  <p className="text-[#A8C898]">✓ Log recorded instantly.</p>
-                </div>
+              <p className={`text-sm leading-relaxed ${body}`}>{item.desc}</p>
+              {item.terminal && (
+                <TerminalBlock isLight={isLight} lines={item.terminal} />
               )}
             </div>
           );
         })}
       </div>
 
+      {/* How articles are displayed */}
+      <section className="space-y-6">
+        <div className="space-y-2 text-center">
+          <h2 className="text-3xl font-serif font-extrabold text-[#8C5E3C]">
+            How articles are displayed
+          </h2>
+          <p className="text-sm text-[#786E65] max-w-xl mx-auto">
+            Generated articles live on the website, next to the logs they came from.
+          </p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {display.map(({ icon: Icon, title, desc }) => (
+            <div key={title} className={`${card} !space-y-2 !p-6`}>
+              <div className="flex items-center gap-2 text-[#6B7A3D]">
+                <Icon className="w-5 h-5" />
+                <h3 className="font-serif font-bold text-[#8C5E3C]">{title}</h3>
+              </div>
+              <p className={`text-sm leading-relaxed ${body}`}>{desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Terminal vs website */}
+      <section className="space-y-6">
+        <div className="space-y-2 text-center">
+          <h2 className="text-3xl font-serif font-extrabold text-[#8C5E3C]">
+            Terminal or website?
+          </h2>
+          <p className="text-sm text-[#786E65] max-w-xl mx-auto">
+            Capture in the terminal. Shape the writing on the website, where you
+            can guide each article's style, and add a sample article to match.
+          </p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {compare.map(({ label, items }) => (
+            <div key={label} className={`${card} !p-6`}>
+              <h3 className="font-serif font-bold text-[#8C5E3C]">{label}</h3>
+              <ul className={`text-sm leading-relaxed list-disc pl-5 space-y-1 ${body}`}>
+                {items.map((text) => (
+                  <li key={text}>{text}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-center text-[#786E65]">
+          On-demand generation from the website requires an active subscription.
+        </p>
+      </section>
+
       {/* Closing CTA */}
       <div
         className={`shadow-soft border rounded-3xl p-8 text-center space-y-6 ${
-          isLight
-            ? "bg-[#F2ECE1] border-[#DCD5C9]"
-            : "bg-[#111315] border-[#2C3325]"
+          isLight ? "bg-[#F2ECE1] border-[#DCD5C9]" : "bg-[#111315] border-[#2C3325]"
         }`}
       >
         <h3 className="text-2xl font-serif font-bold text-[#8C5E3C]">

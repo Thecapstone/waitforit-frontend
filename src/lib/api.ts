@@ -21,25 +21,70 @@ function buildApiUrl(path: string): string {
   return `${baseUrl}${apiPath}`;
 }
 
+/** Fired when the session can no longer be renewed; App signs the user out. */
+export const SESSION_EXPIRED_EVENT = "wfi:session-expired";
+
+// Endpoints that must never trigger a token rotation retry.
+const NO_REFRESH_PATHS = [
+  "/api/auth/login/",
+  "/api/auth/logout/",
+  "/api/auth/rotate-access-token/",
+];
+
+let rotation: Promise<boolean> | null = null;
+
+/**
+ * Exchange the session (refresh) cookie for a fresh access-token cookie.
+ * Concurrent 401s share one rotation request.
+ */
+function rotateAccessToken(): Promise<boolean> {
+  if (!rotation) {
+    rotation = fetch(buildApiUrl("/api/auth/rotate-access-token/"), {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((response) => response.ok)
+      .catch(() => false)
+      .finally(() => {
+        rotation = null;
+      });
+  }
+  return rotation;
+}
+
 async function apiRequest<T>(
   path: string,
   options: { method?: HttpMethod; body?: unknown; headers?: HeadersInit } = {},
 ): Promise<T> {
-  const response = await fetch(buildApiUrl(path), {
-    method: options.method || "GET",
-    credentials: "include",
-    headers: {
-      ...(options.body instanceof FormData
-        ? {}
-        : { "Content-Type": "application/json" }),
-      ...options.headers,
-    },
-    body: options.body
-      ? options.body instanceof FormData
-        ? options.body
-        : JSON.stringify(options.body)
-      : undefined,
-  });
+  const send = () =>
+    fetch(buildApiUrl(path), {
+      method: options.method || "GET",
+      credentials: "include",
+      headers: {
+        ...(options.body instanceof FormData
+          ? {}
+          : { "Content-Type": "application/json" }),
+        ...options.headers,
+      },
+      body: options.body
+        ? options.body instanceof FormData
+          ? options.body
+          : JSON.stringify(options.body)
+        : undefined,
+    });
+
+  let response = await send();
+
+  // The access token is short-lived; renew it from the session cookie once
+  // and retry. If the session itself is gone, sign the user out locally.
+  const canRefresh = !NO_REFRESH_PATHS.some((p) => path.startsWith(p));
+  if (response.status === 401 && canRefresh) {
+    if (await rotateAccessToken()) {
+      response = await send();
+    } else {
+      window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT));
+    }
+  }
 
   if (response.status === 204) {
     return undefined as T;

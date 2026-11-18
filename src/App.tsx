@@ -21,7 +21,12 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { UserDashboardPage } from "./pages/UserDashboardPage";
 import { TerminalAuthorizePage } from "./pages/TerminalAuthorizePage";
 import { AccountPages } from "./pages/AccountPages";
-import { getCurrentUser, logoutUser, trackAnalyticsEvent } from "./lib/api";
+import {
+  SESSION_EXPIRED_EVENT,
+  getCurrentUser,
+  logoutUser,
+  trackAnalyticsEvent,
+} from "./lib/api";
 
 export default function App() {
   const paymentReturn = new URLSearchParams(window.location.search).has(
@@ -81,6 +86,14 @@ export default function App() {
         }
       })
       .finally(() => setAuthLoading(false));
+  }, []);
+
+  // The server session ended (logged out elsewhere, expired, or revoked):
+  // drop the local user so the UI stops showing "You are signed in."
+  useEffect(() => {
+    const onExpired = () => setCurrentUser(null);
+    window.addEventListener(SESSION_EXPIRED_EVENT, onExpired);
+    return () => window.removeEventListener(SESSION_EXPIRED_EVENT, onExpired);
   }, []);
 
   const handleOpenWaitlist = (source: string = "header") => {
