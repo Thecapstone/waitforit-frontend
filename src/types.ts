@@ -167,6 +167,7 @@ export type PageView =
   | "login"
   | "integration-guide"
   | "terminal-authorize"
+  | "verify-email"
   | "dashboard"
   | "profile"
   | "capsules"

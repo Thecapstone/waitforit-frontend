@@ -20,6 +20,7 @@ import { IntegrationGuidePage } from "./pages/IntegrationGuidePage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { UserDashboardPage } from "./pages/UserDashboardPage";
 import { TerminalAuthorizePage } from "./pages/TerminalAuthorizePage";
+import { VerifyEmailPage } from "./pages/VerifyEmailPage";
 import { AccountPages } from "./pages/AccountPages";
 import {
   SESSION_EXPIRED_EVENT,
@@ -35,7 +36,9 @@ export default function App() {
   const initialPage =
     window.location.pathname === "/terminal/authorize"
       ? "terminal-authorize"
-      : paymentReturn
+      : window.location.pathname === "/verify-email"
+        ? "verify-email"
+        : paymentReturn
         ? "settings"
         : "home";
   const [currentPage, setCurrentPage] = useState<PageView>(initialPage);
@@ -232,6 +235,10 @@ export default function App() {
             setCurrentPage={setCurrentPage}
             theme={theme}
           />
+        )}
+
+        {currentPage === "verify-email" && (
+          <VerifyEmailPage setCurrentPage={setCurrentPage} theme={theme} />
         )}
 
         {currentPage === "dashboard" && currentUser?.role === "admin" && (
