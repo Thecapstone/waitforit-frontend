@@ -22,6 +22,7 @@ import { UserDashboardPage } from "./pages/UserDashboardPage";
 import { TerminalAuthorizePage } from "./pages/TerminalAuthorizePage";
 import { VerifyEmailPage } from "./pages/VerifyEmailPage";
 import { AccountPages } from "./pages/AccountPages";
+import { BunnyCompanions } from "./components/BunnyCompanions";
 import {
   SESSION_EXPIRED_EVENT,
   getCurrentUser,
@@ -137,6 +138,8 @@ export default function App() {
         authLoading={authLoading}
         onLogout={handleLogout}
       />
+
+      <BunnyCompanions theme={theme} />
 
       {/* Main Active Page View */}
       <main className="flex-grow">
