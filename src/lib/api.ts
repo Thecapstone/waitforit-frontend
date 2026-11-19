@@ -29,6 +29,8 @@ const NO_REFRESH_PATHS = [
   "/api/auth/login/",
   "/api/auth/logout/",
   "/api/auth/rotate-access-token/",
+  // A bad verification link is a 400/401 about the link, not the session.
+  "/api/auth/verify/",
 ];
 
 let rotation: Promise<boolean> | null = null;
@@ -317,6 +319,14 @@ export async function logoutUser() {
   return apiRequest("/api/auth/logout/", {
     method: "GET",
   });
+}
+
+/** Consume a single-use email verification token from the emailed link. */
+export async function verifyEmail(token: string) {
+  return apiRequest<{ message: string }>(
+    `/api/auth/verify/${encodeURIComponent(token)}/`,
+    { method: "POST" },
+  );
 }
 
 export async function requestPasswordReset(email: string) {
