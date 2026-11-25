@@ -14,6 +14,7 @@ import {
   Globe,
   PenLine,
   Lock,
+  Mic,
 } from "lucide-react";
 
 interface HowItWorksProps {
@@ -148,10 +149,38 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({ theme = "light" }) =
     },
     {
       step: "04",
+      title: "Log by Voice",
+      subtitle: "Talk to your terminal; it writes the logs.",
+      icon: Mic,
+      color: "#6B7A3D",
+      desc: (
+        <>
+          Install the optional voice extra and run{" "}
+          <code className={code}>wfi log -a</code>, then just talk. Speech is
+          transcribed on your machine and works offline; nothing is sent until a
+          log is saved. Every <code className={code}>--max-words</code> words
+          (150 by default) the transcript is saved as a log at a natural pause,
+          and a new one starts. Say <code className={code}>"stop logging"</code>,
+          press <code className={code}>Ctrl+C</code>, or stay silent for a
+          minute to save what you said and exit. The first run downloads the
+          speech model (about 150 MB).
+        </>
+      ),
+      terminal: [
+        { cmd: 'pip install -U "waitforit-tech[voice]"' },
+        { cmd: "wfi log -a" },
+        { out: "🎙  Listening…   Words 87/150   ·   Log #1" },
+        { note: 'say "stop logging", press Ctrl+C, or stay silent to save & exit' },
+        { out: "Voice session ended (voice command). Saved 2 log(s) 🎙️📝" },
+        { note: "optional: --max-words 80  --silence-timeout 30  --voice-model small" },
+      ],
+    },
+    {
+      step: "05",
       title: "Attach Screenshots or Recordings",
       subtitle: "Optional media, from a path or a file picker.",
       icon: ImageIcon,
-      color: "#6B7A3D",
+      color: "#8C5E3C",
       desc: (
         <>
           Attach one image or one video to a log. Pass a path with{" "}
@@ -171,27 +200,27 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({ theme = "light" }) =
       ],
     },
     {
-      step: "05",
+      step: "06",
       title: "Keep Coding",
       subtitle: "Zero workflow friction.",
       icon: Code2,
-      color: "#8C5E3C",
+      color: "#6B7A3D",
       desc: "After saving a log, keep building. No forms, no context switching. WaitForIt collects related logs in the background.",
     },
     {
-      step: "06",
+      step: "07",
       title: "AI Builds the Bigger Picture",
       subtitle: "Logs grouped into complete technical articles.",
       icon: Cpu,
-      color: "#6B7A3D",
+      color: "#8C5E3C",
       desc: "Once a day has fully ended in your capsule's timezone, WaitForIt groups that day's unused logs into a single article instead of one article per log. Thin days are merged with the following days until there is enough material. Each log is used in one article only. By default, in shared capsules each contributor's logs become their own articles.",
     },
     {
-      step: "07",
+      step: "08",
       title: "Search Your Engineering Journal",
       subtitle: "Find the reasoning, not just the code.",
       icon: Search,
-      color: "#8C5E3C",
+      color: "#6B7A3D",
       desc: (
         <>
           Every log stays searchable from the terminal across all capsules you
@@ -236,6 +265,7 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({ theme = "light" }) =
       items: [
         "Create, list, and switch capsules",
         "Record logs with optional image or video",
+        "Log by voice with wfi log -a: speech becomes logs",
         "Search logs across capsules",
         "Articles are generated automatically each day",
       ],

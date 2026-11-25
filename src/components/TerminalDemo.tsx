@@ -1,11 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Play, RotateCcw, Check, Sparkles, Terminal as TerminalIcon, FileText } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import {
+  Play,
+  RotateCcw,
+  Check,
+  Sparkles,
+  Terminal as TerminalIcon,
+  FileText,
+} from "lucide-react";
 
 interface TerminalDemoProps {
   onArticleClick?: () => void;
 }
 
-export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) => {
+export const TerminalDemo: React.FC<TerminalDemoProps> = ({
+  onArticleClick,
+}) => {
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -38,10 +47,10 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
             onClick={() => setIsPlaying(!isPlaying)}
             className="p-1 rounded bg-[#111315] text-[#A0A8B0] hover:text-[#F3F5F7] text-[10px] flex items-center space-x-1 px-2 border border-white/5"
           >
-            <Play className={`w-3 h-3 ${isPlaying ? 'text-[#8FAF9A]' : ''}`} />
-            <span>{isPlaying ? 'Pause' : 'Play'}</span>
+            <Play className={`w-3 h-3 ${isPlaying ? "text-[#8FAF9A]" : ""}`} />
+            <span>{isPlaying ? "Pause" : "Play"}</span>
           </button>
-          
+
           <button
             onClick={() => setStep(0)}
             className="p-1 rounded bg-[#111315] text-[#A0A8B0] hover:text-[#F3F5F7] text-[10px] flex items-center space-x-1 px-2 border border-white/5"
@@ -58,11 +67,21 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
         <div className="space-y-1">
           <div className="flex items-center space-x-2 text-[#5E81AC]">
             <span className="text-[#8FAF9A] font-bold">$</span>
-            <span className="font-semibold">python -m pip install waitforit-tech</span>
+            <span className="font-semibold">pip install waitforit-tech</span>
           </div>
           <div className="text-[#8FAF9A] flex items-center space-x-1.5 pl-4">
             <Check className="w-3.5 h-3.5" />
             <span>CLI installed. Run wfi login to connect your account.</span>
+          </div>
+          <div className="flex items-center space-x-2 text-[#5E81AC] pt-2">
+            <span className="text-[#8FAF9A] font-bold">$</span>
+            <span className="font-semibold">
+              pip install -U "waitforit-tech[voice]"
+            </span>
+          </div>
+          <div className="text-[#8FAF9A] flex items-center space-x-1.5 pl-4">
+            <Check className="w-3.5 h-3.5" />
+            <span>Optional voice logging installed.</span>
           </div>
         </div>
 
@@ -85,12 +104,18 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
           <div className="space-y-2.5 animate-fadeIn">
             <div className="flex items-center space-x-2 text-[#5E81AC]">
               <span className="text-[#8FAF9A] font-bold">$</span>
-              <span className="font-semibold">wfi create-capsule --title "inventory-service"</span>
+              <span className="font-semibold">
+                wfi create-capsule -t "inventory-service"
+              </span>
             </div>
             <div className="bg-[#1A1D21]/90 border border-[#6B7A3D]/40 p-3.5 rounded-xl space-y-1 text-slate-300">
-              <p className="text-[#E8C8D8] font-bold text-[11px] uppercase tracking-wider">Select the capsule</p>
+              <p className="text-[#E8C8D8] font-bold text-[11px] uppercase tracking-wider">
+                Select the capsule
+              </p>
               <p>wfi set-capsule "inventory-service"</p>
-              <p className="text-[#A0A8B0]">New terminal logs now go to this capsule.</p>
+              <p className="text-[#A0A8B0]">
+                New terminal logs now go to this capsule.
+              </p>
             </div>
             <div className="text-[#8FAF9A] flex items-center space-x-1.5 pl-4">
               <Check className="w-3.5 h-3.5" />
@@ -101,9 +126,20 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
 
         {/* Step 3 & 4: Context collecting */}
         {step >= 3 && (
-          <div className="space-y-1 text-[#E8C8D8] flex items-center space-x-2 animate-pulse pl-4 pt-1">
-            <span className="text-sm">⏳</span>
-            <span>wfi log --title "Redis decision" --message "Using Streams for ordered writes."</span>
+          <div className="space-y-1.5 animate-fadeIn">
+            <div className="text-[#E8C8D8] flex items-center space-x-2 animate-pulse pl-4 pt-1">
+              <span className="text-sm">⏳</span>
+              <span>
+                wfi log -t "Persistent DB decision" -m "Due to focus on
+                offline-capability we decided to include in-mem first WAL"
+              </span>
+            </div>
+            <div className="text-[#8FAF9A] flex items-center space-x-1.5 pl-4">
+              <Check className="w-3.5 h-3.5" />
+              <span>
+                Log saved. Prefer talking? Run wfi log -a and just speak.
+              </span>
+            </div>
           </div>
         )}
 
@@ -115,7 +151,7 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
               <span className="font-bold">Search your saved logs:</span>
             </div>
 
-            <div 
+            <div
               onClick={onArticleClick}
               className="group bg-[#1A1D21] border border-[#5E81AC]/40 hover:border-[#5E81AC] p-4 rounded-xl cursor-pointer transition-all shadow-lg hover:shadow-[#5E81AC]/10"
             >
@@ -128,7 +164,8 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
                     </span>
                   </div>
                   <p className="text-xs text-[#A0A8B0] font-sans line-clamp-2">
-                    Search prints matching log titles, capsule names, and saved message details in your terminal.
+                    Search prints matching log titles, capsule names, and saved
+                    message details in your terminal.
                   </p>
                 </div>
               </div>
@@ -138,7 +175,9 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
                   <span className="w-2 h-2 rounded-full bg-[#8FAF9A]"></span>
                   <span>Matching logs found</span>
                 </span>
-                <span className="group-hover:translate-x-1 transition-transform font-medium">wfi --help</span>
+                <span className="group-hover:translate-x-1 transition-transform font-medium">
+                  wfi --help
+                </span>
               </div>
             </div>
           </div>
@@ -158,9 +197,14 @@ export const TerminalDemo: React.FC<TerminalDemoProps> = ({ onArticleClick }) =>
           {Array.from({ length: 6 }).map((_, i) => (
             <button
               key={i}
-              onClick={() => { setStep(i); setIsPlaying(false); }}
+              onClick={() => {
+                setStep(i);
+                setIsPlaying(false);
+              }}
               className={`w-2 h-2 rounded-full transition-all ${
-                step === i ? 'bg-[#5E81AC] w-4' : 'bg-[#A0A8B0]/30 hover:bg-[#A0A8B0]'
+                step === i
+                  ? "bg-[#5E81AC] w-4"
+                  : "bg-[#A0A8B0]/30 hover:bg-[#A0A8B0]"
               }`}
             />
           ))}

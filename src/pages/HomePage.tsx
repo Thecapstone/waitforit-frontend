@@ -61,13 +61,13 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
 
               <h1 className="text-4xl sm:text-5xl font-serif font-extrabold tracking-tight text-[#8C5E3C] leading-[1.15]">
-                Every backend engineer has a story.{" "}
+                Engineering is about breaking down complex problems.{" "}
                 <span
                   className={`font-serif italic font-normal block pt-1.5 ${
                     isLight ? "text-[#4A423A]" : "text-[#C5CCC0]"
                   }`}
                 >
-                  Most of it disappears.
+                  Most of the decisions and constraints disappears.
                 </span>
               </h1>
 
