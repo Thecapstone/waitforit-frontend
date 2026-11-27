@@ -22,10 +22,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setCurrentPage, onOpenWait
           Company & Mission
         </span>
         <h1 className="text-4xl sm:text-5xl font-serif font-extrabold text-[#8C5E3C] tracking-tight">
-          We're preserving the engineering journey.
+          We preserve the reasoning behind how software gets built.
         </h1>
         <p className="text-base text-[#786E65] italic font-serif">
-          "Software engineering is filled with ideas that quietly disappear. WaitForIt exists to make sure they don't."
+          "Code tells us what was built. WaitForIt exists to preserve why."
         </p>
       </div>
 
@@ -39,7 +39,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setCurrentPage, onOpenWait
             WaitForIt began as a personal attempt to solve a problem the founder experienced while building backend systems. Months after completing each project, they realized they could no longer explain many of the engineering decisions that made it successful.
           </p>
           <p>
-            That experience became the foundation for WaitForIt. Today, we're building tools that help developers preserve not only their code, but the thinking that shaped it.
+            That experience became the foundation for WaitForIt: developer visibility software that preserves the decisions, trade-offs, and architectural reasoning behind how engineers build. Instead of asking engineers to stop and write documentation, it fits into the workflow they already have. Log from the terminal, from the website, or simply by talking to your terminal.
           </p>
         </div>
       </div>
@@ -50,24 +50,24 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setCurrentPage, onOpenWait
           isLight ? 'bg-white border-[#DCD5C9]' : 'bg-[#1A1D1A] border-[#2C3325]'
         }`}>
           <CheckCircle2 className="w-5 h-5 text-[#6B7A3D]" />
-          <h3 className="text-base font-serif font-bold text-[#8C5E3C]">Preserve Knowledge</h3>
-          <p className="text-xs text-[#786E65]">Ensure no architectural decision, bug fix, or lesson is ever lost again.</p>
+          <h3 className="text-base font-serif font-bold text-[#8C5E3C]">Preserve Decisions</h3>
+          <p className="text-xs text-[#786E65]">Keep the decisions, trade-offs, and reasoning behind your work, not just the code.</p>
         </div>
 
         <div className={`shadow-soft p-6 rounded-2xl border space-y-2 ${
           isLight ? 'bg-white border-[#DCD5C9]' : 'bg-[#1A1D1A] border-[#2C3325]'
         }`}>
           <CheckCircle2 className="w-5 h-5 text-[#8C5E3C]" />
-          <h3 className="text-base font-serif font-bold text-[#8C5E3C]">Celebrate Software</h3>
-          <p className="text-xs text-[#786E65]">Celebrate thoughtful engineering and backend craftsmanship.</p>
+          <h3 className="text-base font-serif font-bold text-[#8C5E3C]">Make Expertise Visible</h3>
+          <p className="text-xs text-[#786E65]">Help engineers show the depth of their work without exposing sensitive code.</p>
         </div>
 
         <div className={`shadow-soft p-6 rounded-2xl border space-y-2 ${
           isLight ? 'bg-white border-[#DCD5C9]' : 'bg-[#1A1D1A] border-[#2C3325]'
         }`}>
           <CheckCircle2 className="w-5 h-5 text-[#6B7A3D]" />
-          <h3 className="text-base font-serif font-bold text-[#8C5E3C]">Stronger Portfolios</h3>
-          <p className="text-xs text-[#786E65]">Help developers build technical portfolios that showcase how they think.</p>
+          <h3 className="text-base font-serif font-bold text-[#8C5E3C]">Keep Team Knowledge</h3>
+          <p className="text-xs text-[#786E65]">Make sure institutional knowledge stays with the project when engineers move on.</p>
         </div>
       </div>
 
