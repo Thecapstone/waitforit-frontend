@@ -61,29 +61,31 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
 
               <h1 className="text-4xl sm:text-5xl font-serif font-extrabold tracking-tight text-[#8C5E3C] leading-[1.15]">
-                Engineering is about breaking down complex problems.{" "}
+                When you revisit an engineering decision,{" "}
                 <span
                   className={`font-serif italic font-normal block pt-1.5 ${
                     isLight ? "text-[#4A423A]" : "text-[#C5CCC0]"
                   }`}
                 >
-                  Most of the decisions and constraints disappears.
+                  will you remember why you made it?
                 </span>
               </h1>
 
               <p
                 className={`text-base leading-relaxed ${isLight ? "text-[#605549]" : "text-[#A0A8B0]"}`}
               >
-                Every database decision, architectural trade-off, debugging
-                breakthrough, and engineering lesson contributes to the software
-                you build. Yet when the product ships, almost all of that work
-                becomes invisible.
+                Every system is a collection of trade-offs: the database you
+                chose, the abstraction you introduced, the alternative you
+                rejected. That reasoning lives in conversations, debugging
+                sessions, and your head, and it fades long before anyone writes
+                it down.
               </p>
 
               <p className="text-sm font-serif font-semibold border-l-2 border-[#8C5E3C] pl-3 py-1 text-[#8C5E3C]">
-                WaitForIt helps you capture your engineering journey directly
-                from your terminal and transform it into a living record of how
-                your software was built.
+                WaitForIt captures the why behind your work as you build. Type
+                it in your terminal, log it on the website, or just say it out
+                loud, and it becomes a lasting record of how your software was
+                built.
               </p>
 
               <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -114,17 +116,17 @@ export const HomePage: React.FC<HomePageProps> = ({
               >
                 <span className="flex items-center space-x-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#6B7A3D]" />
-                  <span>No IDE switching</span>
+                  <span>Log like you commit</span>
                 </span>
                 <span>•</span>
                 <span className="flex items-center space-x-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#6B7A3D]" />
-                  <span>No manual docs</span>
+                  <span>Type it or say it</span>
                 </span>
                 <span>•</span>
                 <span className="flex items-center space-x-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#6B7A3D]" />
-                  <span>No interruptions</span>
+                  <span>No docs backlog</span>
                 </span>
               </div>
             </div>
@@ -152,10 +154,10 @@ export const HomePage: React.FC<HomePageProps> = ({
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs font-mono">
             {[
               "Backend Engineers",
-              "Platform Engineers",
-              "DevOps",
+              "Platform & DevOps",
               "AI Engineers",
-              "Open Source Maintainers",
+              "Engineering Teams",
+              "Technical Project Managers",
             ].map((role) => (
               <span
                 key={role}
@@ -187,14 +189,15 @@ export const HomePage: React.FC<HomePageProps> = ({
               The Core Problem
             </span>
             <h2 className="text-3xl font-serif font-bold text-[#8C5E3C]">
-              Backend engineering is invisible.
+              Code tells us what was built. It doesn't always tell us why.
             </h2>
             <p
               className={`text-sm leading-relaxed ${isLight ? "text-[#605549]" : "text-[#A0A8B0]"}`}
             >
-              A frontend interface can showcase months of design and engineering
-              effort in a single screenshot. Backend engineering doesn't have
-              that luxury.
+              Engineering is decision-making, and decisions are rarely
+              isolated. One shapes the next until, together, they become the
+              architecture of the whole system. The reasoning behind them
+              rarely makes it into the code.
             </p>
           </div>
 
@@ -207,14 +210,14 @@ export const HomePage: React.FC<HomePageProps> = ({
               }`}
             >
               <span className="text-xs text-[#8C5E3C] font-serif font-bold uppercase tracking-wider">
-                01. Hidden Depth
+                01. Unwritten Reasoning
               </span>
               <h4 className="text-sm font-serif font-bold text-[#2C2825] dark:text-[#e37347]">
-                Clients don't see migrations
+                It lives in your head
               </h4>
               <p className="text-xs text-[#786E65] leading-relaxed">
-                Database indexes, lock strategies, and transaction boundaries
-                disappear after deployment.
+                Trade-offs get argued in conversations and discovered while
+                debugging, then never written down anywhere.
               </p>
             </div>
 
@@ -226,14 +229,14 @@ export const HomePage: React.FC<HomePageProps> = ({
               }`}
             >
               <span className="text-xs text-[#8C5E3C] font-serif font-bold uppercase tracking-wider">
-                02. Unread Details
+                02. Late Documentation
               </span>
               <h4 className="text-sm font-serif font-bold text-[#2C2825] dark:text-[#e37347]">
-                Recruiters don't read PRs
+                Docs become another chore
               </h4>
               <p className="text-xs text-[#786E65] leading-relaxed">
-                Pull requests show what lines changed, but obscure the reasoning
-                behind technical trade-offs.
+                By the time someone gets around to writing it up, the most
+                important context has already been forgotten.
               </p>
             </div>
 
@@ -248,11 +251,11 @@ export const HomePage: React.FC<HomePageProps> = ({
                 03. Lost Memory
               </span>
               <h4 className="text-sm font-serif font-bold text-[#2C2825] dark:text-[#e37347]">
-                Context fades over time
+                Six months later, it's gone
               </h4>
               <p className="text-xs text-[#786E65] leading-relaxed">
-                Even you will struggle to remember why a problem was solved a
-                particular way six months later.
+                You spot a better approach, but first you need to know why it
+                was built this way. And you can't remember.
               </p>
             </div>
           </div>
@@ -269,25 +272,25 @@ export const HomePage: React.FC<HomePageProps> = ({
               <span className="w-7 h-7 rounded-xl bg-[#8C5E3C]/10 text-[#8C5E3C] border border-[#8C5E3C]/30 flex items-center justify-center font-bold">
                 1
               </span>
-              <span>Developer writes code</span>
+              <span>Decide & build</span>
             </div>
             <ArrowRight className="w-4 h-4 text-[#8C5E3C] hidden md:block" />
             <div className="flex items-center space-x-2.5 text-[#2C2825] dark:text-[#e37347]">
               <span className="w-7 h-7 rounded-xl bg-[#8C5E3C]/10 text-[#8C5E3C] border border-[#8C5E3C]/30 flex items-center justify-center font-bold">
                 2
               </span>
-              <span>Git Commit & Push</span>
+              <span>Commit & push</span>
             </div>
             <ArrowRight className="w-4 h-4 text-[#8C5E3C] hidden md:block" />
             <div className="flex items-center space-x-2.5 text-[#2C2825] dark:text-[#e37347]">
               <span className="w-7 h-7 rounded-xl bg-[#8C5E3C]/10 text-[#8C5E3C] border border-[#8C5E3C]/30 flex items-center justify-center font-bold">
                 3
               </span>
-              <span>Production Release</span>
+              <span>Ship to production</span>
             </div>
             <ArrowRight className="w-4 h-4 text-red-600 hidden md:block" />
             <div className="shadow-soft p-3 rounded-xl bg-red-950/10 text-red-700 dark:text-red-300 border border-red-500/30 font-serif font-medium">
-              ⚠️ Context lost between commits
+              ⚠️ The why is lost
             </div>
           </div>
         </div>
@@ -308,8 +311,8 @@ export const HomePage: React.FC<HomePageProps> = ({
           <p
             className={`text-sm ${isLight ? "text-[#605549]" : "text-[#A0A8B0]"}`}
           >
-            Git tells you what changed. WaitForIt explains why it changed —
-            preserved alongside the software that inspired it.
+            You already commit your changes. With WaitForIt, you capture the
+            reasoning behind them just as easily, right where you work.
           </p>
         </div>
 
@@ -374,7 +377,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   WaitForIt
                 </h3>
                 <p className="text-xs text-[#6B7A3D] font-serif font-semibold">
-                  Engineering Journal Platform
+                  Developer Visibility Platform
                 </p>
               </div>
             </div>
@@ -382,22 +385,22 @@ export const HomePage: React.FC<HomePageProps> = ({
             <ul className="space-y-3 text-xs text-[#2C2825] dark:text-[#8C5E3C]">
               <li className="flex items-center space-x-2">
                 <CheckCircle2 className="w-4 h-4 text-[#6B7A3D]" />
-                <span>Tracks architecture decisions & trade-offs</span>
+                <span>Captures decisions, trade-offs & architectural reasoning</span>
               </li>
               <li className="flex items-center space-x-2">
                 <CheckCircle2 className="w-4 h-4 text-[#6B7A3D]" />
-                <span>Captures debugging sessions while coding</span>
+                <span>Log by typing, or just talk to your terminal</span>
               </li>
               <li className="flex items-center space-x-2">
                 <CheckCircle2 className="w-4 h-4 text-[#6B7A3D]" />
                 <span>
-                  AI synthesizes terminal logs into polished technical articles
+                  Turns your logs into detailed technical articles
                 </span>
               </li>
               <li className="flex items-center space-x-2">
                 <CheckCircle2 className="w-4 h-4 text-[#6B7A3D]" />
                 <span>
-                  Builds a searchable technical portfolio automatically
+                  Shows your expertise without exposing sensitive code
                 </span>
               </li>
             </ul>
@@ -409,10 +412,10 @@ export const HomePage: React.FC<HomePageProps> = ({
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
           <span className="text-xs font-serif font-bold uppercase tracking-widest text-[#8C5E3C]">
-            Value Proposition
+            Why It Matters
           </span>
           <h2 className="text-3xl font-serif font-bold text-[#8C5E3C]">
-            Why It Matters
+            From individual visibility to collective knowledge.
           </h2>
         </div>
 
@@ -428,11 +431,11 @@ export const HomePage: React.FC<HomePageProps> = ({
               <Database className="w-4 h-4" />
             </div>
             <h3 className="text-base font-serif font-bold text-[#2C2825] dark:text-[#8C5E3C]">
-              Preserve Engineering Decisions
+              Remember Your Own Decisions
             </h3>
             <p className="text-xs text-[#786E65] leading-relaxed">
-              Remember not only what you built, but why you built it that way.
-              Save your future team hundreds of onboarding hours.
+              Revisit any decision with its context intact: what you
+              considered, what you rejected, and why you settled where you did.
             </p>
           </div>
 
@@ -447,11 +450,11 @@ export const HomePage: React.FC<HomePageProps> = ({
               <Zap className="w-4 h-4" />
             </div>
             <h3 className="text-base font-serif font-bold text-[#2C2825] dark:text-[#8C5E3C]">
-              Build Technical Credibility
+              Make Your Expertise Visible
             </h3>
             <p className="text-xs text-[#786E65] leading-relaxed">
-              Show clients, recruiters, and teammates the deep engineering
-              thinking behind your work—not just the finished UI.
+              Turn your logs into articles that show the depth of your work to
+              clients, recruiters, and peers, without exposing sensitive code.
             </p>
           </div>
 
@@ -466,11 +469,11 @@ export const HomePage: React.FC<HomePageProps> = ({
               <BookOpen className="w-4 h-4" />
             </div>
             <h3 className="text-base font-serif font-bold text-[#2C2825] dark:text-[#8C5E3C]">
-              Learn From Yourself
+              Keep Knowledge on the Team
             </h3>
             <p className="text-xs text-[#786E65] leading-relaxed">
-              Your future self becomes one of your most valuable readers. Search
-              your past debugging breakthroughs whenever needed.
+              When an engineer moves on, their reasoning stays. Whoever inherits
+              the code inherits the why, and managers see the real progress.
             </p>
           </div>
         </div>
@@ -616,13 +619,12 @@ export const HomePage: React.FC<HomePageProps> = ({
         >
           <div className="space-y-3">
             <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#8C5E3C]">
-              Great software deserves a better story.
+              Engineering knowledge shouldn't disappear when the work is done.
             </h2>
             <p className="text-sm text-[#786E65] max-w-xl mx-auto leading-relaxed">
-              Backend engineering is full of invisible moments that shape every
-              successful product. Capture those moments before they're
-              forgotten. Join the developers building a more visible engineering
-              future.
+              The most important part of building software isn't always what
+              you ship. Sometimes, it's everything you had to figure out along
+              the way. Capture it before it's forgotten.
             </p>
           </div>
 
