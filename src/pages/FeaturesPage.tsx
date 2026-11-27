@@ -8,6 +8,8 @@ import {
   History,
   Search,
   Briefcase,
+  Mic,
+  Users,
 } from "lucide-react";
 
 interface FeaturesPageProps {
@@ -30,11 +32,20 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({
       subtitle: "Document your thinking without changing your workflow.",
       icon: Terminal,
       color: "#8C5E3C",
-      body: "Documentation often becomes an afterthought because it interrupts active problem-solving. WaitForIt removes that friction by integrating directly into your terminal. Logging a technical decision feels as natural as writing a Git commit.",
+      body: "Documentation often becomes an afterthought because it interrupts active problem-solving. WaitForIt removes that friction by living in your terminal. You make changes and commit them; now you capture the reasoning behind them just as easily.",
       example: `$ wfi log\nMigrated cache invalidation to Redis Streams after identifying duplicate event processing.\n✓ Log recorded.`,
     },
     {
       num: "02",
+      title: "Voice Logging",
+      subtitle: "Just talk to your terminal.",
+      icon: Mic,
+      color: "#6B7A3D",
+      body: "Deep in a session, you've just figured out why something wasn't working. Instead of stopping to write it up, say it: what you discovered, what you considered, and why you settled on the fix. WaitForIt transcribes it on your machine and turns it into structured engineering logs.",
+      example: `$ wfi log -a\n🎙  Listening…  "Retries were double-charging, so we added idempotency keys…"\n✓ Voice session ended. Saved 1 log.`,
+    },
+    {
+      num: "03",
       title: "Smart Context Building",
       subtitle: "Your logs become one coherent article.",
       icon: Layers,
@@ -43,7 +54,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({
       example: `Log 1 (Cache issue) + Log 2 (Streams test) + Log 3 (Benchmarking)\n↓\nGenerated: "Building Reliable Inventory Synchronization"`,
     },
     {
-      num: "03",
+      num: "04",
       title: "AI That Writes Like You",
       subtitle: "Preserve your voice, not just your code.",
       icon: Bot,
@@ -52,7 +63,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({
       example: `Style Profile: Senior Systems Engineer\nTone: Technical, Reflective, Precise\nOutput: High-fidelity engineering documentation.`,
     },
     {
-      num: "04",
+      num: "05",
       title: "Engineering Timeline",
       subtitle: "Watch your projects evolve.",
       icon: History,
@@ -61,7 +72,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({
       example: `Jan: Architecture → Feb: Authentication → Mar: Redis Queue → Apr: Production Deployment`,
     },
     {
-      num: "05",
+      num: "06",
       title: "Searchable Knowledge Base",
       subtitle: "Never solve the same problem twice.",
       icon: Search,
@@ -70,13 +81,22 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({
       example: `Query: "Redis Streams memory leak"\nFound: 2 prior incident notes with resolution steps.`,
     },
     {
-      num: "06",
+      num: "07",
       title: "Engineering Portfolio",
       subtitle: "Show your thinking—not just your code.",
       icon: Briefcase,
       color: "#6B7A3D",
-      body: "Recruiters can browse GitHub. Clients can look at screenshots. WaitForIt tells the story behind the software. Your portfolio becomes a collection of engineering journeys rather than isolated repositories.",
+      body: "Recruiters can browse GitHub. Clients can look at screenshots. WaitForIt tells the story behind the software, so you can demonstrate the complexity of your work without exposing sensitive code.",
       example: `Portfolio URL: waitforit.dev/@yourname\nContains: 14 Capsules, 42 Deep Engineering Articles.`,
+    },
+    {
+      num: "08",
+      title: "Shared Team Capsules",
+      subtitle: "Knowledge that stays when people move on.",
+      icon: Users,
+      color: "#8C5E3C",
+      body: "Invite teammates into a capsule so the reasoning behind a codebase stays with the project, not the person. Engineers who inherit the code can read why it was built this way, and technical project managers can follow the real progress behind complex work.",
+      example: `Capsule: Payments API\nMembers: 4  ·  Contributors: 6\nEach contributor's logs → their own articles`,
     },
   ];
 
@@ -92,12 +112,13 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({
           Platform Capabilities
         </span>
         <h1 className="text-4xl sm:text-5xl font-serif font-extrabold text-[#8C5E3C] tracking-tight">
-          Designed for the work nobody gets to see.
+          Your engineering process, captured as you work.
         </h1>
         <p className="text-base text-[#786E65]">
-          The software you ship is only part of your engineering story.
-          WaitForIt captures everything that happens before deployment and turns
-          that invisible work into a lasting record of your expertise.
+          WaitForIt fits inside the workflow you already have. Type a log or
+          just talk to your terminal, and your reasoning becomes structured
+          logs, then detailed articles that preserve the context behind your
+          work.
         </p>
       </div>
 
@@ -174,7 +195,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({
         }`}
       >
         <h3 className="text-2xl font-serif font-bold text-[#8C5E3C]">
-          Every project deserves a history.
+          Every decision deserves to be remembered.
         </h3>
         <div className="max-w-md mx-auto text-left">
           <WaitlistForm source="features_page_cta" theme={theme} />
