@@ -75,7 +75,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, onOpenWaitlist, 
             </p>
             
             <p className={`text-xs leading-relaxed max-w-sm ${isLight ? 'text-[#605549]' : 'text-[#A0A8B0]'}`}>
-              Built for developers who believe the journey behind great software deserves to be remembered.
+              For engineers who want their work understood, their decisions remembered, and their expertise visible.
             </p>
 
             {/* Newsletter Input - Olive Button */}
