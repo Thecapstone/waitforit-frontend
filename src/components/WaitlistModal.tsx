@@ -37,7 +37,7 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({ isOpen, onClose, s
             </div>
             <div>
               <h3 className="text-lg font-serif font-bold text-[#8C5E3C]">Join the WaitForIt Waitlist</h3>
-              <p className="text-xs text-[#786E65]">Get private beta access to terminal-first documentation.</p>
+              <p className="text-xs text-[#786E65]">Get early access and start preserving the why behind your work.</p>
             </div>
           </div>
 
