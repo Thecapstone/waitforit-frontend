@@ -28,7 +28,7 @@ export const WhyPage: React.FC<WhyPageProps> = ({ setCurrentPage, onOpenWaitlist
         </h1>
 
         <p className="text-base text-[#786E65] max-w-2xl mx-auto italic font-serif leading-relaxed">
-          "Every company starts with a problem. WaitForIt started with a forgotten engineering decision."
+          "Code tells us what was built. It doesn't always tell us why."
         </p>
       </div>
 
@@ -79,15 +79,15 @@ export const WhyPage: React.FC<WhyPageProps> = ({ setCurrentPage, onOpenWaitlist
         <Quote className="w-10 h-10 text-[#8C5E3C] opacity-40" />
 
         <h3 className="text-2xl sm:text-3xl font-bold font-serif text-[#8C5E3C] leading-snug">
-          "When you take away the pretty UIs, what do backend developers use to display proof of competence?"
+          "When you revisit an engineering decision, will you remember why you made it?"
         </h3>
 
         <div className={`space-y-3 text-sm leading-relaxed border-t pt-4 ${
           isLight ? 'border-[#DCD5C9] text-[#605549]' : 'border-white/10 text-[#A0A8B0]'
         }`}>
-          <p>The answers were familiar: API documentation, GitHub repositories, or building a frontend. But none of them captured the engineering journey.</p>
+          <p>Engineers spend a lot of time documenting what they build, and very little preserving why they built it that way.</p>
           <p>
-            GitHub stores code. Swagger documents endpoints. Landing pages showcase products. None of them explain the decisions that shaped the software.
+            GitHub stores code. Swagger documents endpoints. Traditional documentation becomes one more task to remember, and by the time it gets written, the most important context is already gone.
           </p>
         </div>
       </div>
@@ -100,14 +100,14 @@ export const WhyPage: React.FC<WhyPageProps> = ({ setCurrentPage, onOpenWaitlist
           Section 04 — The Idea
         </span>
         <h2 className="text-2xl font-serif font-bold text-[#8C5E3C]">
-          Engineering deserves memory.
+          Engineering knowledge shouldn't disappear.
         </h2>
         <div className={`space-y-3 text-sm leading-relaxed ${isLight ? 'text-[#4A423A]' : 'text-[#A0A8B0]'}`}>
           <p>
-            Software isn't only the final product. It's every failed experiment, every architecture discussion, every debugging breakthrough, every trade-off, and every lesson learned.
+            Software isn't only the final product. It's every failed experiment, every architecture discussion, every debugging breakthrough, and every trade-off. When an engineer moves on, all of that usually leaves with them.
           </p>
           <p className="text-[#8C5E3C] font-serif font-bold text-base border-l-2 border-[#6B7A3D] pl-3 py-0.5">
-            Those moments deserve to be preserved. That belief became WaitForIt.
+            The most important part of building software is often everything you had to figure out along the way. That belief became WaitForIt.
           </p>
         </div>
       </div>
@@ -116,7 +116,7 @@ export const WhyPage: React.FC<WhyPageProps> = ({ setCurrentPage, onOpenWaitlist
       <div className={`shadow-soft border rounded-3xl p-8 text-center space-y-6 ${
         isLight ? 'bg-[#F2ECE1] border-[#DCD5C9]' : 'bg-[#111315] border-[#2C3325]'
       }`}>
-        <h3 className="text-2xl font-serif font-bold text-[#8C5E3C]">Ready to preserve your engineering journey?</h3>
+        <h3 className="text-2xl font-serif font-bold text-[#8C5E3C]">Ready to preserve the why behind your work?</h3>
         <div className="max-w-md mx-auto text-left">
           <WaitlistForm source="why_page" theme={theme} />
         </div>
