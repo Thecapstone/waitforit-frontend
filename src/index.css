@@ -86,6 +86,34 @@
   .bunny-ears { animation: none; }
 }
 
+/* Header "We're Live" button: a light sweep across it and twinkling sparkles. */
+@keyframes live-shimmer {
+  0% { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(100%); }
+}
+.live-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.live-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
+  animation: live-shimmer 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes sparkle-twinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(1.25) rotate(15deg); opacity: 0.7; }
+}
+.sparkle-twinkle {
+  animation: sparkle-twinkle 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-shimmer::after, .sparkle-twinkle { animation: none; }
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

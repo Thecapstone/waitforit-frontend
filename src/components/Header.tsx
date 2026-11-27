@@ -11,6 +11,7 @@ import {
   Moon,
   UserCircle,
   Settings,
+  Sparkles,
 } from "lucide-react";
 
 interface HeaderProps {
@@ -46,6 +47,7 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const navItems: { label: string; page: PageView }[] = [
+    { label: "Home", page: "home" },
     { label: "Why WaitForIt", page: "why-waitforit" },
     { label: "How It Works", page: "how-it-works" },
     { label: "Features", page: "features" },
@@ -248,6 +250,18 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
+          {/* We're Live: shimmer + twinkling sparkles, routes to How It Works */}
+          <button
+            onClick={() => {
+              setCurrentPage("how-it-works");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="live-shimmer shadow-glow px-4 py-2 rounded-full bg-gradient-to-r from-[#8C5E3C] to-[#C49A6C] text-[#FAF8F3] text-xs font-serif uppercase tracking-wider font-semibold border border-[#8C5E3C] flex items-center space-x-2 transition-all duration-200 transform hover:-translate-y-0.5"
+          >
+            <Sparkles className="sparkle-twinkle w-3.5 h-3.5" />
+            <span>We're Live</span>
+          </button>
+
           {/* Olive Button for Join Waitlist */}
           <button
             onClick={onOpenWaitlist}
@@ -391,6 +405,17 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>Sign In</span>
               </button>
             )}
+
+            <button
+              onClick={() => {
+                setCurrentPage("how-it-works");
+                setMobileMenuOpen(false);
+              }}
+              className="live-shimmer w-full text-center py-2.5 rounded-xl bg-gradient-to-r from-[#8C5E3C] to-[#C49A6C] text-white text-xs font-serif uppercase tracking-wider font-semibold border border-[#8C5E3C] flex items-center justify-center space-x-2"
+            >
+              <Sparkles className="sparkle-twinkle w-4 h-4" />
+              <span>We're Live</span>
+            </button>
 
             <button
               onClick={() => {
