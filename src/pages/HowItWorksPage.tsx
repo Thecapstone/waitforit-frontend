@@ -294,10 +294,10 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({ theme = "light" }) =
           <span>Workflow Architecture</span>
         </div>
         <h1 className="text-4xl sm:text-5xl font-serif font-extrabold text-[#8C5E3C] tracking-tight">
-          Built around the way developers already work.
+          Capture the why as easily as you commit the what.
         </h1>
         <p className="text-base text-[#786E65] max-w-xl mx-auto">
-          WaitForIt doesn't replace your workflow. It quietly fits inside it.
+          Type it or say it in your terminal, or log from the website. WaitForIt fits inside the workflow you already have.
         </p>
         <div className="max-w-sm mx-auto text-left">
           <TerminalBlock
@@ -410,7 +410,7 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({ theme = "light" }) =
           Ready to make your engineering process visible?
         </h3>
         <p className="text-xs text-[#786E65]">
-          Start documenting your work without changing the way you build.
+          Preserve your reasoning without changing the way you build.
         </p>
         <div className="max-w-md mx-auto text-left">
           <WaitlistForm source="how_it_works_cta" theme={theme} />
