@@ -99,10 +99,10 @@ export const DevelopersPage: React.FC<DevelopersPageProps> = ({ setCurrentPage, 
           Built For Engineers
         </span>
         <h1 className="text-4xl sm:text-5xl font-serif font-extrabold text-[#8C5E3C] tracking-tight">
-          Built for developers who solve invisible problems.
+          Built for engineers who want their work understood.
         </h1>
         <p className="text-base text-[#786E65]">
-          Every engineering discipline leaves behind valuable knowledge. WaitForIt helps preserve it.
+          Every engineering discipline leaves behind decisions worth remembering and expertise worth seeing. WaitForIt helps preserve both.
         </p>
       </div>
 
