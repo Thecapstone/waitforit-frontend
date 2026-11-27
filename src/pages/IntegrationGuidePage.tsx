@@ -11,7 +11,7 @@ interface IntegrationGuidePageProps {
 
 export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setCurrentPage, onOpenWaitlist, theme = 'light' }) => {
   const [copied, setCopied] = useState(false);
-  const installCmd = 'python -m pip install waitforit-tech';
+  const installCmd = 'pip install waitforit-tech';
   const isLight = theme === 'light';
 
   const handleCopy = () => {
@@ -24,8 +24,8 @@ export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setC
     {
       title: 'CLI Tooling',
       badge: 'Terminal Native',
-      desc: 'Command-line tool for `$ wfi init`, `$ wfi log`, `$ wfi capsule`, and `$ wfi publish`.',
-      status: 'In Alpha'
+      desc: 'Command-line tool for `$ wfi init`, `$ wfi log`, `$ wfi create-capsule`, and `$ wfi search`.',
+      status: 'Live'
     },
     {
       title: 'VSCode Extension',
@@ -104,7 +104,7 @@ export const IntegrationGuidePage: React.FC<IntegrationGuidePageProps> = ({ setC
 
       <div className={`rounded-2xl shadow-soft border p-6 space-y-3 ${isLight ? 'bg-white border-[#DCD5C9]' : 'bg-[#1A1D1A] border-[#2C3325]'}`}>
         <h3 className="font-serif font-bold text-[#8C5E3C]">First commands</h3>
-        <pre className="overflow-x-auto whitespace-pre-wrap text-xs leading-7"><code>{`wfi --help\nwfi login\nwfi capsules\nwfi create-capsule --title "my-project" --description "Project notes"\nwfi set-capsule "my-project"\nwfi log --title "Cache decision" --message "Chose Redis for shared cache state."\nwfi search "Redis"`}</code></pre>
+        <pre className="overflow-x-auto whitespace-pre-wrap text-xs leading-7"><code>{`wfi --help\nwfi login\nwfi capsules\nwfi create-capsule --title "my-project" --description "Project notes"\n  [optional] --public | --private          (private by default)\n  [optional] --maturity-date 2027-01-01T00:00:00Z   (sealed until this date)\nwfi set-capsule "my-project"\nwfi log --title "Cache decision" --message "Chose Redis for shared cache state."\nwfi search "Redis"`}</code></pre>
         <p className="text-xs text-[#786E65]">Website users can create an account and sign in there. Terminal users run <code>wfi login</code>, then approve the one-time code in their browser.</p>
       </div>
 
